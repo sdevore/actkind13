@@ -56,4 +56,13 @@
             </div>
         @endif
     </div>
+    @env('local')
+        <div class="grid grid-cols-2 gap-1 dark:text-slate-400">
+            <x-login-link email="sdevore@sdevore.com" label="Login as sdevore" />
+            <x-login-link email="regular@example.com" label="Login as regular user" />
+            <x-login-link email="moderator@example.com" label="Login as moderator" />
+            <x-login-link email="admin@example.com" label="Login as admin" />
+        </div>
+    @endenv
+
 </x-layouts::auth>
