@@ -1,0 +1,25 @@
+name: pipeline
+
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  lint:
+    uses: ./.github/workflows/lint.yml
+    secrets: inherit
+
+  tests:
+    uses: ./.github/workflows/tests.yml
+    secrets: inherit
+
+  passed:
+    needs: [lint, tests]
+    runs-on: ubuntu-latest
+    steps:
+      - name: All checks passed
+        run: echo "Lint and tests passed."

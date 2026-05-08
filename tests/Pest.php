@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+use Tests\Feature\FeatureTestCase;
+use Tests\Integration\IntegrationTestCase;
+use Tests\Unit\UnitTestCase;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,9 +16,9 @@ use Tests\TestCase;
 |
 */
 
-pest()->extend(TestCase::class)
- // ->use(RefreshDatabase::class)
-    ->in('Feature');
+uses(FeatureTestCase::class, RefreshDatabase::class)->in('Feature');
+uses(IntegrationTestCase::class, RefreshDatabase::class)->in('Integration');
+uses(UnitTestCase::class)->in('Unit');
 
 /*
 |--------------------------------------------------------------------------
@@ -43,6 +45,17 @@ expect()->extend('toBeOne', function () {
 | global functions to help you to reduce the number of lines of code in your test files.
 |
 */
+
+if (! function_exists('getProperty')) {
+    function getProperty($object, $propertyName)
+    {
+        $reflection = new ReflectionClass($object);
+        $property = $reflection->getProperty($propertyName);
+        $property->setAccessible(true);
+
+        return $property->getValue($object);
+    }
+}
 
 function something()
 {
