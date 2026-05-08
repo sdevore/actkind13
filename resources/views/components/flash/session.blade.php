@@ -6,7 +6,7 @@
 @endphp
 
 @if ($show)
-    <div class="fixed right-0 top-0 flex flex-col space-y-4">
+    <div class="fixed top-0 right-0 flex flex-col space-y-4">
         @foreach ($notices as $style => $message)
             @php
                 $icon = match ($style) {
@@ -26,7 +26,6 @@
                 $id = uniqid('flash-');
                 $ids[] = $id;
             @endphp
-
             <div id="{{ $id }}" class="{{ $css }} max-w-lg rounded-b border-t-4 px-4 py-3 shadow-md" role="alert">
                 <div class="flex items-center">
                     <div class="mr-2 w-5 py-1">
@@ -41,7 +40,7 @@
 
         <script>
             setTimeout(() => {
-                const ids = @json($ids);
+                const ids = @json ($ids);
                 ids.forEach((id) => {
                     const element = document.getElementById(id);
                     element.classList.add('transition-opacity', 'duration-500', 'opacity-0');

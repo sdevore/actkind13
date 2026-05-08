@@ -25,7 +25,6 @@ class MarkdownViewController extends Controller
         $slug = $request->route()->getName();
         $title = Str::title(str_replace('.', ' ', $slug));
         $markdownFile = resource_path('markdown/'.$slug.'.md');
-        ray($title, $markdownFile);
 
         return view('markdown', [
             'title' => $title,

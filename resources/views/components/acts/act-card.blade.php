@@ -12,7 +12,7 @@
                     {{ $act->title }}
                 </a>
             </h3>
-            <span class="absolute right-0 top-0 m-2 flex w-auto justify-between">
+            <span class="absolute top-0 right-0 m-2 flex w-auto justify-between">
                 @if ($showName)
                     <span class="text-sm text-slate-600 dark:text-slate-400">{{ $act->user->name }}</span>
                 @endif
@@ -26,7 +26,7 @@
             </div>
         @endif
 
-        @auth()
+        @auth ()
             <x-slot name="footer">
                 <span class="flex items-center justify-between">
                     <livewire:acts.appreciate :act="$act" />
@@ -35,7 +35,7 @@
             </x-slot>
         @endauth
 
-        @guest()
+        @guest ()
             @if ($act->appreciates->count() > 0)
                 <x-slot name="footer">
                     <span class="{{ $act->type->getTextColor() }} flex items-center">

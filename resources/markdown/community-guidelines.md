@@ -27,17 +27,17 @@ ActKind.online will be subject to the community guidelines below.
 
 The following will not be tolerated in comments or in posts (including photos) that appear on ActKind.online.
 
--   Hate speech: Content that attacks other people on the basis of race, ethnicity, national origin, sexual orientation,
-    gender, gender identity, religious affiliation, age, disability, or disease. We will not host acts or comments whose
-    primary purpose is inciting harm towards others on the basis of these categories.
--   Threats of violence: You may not threaten violence towards others or use the platform to organize, promote, or incite
-    acts of real-world violence or terrorism.
--   Harassment: Repeatedly targeting other people with unwanted comments.
--   Posting private information (aka doxxing): You may not publish or post other people’s private and confidential
-    information, such as credit card numbers, street address, or Social Security/National Identity numbers. In addition,
-    you may not post intimate photos or videos that were taken or distributed without the subject’s consent.
--   Illegal activities: You may not use our service for any unlawful purposes or in furtherance of illegal activities.
-    International users agree to comply with all local laws regarding online conduct and acceptable content.
+- Hate speech: Content that attacks other people on the basis of race, ethnicity, national origin, sexual orientation,
+  gender, gender identity, religious affiliation, age, disability, or disease. We will not host acts or comments whose
+  primary purpose is inciting harm towards others on the basis of these categories.
+- Threats of violence: You may not threaten violence towards others or use the platform to organize, promote, or incite
+  acts of real-world violence or terrorism.
+- Harassment: Repeatedly targeting other people with unwanted comments.
+- Posting private information (aka doxxing): You may not publish or post other people’s private and confidential
+  information, such as credit card numbers, street address, or Social Security/National Identity numbers. In addition,
+  you may not post intimate photos or videos that were taken or distributed without the subject’s consent.
+- Illegal activities: You may not use our service for any unlawful purposes or in furtherance of illegal activities.
+  International users agree to comply with all local laws regarding online conduct and acceptable content.
 
 #### What Happens If Someone Violates These Guidelines
 
@@ -45,12 +45,12 @@ We recognize that the circumstances under which a violation has occurred will va
 the situation that has been reported. We’ll review each abuse report on a case-by-case basis. In each case. The actions
 that we will take include, but are not limited to, the following:
 
--   A warning to discontinue behavior that violates the guidelines, with specific details on how the guidelines have been
-    violated. Repeated warnings will lead to blocking and removal from ActKind.online.
--   Posting to ActKind.online will be temporarily or permanently disabled.
--   Specific posts will be blocked from ActKind.online.
--   Comments will be hidden from the default timeline for a user.
--   ActKind.online account will be closed.
+- A warning to discontinue behavior that violates the guidelines, with specific details on how the guidelines have been
+  violated. Repeated warnings will lead to blocking and removal from ActKind.online.
+- Posting to ActKind.online will be temporarily or permanently disabled.
+- Specific posts will be blocked from ActKind.online.
+- Comments will be hidden from the default timeline for a user.
+- ActKind.online account will be closed.
 
 Thanks for helping us encourage a safe and welcoming community on ActKind.online. We’ll update these guidelines as
 needed.

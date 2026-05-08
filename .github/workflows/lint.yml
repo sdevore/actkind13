@@ -16,6 +16,10 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.4'
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: '.nvmrc'
       - name: Add Flux Credentials Loaded From ENV
         run: composer config http-basic.composer.fluxui.dev "${{ secrets.FLUX_USERNAME }}" "${{ secrets.FLUX_LICENSE_KEY }}"
       - name: Install Dependencies
@@ -30,6 +34,10 @@ jobs:
         run: ./vendor/bin/phpstan analyse
       - name: Run Security Audit
         run: composer audit
+      - name: Run ESLint
+        run: npm run lint:js
+      - name: Run Prettier
+        run: npx prettier --check .
       # - name: Commit Changes
       #   uses: stefanzweifel/git-auto-commit-action@v7
       #   with:

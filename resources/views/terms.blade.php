@@ -5,9 +5,7 @@
                 <x-authentication-card-logo />
             </div>
 
-            <div class="prose mt-6 w-full overflow-hidden bg-white p-6 shadow-md dark:prose-invert sm:max-w-2xl sm:rounded-lg dark:bg-gray-800">
-                {!! $terms !!}
-            </div>
+            <div class="prose dark:prose-invert mt-6 w-full overflow-hidden bg-white p-6 shadow-md sm:max-w-2xl sm:rounded-lg dark:bg-gray-800">{!! $terms !!}</div>
         </div>
     </div>
 </x-guest-layout>

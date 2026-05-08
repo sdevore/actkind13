@@ -19,7 +19,6 @@ class WelcomeController extends Controller
         }
         // get a random set of acts to display on the welcome page
         $acts = Act::with(['appreciates'])->limit(10)->get();
-        ray($acts);
 
         return view('welcome', compact('acts'));
     }

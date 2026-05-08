@@ -1,4 +1,4 @@
-@env(['staging', 'debug', 'local'])
+@env (['staging', 'debug', 'local'])
     <div {{ $attributes->class(['fixed bottom-1 right-1 z-50 flex h-6 w-6 items-center justify-center rounded-full bg-gray-800 p-3 font-mono text-xs text-white']) }}>
         <div class="block sm:hidden">xs</div>
         <div class="hidden sm:block md:hidden">sm</div>

@@ -1,4 +1,4 @@
-@props([
+@props ([
     "id" => "editor-" . str()->random(8),
     "height" => "400px",
     "label" => null,
@@ -12,9 +12,7 @@
 {{-- see: https://stevencotterill.com/articles/adding-a-markdown-editor-to-laravel --}}
 <div class="{{ $noMargin ? "mb-0" : "mb-5" }}">
     @if ($label)
-        <label class="mb-1 block text-sm font-medium text-gray-800">
-            {{ $label }}
-        </label>
+        <label class="mb-1 block text-sm font-medium text-gray-800"> {{ $label }} </label>
     @endif
 
     <div
@@ -99,7 +97,10 @@
                     type="button"
                     class="inline-block px-4 py-2 font-semibold"
                     :class="{ 'text-indigo-600': tab === 'write' }"
-                    x-on:click.prevent="tab = 'write'; showConvertedMarkdown = false"
+                    x-on:click.prevent="
+                        tab = 'write';
+                        showConvertedMarkdown = false;
+                    "
                 >
                     Write
                 </button>
@@ -108,8 +109,8 @@
                     class="inline-block px-4 py-2 font-semibold"
                     :class="{ 'text-indigo-600': tab === 'preview' && showConvertedMarkdown === true }"
                     x-on:click.prevent="
-                        tab = 'preview'
-                        convertedMarkdown()
+                        tab = 'preview';
+                        convertedMarkdown();
                     "
                 >
                     Preview
@@ -144,7 +145,6 @@
                         />
                     </svg>
                 </button>
-
                 <button x-tooltip="'quote'" type="button" class="group inline-block px-2 py-2" x-on:click.prevent="toggleMenu('quote')">
                     <svg class="h-4 w-4 text-gray-500 group-hover:text-indigo-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -220,7 +220,7 @@
                     x-tooltip="'Markdown Cheatsheet'"
                     type="button"
                     class="group inline-block rounded-lg px-2 py-2 focus:ring-1 focus:ring-indigo-200"
-                    x-on:click="open = ! open"
+                    x-on:click="open = !open"
                 >
                     <svg class="h-5 w-5 rotate-180 transform text-gray-500 group-hover:text-indigo-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -304,7 +304,7 @@
 
         <textarea
             spellcheck="false"
-            x-show="! showConvertedMarkdown"
+            x-show="!showConvertedMarkdown"
             id="{{ $id }}"
             x-ref="input"
             x-model="content"
@@ -322,12 +322,12 @@
         </div>
     </div>
 
-    @error($name)
+    @error ($name)
         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
     @enderror
 </div>
 
-@pushOnce("styles-head")
+@pushOnce ("styles-head")
     <style>
         .fullscreen {
             width: 100vw !important;
@@ -343,7 +343,7 @@
     </style>
 @endpushOnce
 
-@pushOnce("scripts-footer")
+@pushOnce ("scripts-footer")
     <script src="https://cdn.jsdelivr.net/npm/marked@4.0.12/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dompurify@2.3.6/dist/purify.min.js"></script>
 @endpushOnce

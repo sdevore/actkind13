@@ -1,4 +1,4 @@
-@props([
+@props ([
     'heading',
     'footer',
 ])
@@ -10,15 +10,11 @@
 
 <div {{ $attributes->merge(['class' => $classes]) }}>
     @if (! empty($heading))
-        <div {{ $heading->attributes->class([$headingClasses]) }}>
-            {{ $heading }}
-        </div>
+        <div {{ $heading->attributes->class([$headingClasses]) }}> {{ $heading }}</div>
     @endif
 
     {{ $slot }}
     @if (! empty($footer))
-        <div {{ $footer->attributes->class([$footerClasses]) }}>
-            {{ $footer }}
-        </div>
+        <div {{ $footer->attributes->class([$footerClasses]) }}> {{ $footer }}</div>
     @endif
 </div>
