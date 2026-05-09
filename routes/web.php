@@ -6,11 +6,16 @@ use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', WelcomeController::class)->name('home');
-Route::get('/terms', [MarkdownViewController::class, 'show'])->name('terms');
-Route::get('/policy', fn () => view('policy'))->name('policy');
 
-Route::get('/contact-us', fn () => 'TBA')->name('contact-us');
-Route::get('/about', fn () => 'TBA')->name('about');
+Route::controller(MarkdownViewController::class)->group(function () {
+    Route::get('/terms', 'show')->name('terms');
+    Route::get('/policy', 'show')->name('policy');
+    Route::get('/about', 'show')->name('about');
+});
+
+Route::get('/contact', function () {
+    return view('contact_us.contact', ['title' => __('Contact Us')]);
+})->name('contact-us');
 
 // acts
 
