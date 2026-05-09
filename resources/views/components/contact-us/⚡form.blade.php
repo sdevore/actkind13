@@ -1,0 +1,119 @@
+<?php
+
+use Livewire\Component;
+
+new class extends Component
+{
+    public string $name = '';
+
+    public string $email = '';
+
+    public string $where_from = '';
+
+    public string $message = '';
+
+    protected function rules(): array
+    {
+        return [
+            'name' => ['required', 'string', 'max:255', 'min:3'],
+            'email' => ['required', 'email', 'max:255', 'min:5'],
+            'where_from' => ['nullable', 'string', 'max:255'],
+            'message' => ['nullable', 'string', 'max:255', 'min:10'],
+        ];
+    }
+
+    public function submit()
+    {
+
+        $this->validate();
+
+        $contact = \App\Models\ContactUs::firstOrCreate([
+            'name' => $this->name,
+            'email' => $this->email,
+            'where_from' => $this->where_from,
+            'message' => $this->message,
+        ]);
+        Mail::send(new \App\Mail\ContactUsMailable($contact));
+        $this->reset();
+        session()->flash('success', 'Your message has been sent successfully.');
+        $this->redirect(route('home'));
+    }
+};
+?>
+
+<div>
+    <div class="p-2">
+        <form wire:submit.prevent="submit" class="flex flex-col">
+            <label for="name" class="block">
+                <span class="text-gray-700 dark:text-slate-200">Name</span>
+                <input
+                    class="form-input mt-1 block w-full rounded-md border-gray-300 dark:border-gray-800 shadow-sm focus:border-green-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-slate-200/20 placeholder-gray-200"
+                    wire:model="name"
+                    placeholder="Kind person"
+                    id="name"
+                    type="text"
+                    autocomplete="off"
+                    required
+                />
+            </label>
+            @error('name')
+            <span class="ml-1 mt-1 text-sm text-red-700">{{ $message }}</span>
+            @enderror
+
+            <label for="email" class="mt-4 block">
+            <span class="text-gray-700 dark:text-slate-200">
+                Email
+                <span class="text-xs text-green-600 dark:text-slate-200/80">Where we will send an invitation</span>
+            </span>
+                <input
+                    class="form-input mt-1 block w-full rounded-md border-gray-300 dark:border-gray-800 shadow-sm focus:border-green-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-slate-200/20 placeholder-gray-200"
+                    wire:model="email"
+                    placeholder="kindness@example.com"
+                    id="email"
+                    autocomplete="off"
+                    type="email"
+                    required
+                />
+            </label>
+            @error('email')
+            <span class="ml-1 mt-1 text-sm text-red-700">{{ $message }}</span>
+            @enderror
+
+            <label for="where_from" class="mt-4 hidden sm:block">
+                <span class="text-gray-700 dark:text-slate-200">How did you hear about AckKind.online?</span>
+                <input
+                    class="form-input mt-1 block w-full rounded-md border-gray-300 dark:border-gray-800 shadow-sm focus:border-green-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-slate-200/20 placeholder-gray-200"
+                    wire:model="where_from"
+                    placeholder="I heard from..."
+                    id="where_from"
+                    autocomplete="off"
+                    type="text"
+                />
+            </label>
+            @error('where_from')
+            <span class="ml-1 mt-1 text-sm text-red-700">{{ $message }}</span>
+            @enderror
+
+            <label class="mt-4 block">
+            <span class="text-green-700 dark:text-slate-200">
+                Message
+                <span
+                    class="text-xs text-green-600 dark:text-slate-200/80">Why do you want to join ActKind.online</span>
+            </span>
+                <textarea
+                    class="form-textarea mt-1 block w-full rounded-md border-gray-300 dark:border-gray-800 shadow-sm focus:border-green-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-slate-200/20 placeholder-gray-200"
+                    wire:model="message"
+                    rows="3"
+                    placeholder="I am interested in..."
+                ></textarea>
+            </label>
+            @error('message')
+            <span class="ml-1 mt-1 text-sm text-red-700">{{ $message }}</span>
+            @enderror
+
+            <div class="mt-2">
+                <x-controls.success-button type="submit" class="w-auto">Send us a message</x-controls.success-button>
+            </div>
+        </form>
+    </div>
+</div>
