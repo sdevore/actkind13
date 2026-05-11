@@ -7,7 +7,7 @@
 --}}
 <x-app-layout title="Create Invitation">
     <x-slot name="header">
-        <h2 class="text-xl font-semibold leading-tight text-gray-800">Create Invitation</h2>
+        <h2 class="text-xl leading-tight font-semibold text-gray-800">Create Invitation</h2>
     </x-slot>
 
     <div class="py-12">
@@ -33,9 +33,7 @@
 
                         <x-common.simple-markdown-input label="Short text to include in the invitation" name="message" />
                         <div class="mt-4 flex items-center justify-end">
-                            <x-button class="ml-4">
-                                {{ __('Send Invitation') }}
-                            </x-button>
+                            <x-button class="ml-4"> {{ __('Send Invitation') }} </x-button>
                         </div>
                     </form>
                 </div>

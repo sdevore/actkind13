@@ -13,6 +13,9 @@
             <!-- Email Address -->
             <flux:input name="email" :label="__('Email address')" :value="old('email')" type="email" required autocomplete="email" placeholder="email@example.com" />
 
+            <!-- Invitation Code -->
+            <flux:input name="code" :label="__('Invitation Code')" :value="old('code')" type="text" required autofocus :placeholder="__('You inviteation code here')" />
+
             <!-- Password -->
             <flux:input name="password" :label="__('Password')" type="password" required autocomplete="new-password" :placeholder="__('Password')" viewable />
 
