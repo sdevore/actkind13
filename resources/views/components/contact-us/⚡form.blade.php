@@ -47,7 +47,7 @@ new class extends Component
             <label for="name" class="block">
                 <span class="text-gray-700 dark:text-slate-200">Name</span>
                 <input
-                    class="form-input mt-1 block w-full rounded-md border-gray-300 dark:border-gray-800 shadow-sm focus:border-green-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-slate-200/20 placeholder-gray-200"
+                    class="form-input focus:ring-opacity-50 mt-1 block w-full rounded-md border-gray-300 placeholder-gray-200 shadow-sm focus:border-green-300 focus:ring focus:ring-indigo-200 dark:border-gray-800 dark:bg-slate-200/20"
                     wire:model="name"
                     placeholder="Kind person"
                     id="name"
@@ -56,17 +56,17 @@ new class extends Component
                     required
                 />
             </label>
-            @error('name')
-            <span class="ml-1 mt-1 text-sm text-red-700">{{ $message }}</span>
+            @error ('name')
+                <span class="mt-1 ml-1 text-sm text-red-700">{{ $message }}</span>
             @enderror
 
             <label for="email" class="mt-4 block">
-            <span class="text-gray-700 dark:text-slate-200">
-                Email
-                <span class="text-xs text-green-600 dark:text-slate-200/80">Where we will send an invitation</span>
-            </span>
+                <span class="text-gray-700 dark:text-slate-200">
+                    Email
+                    <span class="text-xs text-green-600 dark:text-slate-200/80">Where we will send an invitation</span>
+                </span>
                 <input
-                    class="form-input mt-1 block w-full rounded-md border-gray-300 dark:border-gray-800 shadow-sm focus:border-green-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-slate-200/20 placeholder-gray-200"
+                    class="form-input focus:ring-opacity-50 mt-1 block w-full rounded-md border-gray-300 placeholder-gray-200 shadow-sm focus:border-green-300 focus:ring focus:ring-indigo-200 dark:border-gray-800 dark:bg-slate-200/20"
                     wire:model="email"
                     placeholder="kindness@example.com"
                     id="email"
@@ -75,14 +75,14 @@ new class extends Component
                     required
                 />
             </label>
-            @error('email')
-            <span class="ml-1 mt-1 text-sm text-red-700">{{ $message }}</span>
+            @error ('email')
+                <span class="mt-1 ml-1 text-sm text-red-700">{{ $message }}</span>
             @enderror
 
             <label for="where_from" class="mt-4 hidden sm:block">
                 <span class="text-gray-700 dark:text-slate-200">How did you hear about AckKind.online?</span>
                 <input
-                    class="form-input mt-1 block w-full rounded-md border-gray-300 dark:border-gray-800 shadow-sm focus:border-green-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-slate-200/20 placeholder-gray-200"
+                    class="form-input focus:ring-opacity-50 mt-1 block w-full rounded-md border-gray-300 placeholder-gray-200 shadow-sm focus:border-green-300 focus:ring focus:ring-indigo-200 dark:border-gray-800 dark:bg-slate-200/20"
                     wire:model="where_from"
                     placeholder="I heard from..."
                     id="where_from"
@@ -90,25 +90,24 @@ new class extends Component
                     type="text"
                 />
             </label>
-            @error('where_from')
-            <span class="ml-1 mt-1 text-sm text-red-700">{{ $message }}</span>
+            @error ('where_from')
+                <span class="mt-1 ml-1 text-sm text-red-700">{{ $message }}</span>
             @enderror
 
             <label class="mt-4 block">
-            <span class="text-green-700 dark:text-slate-200">
-                Message
-                <span
-                    class="text-xs text-green-600 dark:text-slate-200/80">Why do you want to join ActKind.online</span>
-            </span>
+                <span class="text-green-700 dark:text-slate-200">
+                    Message
+                    <span class="text-xs text-green-600 dark:text-slate-200/80">Why do you want to join ActKind.online</span>
+                </span>
                 <textarea
-                    class="form-textarea mt-1 block w-full rounded-md border-gray-300 dark:border-gray-800 shadow-sm focus:border-green-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-slate-200/20 placeholder-gray-200"
+                    class="form-textarea focus:ring-opacity-50 mt-1 block w-full rounded-md border-gray-300 placeholder-gray-200 shadow-sm focus:border-green-300 focus:ring focus:ring-indigo-200 dark:border-gray-800 dark:bg-slate-200/20"
                     wire:model="message"
                     rows="3"
                     placeholder="I am interested in..."
                 ></textarea>
             </label>
-            @error('message')
-            <span class="ml-1 mt-1 text-sm text-red-700">{{ $message }}</span>
+            @error ('message')
+                <span class="mt-1 ml-1 text-sm text-red-700">{{ $message }}</span>
             @enderror
 
             <div class="mt-2">

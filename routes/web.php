@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ActController;
+use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\MarkdownViewController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
@@ -28,5 +29,10 @@ Route::resource('acts', ActController::class);
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('dashboard', 'dashboard')->name('dashboard');
 });
+
+// invitations
+Route::resource('invitations', InvitationController::class)->middleware([
+    'auth',
+]);
 
 require __DIR__.'/settings.php';

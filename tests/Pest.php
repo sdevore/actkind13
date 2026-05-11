@@ -16,7 +16,8 @@ use Tests\Unit\UnitTestCase;
 |
 */
 
-uses(FeatureTestCase::class, RefreshDatabase::class)->in('Feature');
+uses(FeatureTestCase::class, RefreshDatabase::class)
+    ->in('Feature', '../resources/views');
 uses(IntegrationTestCase::class, RefreshDatabase::class)->in('Integration');
 uses(UnitTestCase::class)->in('Unit');
 
