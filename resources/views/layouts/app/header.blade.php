@@ -2,8 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
 <head>
     @include ('partials.head')
-    {{ filament()->getTheme()->getHtml() }}
-    {{ filament()->getFontHtml() }}
+    {{ filament()->getTheme()->getHtml() }} {{ filament()->getFontHtml() }}
     @filamentStyles
 </head>
 <body
@@ -21,12 +20,14 @@
                     {{ __('Invitations') }}
                 </flux:navbar.item>
             @endcan
-            <flux:navbar.item icon="hand-heart" :href="route('acts.mine')" :current="request()->routeIs('acts.mine')" wire:navigate> {{ __('Acts of your kindness') }} </flux:navbar.item>
-            @can('view admin panel')
+            <flux:navbar.item icon="hand-heart" :href="route('acts.mine')" :current="request()->routeIs('acts.mine')" wire:navigate>
+                {{ __('Acts of your kindness') }}
+            </flux:navbar.item>
+            @can ('view admin panel')
                 <flux:navbar.item icon="shield-check" :href="route('filament.admin.pages.dashboard')" :current="request()->routeIs('filament.admin.pages.dashboard')" wire:navigate>
                     {{ __('Admin Panel') }}
                 </flux:navbar.item>
-                @endcan
+            @endcan
         </flux:navbar>
 
         <flux:spacer />
@@ -35,7 +36,6 @@
             <flux:tooltip :content="__('Search')" position="bottom">
                 <flux:navbar.item class="[&>div>svg]:size-5 !h-10" icon="magnifying-glass" href="#" :label="__('Search')" />
             </flux:tooltip>
-
         </flux:navbar>
 
         <x-desktop-user-menu />
@@ -89,7 +89,7 @@
         @endenv
     </footer>
     <x-display-breakpoint />
-    @persist ('toast')
+    @persist('toast')
         <flux:toast.group>
             <flux:toast />
         </flux:toast.group>
@@ -99,8 +99,7 @@
     @endauth
     @fluxScripts
     @filamentScripts
-    @livewireScripts
+@livewireScripts
     @stack ('footer_scripts')
-
 </body>
 </html>

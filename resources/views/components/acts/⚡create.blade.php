@@ -91,7 +91,7 @@ new class extends Component implements HasSchemas {
 
         <x-controls.primary-button type="submit" class="mt-4">Share</x-controls.primary-button>
         <x-controls.info-button wire:click="toggleHelp" class="float-end mt-4 text-sm">
-            <x-icon name="heroicon-c-question-mark-circle" class="mr-2 h-4"/>
+            <x-icon name="heroicon-c-question-mark-circle" class="mr-2 h-4" />
             {{ $showHelp ? 'Hide Help' : 'Show Help' }}
         </x-controls.info-button>
     </form>
@@ -104,11 +104,9 @@ new class extends Component implements HasSchemas {
             <ul class="list-inside list-disc">
                 <li>Your name will only be shown to members that are signed in</li>
                 <li>Comments are only shown to signed in members</li>
-                <li class="italic">While we are testing you or I can always delete any experiments before things open
-                    up
-                </li>
+                <li class="italic">While we are testing you or I can always delete any experiments before things open up</li>
             </ul>
         </div>
     @endif
-    <x-filament-actions::modals/>
+    <x-filament-actions::modals />
 </div>

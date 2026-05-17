@@ -19,7 +19,7 @@ class InvitationController extends Controller
             ->orderBy('updated_at', 'desc')
             ->get();
 
-        return view('invitation.index', compact('invitations'));
+        return view('invitations.index', compact('invitations'));
     }
 
     public function send(Request $request, Invitation $invitation): RedirectResponse
@@ -34,6 +34,6 @@ class InvitationController extends Controller
     {
         Gate::authorize('view', $invitation);
 
-        return view('invitation.show', compact('invitation'));
+        return view('invitations.show', compact('invitation'));
     }
 }

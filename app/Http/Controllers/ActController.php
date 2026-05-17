@@ -37,7 +37,7 @@ class ActController extends Controller
         if ($request->expectsJson()) {
             return $acts;
         } else {
-            return view('act.index', compact('acts'));
+            return view('acts.index', compact('acts'));
         }
 
     }
@@ -50,7 +50,7 @@ class ActController extends Controller
             ->withCount(['appreciates', 'comments'])
             ->simplePaginate(20);
 
-        return view('act.mine', compact('acts'));
+        return view('acts.mine', compact('acts'));
     }
 
     public function create(Request $request): View
@@ -59,7 +59,7 @@ class ActController extends Controller
             abort(401);
         }
 
-        return view('act.create');
+        return view('acts.create');
     }
 
     public function store(ActStoreRequest $request): RedirectResponse
@@ -76,7 +76,7 @@ class ActController extends Controller
 
     public function show(Request $request, Act $act): View
     {
-        return view('act.show', compact('act'));
+        return view('acts.show', compact('act'));
     }
 
     public function edit(Request $request, Act $act): View
