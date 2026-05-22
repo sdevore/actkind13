@@ -13,7 +13,7 @@ it('renders successfully', function () {
     $act = Act::factory()->create();
     Livewire::test('comments.comment-list', ['act' => $act])
         ->assertStatus(200);
-});
+})->group('components');
 
 it('shows the correct number of comments on an act', function () {
     $user = User::factory()->create();
@@ -30,4 +30,4 @@ it('shows the correct number of comments on an act', function () {
     foreach ($comments as $comment) {
         $test->assertSee($comment->body);
     }
-});
+})->group('components');

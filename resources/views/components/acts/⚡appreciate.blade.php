@@ -25,10 +25,9 @@ new class extends Component {
         </button>
         {{ $act->appreciates->count() > 0 ? $act->appreciates->count() : '' }}
         @if ($showNames)
-            <span class="ml-2 flex items-center space-x-1">
+            <span class="ml-2 flex items-center space-x-1 divide-x divide-gray-300 divide-solid ">
                 @foreach ($act->appreciates as $appreciate)
-                    <span class="flex items-center">
-                        <img class="h-6 w-6 rounded-full object-cover" src="{{ $appreciate->user->profile_photo_url }}" alt="{{ $appreciate->user->name }}" />
+                    <span class="flex-auto items-center text-sm text-gray-600 dark:text-gray-400 px-2">
                         {{ $appreciate->user->name }}
                     </span>
                 @endforeach

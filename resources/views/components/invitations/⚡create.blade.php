@@ -79,9 +79,7 @@ new class extends Component implements HasSchemas {
 ?>
 
 <div class="{{ $mergedClasses }}">
-    <p class="mb-2 rounded border border-green-900 bg-green-200/80 p-2 font-bold text-green-700 shadow-sm">
-        Be thoughtful about who you invite we are trying to make this a thoughtful kind community. Invitations are sent via email.
-    </p>
+    <p class="mb-2 rounded border border-green-900 bg-green-200/80 p-2 font-bold text-green-700 shadow-sm">Be thoughtful about who you invite we are trying to make this a thoughtful kind community. Invitations are sent via email.</p>
     <form wire:submit="create">
         {{ $this->form }}
         <x-controls.primary-button type="submit" class="mt-4">Invite</x-controls.primary-button>

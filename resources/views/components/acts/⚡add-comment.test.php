@@ -15,7 +15,7 @@ use function Pest\Laravel\assertDatabaseHas;
 it('renders successfully', function () {
     Livewire::test('acts.add-comment')
         ->assertStatus(200);
-});
+})->group('components');
 
 it('can add a comment to an act', function () {
     Notification::fake();
@@ -41,4 +41,4 @@ it('can add a comment to an act', function () {
     ]);
 
     Notification::assertSentTo($actOwner, ActCommented::class);
-});
+})->group('components');

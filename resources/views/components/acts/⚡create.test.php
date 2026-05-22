@@ -13,7 +13,7 @@ use function Pest\Laravel\assertDatabaseHas;
 it('renders successfully', function () {
     Livewire::test('acts.create')
         ->assertStatus(200);
-});
+})->group('components');
 
 it('can create an act', function () {
     $user = User::factory()->create();
@@ -36,4 +36,4 @@ it('can create an act', function () {
         'description' => 'This is a test act description',
         'user_id' => $user->id,
     ]);
-});
+})->group('components');

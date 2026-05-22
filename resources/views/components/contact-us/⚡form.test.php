@@ -6,77 +6,77 @@ use Livewire\Livewire;
 it('renders successfully', function () {
     Livewire::test('contact-us.form')
         ->assertStatus(200);
-});
+})->group('components');
 
 it('validates name is required', function () {
     Livewire::test('contact-us.form')
         ->set('name', '')
         ->call('submit')
         ->assertHasErrors(['name' => 'required']);
-});
+})->group('components');
 
 it('validates name is at least 3 characters', function () {
     Livewire::test('contact-us.form')
         ->set('name', 'Jo')
         ->call('submit')
         ->assertHasErrors(['name' => 'min']);
-});
+})->group('components');
 
 it('validates name is at most 255 characters', function () {
     Livewire::test('contact-us.form')
         ->set('name', str_repeat('a', 256))
         ->call('submit')
         ->assertHasErrors(['name' => 'max']);
-});
+})->group('components');
 
 it('validates email is required', function () {
     Livewire::test('contact-us.form')
         ->set('email', '')
         ->call('submit')
         ->assertHasErrors(['email' => 'required']);
-});
+})->group('components');
 
 it('validates email is a valid email', function () {
     Livewire::test('contact-us.form')
         ->set('email', 'not-an-email')
         ->call('submit')
         ->assertHasErrors(['email' => 'email']);
-});
+})->group('components');
 
 it('validates email is at least 5 characters', function () {
     Livewire::test('contact-us.form')
         ->set('email', 'a@b')
         ->call('submit')
         ->assertHasErrors(['email' => 'min']);
-});
+})->group('components');
 
 it('validates email is at most 255 characters', function () {
     Livewire::test('contact-us.form')
         ->set('email', str_repeat('a', 246).'@example.com')
         ->call('submit')
         ->assertHasErrors(['email' => 'max']);
-});
+})->group('components');
 
 it('validates where_from is at most 255 characters', function () {
     Livewire::test('contact-us.form')
         ->set('where_from', str_repeat('a', 256))
         ->call('submit')
         ->assertHasErrors(['where_from' => 'max']);
-});
+})->group('components');
 
 it('validates message is at least 10 characters', function () {
     Livewire::test('contact-us.form')
         ->set('message', 'too short')
         ->call('submit')
         ->assertHasErrors(['message' => 'min']);
-});
+})->group('components');
 
 it('validates message is at most 255 characters', function () {
     Livewire::test('contact-us.form')
         ->set('message', str_repeat('a', 256))
         ->call('submit')
         ->assertHasErrors(['message' => 'max']);
-});
+})->group('components');
 
 it('allows nullable where_from and message', function () {
     Livewire::test('contact-us.form')
@@ -86,7 +86,7 @@ it('allows nullable where_from and message', function () {
         ->set('message', '')
         ->call('submit')
         ->assertHasNoErrors(['where_from', 'message']);
-});
+})->group('components');
 
 it('sends an email and redirects to the home route on success', function () {
     Mail::fake();
@@ -103,4 +103,4 @@ it('sends an email and redirects to the home route on success', function () {
         return $mail->contactUs->name === 'John Doe' &&
                $mail->contactUs->email === 'john@example.com';
     });
-});
+})->group('components');

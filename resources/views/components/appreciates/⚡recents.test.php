@@ -12,15 +12,14 @@ use function Pest\Laravel\actingAs;
 it('renders successfully', function () {
     Livewire::test('appreciates.recents')
         ->assertStatus(200);
-});
+})->group('components');
 
 it('shows the correct number of appreciations for the current user', function () {
     $owner = User::factory()->create();
     $appreciator = User::factory()->create();
     $act = Act::factory()->create(['user_id' => $owner->id]);
 
-    // Create an appreciation
-    Appreciate::create([
+    Appreciate::factory()->create([
         'user_id' => $appreciator->id,
         'appreciable_type' => Act::class,
         'appreciable_id' => $act->id,
@@ -31,4 +30,4 @@ it('shows the correct number of appreciations for the current user', function ()
     Livewire::test('appreciates.recents')
         ->assertSee($appreciator->name)
         ->assertSee($act->title);
-});
+})->group('components');

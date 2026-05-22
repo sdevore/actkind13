@@ -8,7 +8,7 @@ it('renders successfully', function () {
     $act = Act::factory()->create();
     Livewire::test('acts.appreciate', ['act' => $act])
         ->assertStatus(200);
-});
+})->group('components');
 
 it('adds an appreciation to the act when the appreciate button action is called', function () {
     $user = User::factory()->create();
@@ -26,4 +26,4 @@ it('adds an appreciation to the act when the appreciate button action is called'
         'appreciable_type' => Act::class,
         'appreciable_id' => $act->id,
     ]);
-});
+})->group('components');

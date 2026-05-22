@@ -1,7 +1,5 @@
 <?php
 
-/** @noinspection ALL */
-
 use App\Models\Comment;
 use App\Models\User;
 use Illuminate\Support\Facades\Notification;

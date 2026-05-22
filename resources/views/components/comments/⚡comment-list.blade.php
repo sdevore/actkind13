@@ -38,25 +38,22 @@ new class extends Component {
 
     <h5 class="text-md font-bold dark:text-slate-200">Comments</h5>
     @forelse ($comments as $comment)
-        <div class="my-4 bg-white p-4 shadow-xl sm:rounded-lg dark:bg-gray-800/30 dark:text-slate-200">
-            <div class="flex items-center space-x-0.5">
-                @auth()
-                    <img class="h-6 w-6 rounded-full object-cover" src="{{ $comment->user->profile_photo_url }}"
-                         alt="{{ $comment->user->name }}" />
+        <div class="my-4 bg-white p-4 shadow-sm sm:rounded-lg dark:bg-gray-800/30 dark:text-slate-200">
+            <div class="flex flex justify-between space-x-0.5 w-full">
+                @auth ()
+
                     <strong class="pr-1">{{ $comment->user->name }}</strong>
                 @endauth
 
-                {{ $comment->created_at->diffForHumans() }}
+                <span class="text-slate-400 text-sm">{{ $comment->created_at->diffForHumans() }}</span>
             </div>
-            <div class="prose p-4">
-                {!! Str::markdown($comment->body) !!}
-            </div>
-            @can('view flags')
+            <div class="prose p-4">{!! Str::markdown($comment->body) !!}</div>
+            @can ('view flags')
                 <livewire:comments.flag :comment="$comment" />
             @endcan
         </div>
     @empty
-        <div class="my-4 bg-white p-4 shadow-xl sm:rounded-lg dark:bg-gray-800/30 dark:text-slate-200">
+        <div class="my-4 bg-white p-4 shadow-sm sm:rounded-lg dark:bg-gray-800/30 dark:text-slate-200">
             <p>No comments yet.</p>
         </div>
     @endforelse

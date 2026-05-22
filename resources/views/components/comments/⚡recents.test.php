@@ -12,7 +12,7 @@ use function Pest\Laravel\actingAs;
 it('renders successfully', function () {
     Livewire::test('comments.recents')
         ->assertStatus(200);
-});
+})->group('components');
 
 it('shows the correct number of recent comments to acts that the current user created', function () {
     $owner = User::factory()->create();
@@ -30,4 +30,4 @@ it('shows the correct number of recent comments to acts that the current user cr
     Livewire::test('comments.recents')
         ->assertSee($commenter->name)
         ->assertSee($act->title);
-});
+})->group('components');

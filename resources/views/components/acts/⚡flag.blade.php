@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Act;
+use Filament\Notifications\Notification;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -8,8 +9,6 @@ new class extends Component {
     use \App\Traits\HasMergedClasses;
 
     public Act $act;
-
-    public $class = '';
 
     #[Validate('required|min:5|max:255')]
     public string $reason = '';
@@ -23,7 +22,7 @@ new class extends Component {
         $this->setMergedClasses('border-1 rounded border  p-4');
     }
 
-    public function save()
+    public function save(): void
     {
         $this->authorize('flag', $this->act);
         $this->act->flag(

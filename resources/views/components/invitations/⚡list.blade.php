@@ -94,6 +94,4 @@ new class extends Component implements HasActions, HasSchemas, HasTable {
 };
 ?>
 
-<div>
-    {{ $this->table }}
-</div>
+<div>{{ $this->table }}</div>

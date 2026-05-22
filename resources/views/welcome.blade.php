@@ -1,4 +1,4 @@
-<x-layouts::guest :title="__('Welcome to ActKind.online')">
+<x-layouts::app :title="__('Welcome to ActKind.online')">
     <section class="m-6 mb-2 border-b-2 border-neutral-500/50 text-center text-slate-700 dark:border-neutral-500/50 dark:text-slate-200">
         <h1 class="font-serif text-slate-600 dark:text-slate-200">
             ActKind
@@ -23,4 +23,4 @@
     <section>
         <x-acts.acts :acts="$acts" :show-names="true" />
     </section>
-</x-layouts::guest>
+</x-layouts::app>

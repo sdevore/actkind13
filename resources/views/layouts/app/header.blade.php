@@ -89,7 +89,7 @@
         @endenv
     </footer>
     <x-display-breakpoint />
-    @persist('toast')
+    @persist ('toast')
         <flux:toast.group>
             <flux:toast />
         </flux:toast.group>
@@ -99,7 +99,7 @@
     @endauth
     @fluxScripts
     @filamentScripts
-@livewireScripts
+    @livewireScripts
     @stack ('footer_scripts')
 </body>
 </html>
