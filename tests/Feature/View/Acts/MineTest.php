@@ -1,7 +1,12 @@
 <?php
 
+use App\Models\User;
+
 it('can render', function () {
-    $contents = $this->view('acts.mine', [
+    $user = User::factory()->create();
+    $this->actingAs($user);
+
+        $contents = $this->view('acts.mine', [
         //
     ]);
 

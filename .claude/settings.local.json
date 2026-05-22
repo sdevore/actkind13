@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(./vendor/bin/pest *)",
+      "Bash(php vendor/bin/pest tests/Feature/View/Acts/MineTest.php --no-coverage --colors=never)",
+      "Bash(echo \"EXIT=$?\")",
+      "Bash(php vendor/bin/pest --no-coverage --colors=never --reporter=default)",
+      "Bash(php vendor/bin/pest --help)",
+      "Bash(PHP_CLI_SERVER_WORKERS=1 TERM=dumb php vendor/bin/pest --no-coverage --compact --colors=never)",
+      "Bash(php artisan *)",
+      "Read(//tmp/**)",
+      "Bash(php -d error_reporting=E_ALL -d display_errors=1 artisan test --compact)"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "laravel-boost"
+  ]
+}
