@@ -64,11 +64,15 @@ class AppreciateResource extends Resource
                     ->searchable(),
                 TextColumn::make('act')
                     ->getStateUsing(function (Appreciate $record) {
-                        return match ($record->appreciable_type) {
-                            Act::class => $record->act->title,
-                            Comment::class => $record->comment->content,
-                            default => 'unknown',
-                        };
+                        $appreciable = $record->appreciable;
+                        if ($appreciable instanceof Act) {
+                            return $appreciable->title;
+                        }
+                        if ($appreciable instanceof Comment) {
+                            return $appreciable->body;
+                        }
+
+                        return 'unknown';
                     })->wrap(),
                 TextColumn::make('user.name')
                     ->label('By')

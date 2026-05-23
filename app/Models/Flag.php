@@ -50,6 +50,11 @@ class Flag extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function flaggable(): MorphTo
+    {
+        return $this->morphTo();
+    }
+
     public function act(): MorphTo
     {
         return $this->morphTo('flaggable');

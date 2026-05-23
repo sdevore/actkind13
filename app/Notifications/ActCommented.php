@@ -52,7 +52,7 @@ class ActCommented extends Notification
         return [
             'id' => $this->comment->id,
             'act_title' => $this->comment->act->title,
-            'comment' => $this->comment->comment,
+            'comment' => $this->comment->body,
         ];
     }
 }

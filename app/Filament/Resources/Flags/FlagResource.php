@@ -67,11 +67,15 @@ class FlagResource extends Resource
                     ->searchable(),
                 TextColumn::make('flaggedUser.name')
                     ->description(function (Flag $record) {
-                        return match ($record->flaggable_type) {
-                            Act::class => $record->act->title,
-                            Comment::class => $record->comment->content,
-                            default => 'unknown',
-                        };
+                        $flaggable = $record->flaggable;
+                        if ($flaggable instanceof Act) {
+                            return $flaggable->title;
+                        }
+                        if ($flaggable instanceof Comment) {
+                            return $flaggable->body;
+                        }
+
+                        return 'unknown';
                     }, position: 'above')
                     ->wrap()
                     ->label('Flagged'),

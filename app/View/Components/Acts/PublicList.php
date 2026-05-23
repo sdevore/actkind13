@@ -5,6 +5,7 @@ namespace App\View\Components\Acts;
 use App\Models\Act;
 use Closure;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -42,8 +43,10 @@ class PublicList extends Component
         if (! Auth::check()) {
             $this->showNames = false;
         } else {
-            if ($this->showNames) {
-                $this->acts->load('user');
+            if ($this->showNames && $this->acts instanceof Paginator) {
+                /** @var EloquentCollection<int, Act> $collection */
+                $collection = $this->acts->getCollection();
+                $collection->load('user');
             }
         }
     }

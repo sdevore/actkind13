@@ -9,7 +9,10 @@
       "Bash(PHP_CLI_SERVER_WORKERS=1 TERM=dumb php vendor/bin/pest --no-coverage --compact --colors=never)",
       "Bash(php artisan *)",
       "Read(//tmp/**)",
-      "Bash(php -d error_reporting=E_ALL -d display_errors=1 artisan test --compact)"
+      "Bash(php -d error_reporting=E_ALL -d display_errors=1 artisan test --compact)",
+      "Bash(./vendor/bin/phpstan analyse *)",
+      "mcp__laravel-boost__database-schema",
+      "Bash(./vendor/bin/pint *)"
     ]
   },
   "enableAllProjectMcpServers": true,

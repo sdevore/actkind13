@@ -13,7 +13,7 @@ use Illuminate\Validation\UnauthorizedException;
 
 /**
  * @property int $id
- * @property string $content
+ * @property string $body
  * @property int $user_id
  * @property int $act_id
  * @property Carbon $created_at
@@ -46,21 +46,25 @@ class Comment extends Model
         'act_id' => 'integer',
     ];
 
+    /** @return BelongsTo<User, Comment> */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /** @return BelongsTo<Act, Comment> */
     public function act(): BelongsTo
     {
         return $this->belongsTo(Act::class);
     }
 
+    /** @return MorphMany<Appreciate, Comment> */
     public function appreciates(): MorphMany
     {
         return $this->morphMany(Appreciate::class, 'appreciable');
     }
 
+    /** @return MorphMany<Flag, Comment> */
     public function flags(): MorphMany
     {
         return $this->morphMany(Flag::class, 'flaggable');

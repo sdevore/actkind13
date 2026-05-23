@@ -53,16 +53,19 @@ class Invitation extends Model
         'joined_id' => 'integer',
     ];
 
+    /** @return BelongsTo<User, Invitation> */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /** @return BelongsTo<User, Invitation> */
     public function invited_by(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    /** @return BelongsTo<User, Invitation> */
     public function joinedAs(): BelongsTo
     {
         return $this->belongsTo(User::class, 'joined_id');

@@ -35,6 +35,15 @@ class User extends Authenticatable
         ];
     }
 
+    public function sendInvitation(Invitation $invitation, ?int $userId = null): Invitation
+    {
+        $invitation->user_id = $userId ?? $this->id;
+        $invitation->save();
+        $invitation->send(shouldQueue: true);
+
+        return $invitation;
+    }
+
     /**
      * Get the user's initials
      */

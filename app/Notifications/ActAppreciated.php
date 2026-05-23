@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Models\Act;
 use App\Models\Appreciate;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -36,9 +37,12 @@ class ActAppreciated extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
+        /** @var Act $act */
+        $act = $this->appreciate->appreciable;
+
         return (new MailMessage)
-            ->line('Your act of kindness "'.$this->appreciate->act->title.'" has been appreciated by '.$this->appreciate->user->name.'.')
-            ->action('Go to Act of Kindness', route('acts.show', $this->appreciate->act))
+            ->line("Your act of kindness \"{$act->title}\" has been appreciated by {$this->appreciate->user->name}.")
+            ->action('Go to Act of Kindness', route('acts.show', $act))
             ->line('Feels good!');
     }
 
@@ -49,11 +53,14 @@ class ActAppreciated extends Notification
      */
     public function toArray(object $notifiable): array
     {
+        /** @var Act $act */
+        $act = $this->appreciate->appreciable;
+
         return [
             'created_at' => $this->appreciate->created_at,
             'user_id' => $this->appreciate->user_id,
-            'act_id' => $this->appreciate->act_id,
-            'act_title' => $this->appreciate->act->title,
+            'act_id' => $this->appreciate->appreciable_id,
+            'act_title' => $act->title,
             'id' => $this->appreciate->id,
         ];
     }

@@ -54,11 +54,13 @@ class Act extends Model
         'type' => ActType::class,
     ];
 
+    /** @return BelongsTo<User, Act> */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /** @return HasMany<Comment, Act> */
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
@@ -77,6 +79,7 @@ class Act extends Model
         return $comment;
     }
 
+    /** @return MorphMany<Appreciate, Act> */
     public function appreciates(): MorphMany
     {
         return $this->morphMany(Appreciate::class, 'appreciable');
@@ -103,6 +106,7 @@ class Act extends Model
         return false;
     }
 
+    /** @return MorphMany<Flag, Act> */
     public function flags(): MorphMany
     {
         return $this->morphMany(Flag::class, 'flaggable');
