@@ -26,6 +26,6 @@ new class extends Component {
 ?>
 
 <div>
-    @ray($acts)
+    @ray ($acts)
     <x-acts.acts :acts="$acts" :show-names="$showNames" />
 </div>

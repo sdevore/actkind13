@@ -25,11 +25,9 @@ new class extends Component {
         </button>
         {{ $act->appreciates->count() > 0 ? $act->appreciates->count() : '' }}
         @if ($showNames)
-            <span class="ml-2 flex items-center space-x-1 divide-x divide-gray-300 divide-solid ">
+            <span class="ml-2 flex items-center space-x-1 divide-x divide-solid divide-gray-300">
                 @foreach ($act->appreciates as $appreciate)
-                    <span class="flex-auto items-center text-sm text-gray-600 dark:text-gray-400 px-2">
-                        {{ $appreciate->user->name }}
-                    </span>
+                    <span class="flex-auto items-center px-2 text-sm text-gray-600 dark:text-gray-400"> {{ $appreciate->user->name }} </span>
                 @endforeach
             </span>
         @endif

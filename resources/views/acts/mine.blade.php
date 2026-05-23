@@ -3,7 +3,13 @@
         <h3 class="mb-4 text-center text-lg leading-tight font-semibold text-gray-800 dark:text-gray-200">Add your Act of Kindness</h3>
         <livewire:acts.create class="mx-auto w-5/6 md:w-3/4 lg:w-1/2" />
     </section>
-    <section>
-        <x-acts.acts :acts="$acts" :show-names="false" />
-    </section>
+    @if ($acts->count())
+        <section>
+            <x-acts.acts :acts="$acts" :show-names="false" />
+        </section>
+    @else
+        <section class="flex h-64 items-center justify-center">
+            <p class="text-gray-500 dark:text-gray-400">You haven't shared any acts of kindness yet. Start by sharing one above!</p>
+        </section>
+    @endif
 </x-layouts::app>

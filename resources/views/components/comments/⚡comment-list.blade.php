@@ -39,13 +39,12 @@ new class extends Component {
     <h5 class="text-md font-bold dark:text-slate-200">Comments</h5>
     @forelse ($comments as $comment)
         <div class="my-4 bg-white p-4 shadow-sm sm:rounded-lg dark:bg-gray-800/30 dark:text-slate-200">
-            <div class="flex flex justify-between space-x-0.5 w-full">
+            <div class="flex w-full justify-between space-x-0.5">
                 @auth ()
-
                     <strong class="pr-1">{{ $comment->user->name }}</strong>
                 @endauth
 
-                <span class="text-slate-400 text-sm">{{ $comment->created_at->diffForHumans() }}</span>
+                <span class="text-sm text-slate-400">{{ $comment->created_at->diffForHumans() }}</span>
             </div>
             <div class="prose p-4">{!! Str::markdown($comment->body) !!}</div>
             @can ('view flags')

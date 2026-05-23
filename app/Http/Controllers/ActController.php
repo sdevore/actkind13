@@ -49,7 +49,6 @@ class ActController extends Controller
             ->where('user_id', Auth::id())
             ->withCount(['appreciates', 'comments'])
             ->simplePaginate(20);
-        ray($acts);
 
         return view('acts.mine', compact('acts'));
     }
