@@ -18,6 +18,16 @@ jobs:
     uses: ./.github/workflows/tests.yml
     secrets: inherit
 
+  deploy:
+    if: ${{ needs.lint.result == 'success' && needs.tests.result == 'success' && github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    needs: [lint, tests]
+    uses: ./.github/workflows/deploy-laravel-cloud.yml
+    with:
+      cloud_application: ${{ vars.LARAVEL_CLOUD_APPLICATION }}
+      cloud_environment: ${{ vars.LARAVEL_CLOUD_ENVIRONMENT }}
+    secrets:
+      LARAVEL_CLOUD_API_TOKEN: ${{ secrets.LARAVEL_CLOUD_API_TOKEN }}
+
   passed:
     needs: [lint, tests]
     runs-on: ubuntu-latest
