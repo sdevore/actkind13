@@ -3,15 +3,8 @@ name: deploy-laravel-cloud
 on:
   workflow_dispatch:
   workflow_call:
-    inputs:
-      cloud_application:
-        required: true
-        type: string
-      cloud_environment:
-        required: true
-        type: string
     secrets:
-      LARAVEL_CLOUD_API_TOKEN:
+      LARAVEL_CLOUD_DEPLOY_HOOK:
         required: true
 
 permissions:
@@ -20,27 +13,7 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: Production
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.4'
-          tools: composer:v2
-
-      - name: Install Laravel Cloud CLI
-        run: composer global require laravel/cloud-cli
-
-      - name: Add Composer global bin to PATH
-        run: echo "$HOME/.config/composer/vendor/bin" >> "$GITHUB_PATH"
-
       - name: Deploy to Laravel Cloud
-        env:
-          LARAVEL_CLOUD_API_TOKEN: ${{ secrets.LARAVEL_CLOUD_API_TOKEN }}
         run: |
-          cloud deploy "${{ inputs.cloud_application }}" "${{ inputs.cloud_environment }}" -n
-          cloud deploy:monitor -n
-
+          curl -X POST "${{ secrets.LARAVEL_CLOUD_DEPLOY_HOOK }}?commit_hash=${{ github.sha }}"

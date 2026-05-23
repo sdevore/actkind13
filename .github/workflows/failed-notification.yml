@@ -1,0 +1,50 @@
+name: failed-notification
+
+on:
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      status:
+        required: true
+        type: string
+      cloud_application:
+        required: true
+        type: string
+      cloud_environment:
+        required: true
+        type: string
+    secrets:
+      SLACK_WEBHOOK_MAIN:
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  notifications:
+    name: Notifications
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send custom JSON data to Slack workflow
+        id: slack
+        uses: slackapi/slack-github-action@v1.26.0
+        with:
+          status: ${{ inputs.status }}
+          # For posting a rich message using Block Kit
+          payload: |
+            {
+              "text": "${{ inputs.cloud_application }}/${{ inputs.cloud_environment }} failed\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "GitHub Action failed result: ${{ inputs.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+                  }
+                }
+              ]
+            }
+
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_MAIN }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
