@@ -77,6 +77,15 @@
             "@lint:check",
             "@php artisan test"
         ],
+        "test:coverage": [
+            "herd debug -d xdebug.mode=coverage vendor/bin/pest --coverage"
+        ],
+        "test:coverage:html": [
+            "herd debug -d xdebug.mode=coverage vendor/bin/pest --coverage-html storage/coverage"
+        ],
+        "test:coverage:min": [
+            "herd debug -d xdebug.mode=coverage vendor/bin/pest --coverage --min=80"
+        ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi",
