@@ -4,6 +4,6 @@
         <livewire:invitations.create class="mx-auto w-5/6 md:w-3/4 lg:w-1/2" />
     </section>
     <section>
-        <livewire:invitations.list />
+        <livewire:invitations.invitation-list />
     </section>
 </x-layouts::app>

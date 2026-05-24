@@ -21,15 +21,13 @@ new class extends Component implements HasSchemas {
     #[Session]
     public bool $showHelp = false;
 
-    public $class = '';
 
-    public ?string $mergedClasses = 'border-1 rounded border dark:border-slate-800 bg-slate-100 dark:bg-slate-900 p-4 shadow';
+
+    public string $classes = 'border-1 rounded border dark:border-slate-800 bg-slate-100 dark:bg-slate-900 p-4 shadow';
 
     public function mount(): void
     {
         $this->form->fill();
-        $split = array_merge(explode(' ', $this->class), explode(' ', $this->mergedClasses));
-        $this->mergedClasses = implode(' ', array_unique($split));
     }
 
     public function toggleHelp(): void
@@ -85,7 +83,7 @@ new class extends Component implements HasSchemas {
 };
 ?>
 
-<div class="{{ $mergedClasses }}">
+<div {{ $attributes->merge(['class'=> $classes]) }}>
     <form wire:submit="create">
         {{ $this->form }}
 

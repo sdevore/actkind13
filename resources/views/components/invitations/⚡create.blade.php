@@ -21,15 +21,13 @@ new class extends Component implements HasSchemas {
 
     public ?array $data = [];
 
-    public $class = '';
 
-    public ?string $mergedClasses = 'border-1 rounded border dark:border-slate-800 bg-slate-100 dark:bg-slate-900 p-4 shadow';
+
+    public string $classes = 'border-1 rounded border dark:border-slate-800 bg-slate-100 dark:bg-slate-900 p-4 shadow';
 
     public function mount(): void
     {
         $this->form->fill();
-        $split = array_merge(explode(' ', $this->class), explode(' ', $this->mergedClasses));
-        $this->mergedClasses = implode(' ', array_unique($split));
     }
 
     public function form(Schema $schema): Schema
@@ -78,7 +76,7 @@ new class extends Component implements HasSchemas {
 };
 ?>
 
-<div class="{{ $mergedClasses }}">
+<div {{ $attributes->merge(['class'=> $classes]) }}>
     <p class="mb-2 rounded border border-green-900 bg-green-200/80 p-2 font-bold text-green-700 shadow-sm">Be thoughtful about who you invite we are trying to make this a thoughtful kind community. Invitations are sent via email.</p>
     <form wire:submit="create">
         {{ $this->form }}

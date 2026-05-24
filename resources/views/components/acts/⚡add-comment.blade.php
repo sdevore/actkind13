@@ -5,18 +5,19 @@ use Livewire\Component;
 use Livewire\Attributes\Validate;
 
 new class extends Component {
-    use \App\Traits\HasMergedClasses;
+
 
     public \App\Models\Act $act;
 
     #[Validate('required|min:5|max:255')]
     public string $body = '';
 
+  public string $classes = 'border-1 rounded border  p-4';
+
 public bool $showForm = false;
 
     public function mount(): void
     {
-        $this->setMergedClasses( 'border-1 rounded border  p-4');
     }
 
     public function save(): void
@@ -39,7 +40,7 @@ public bool $showForm = false;
 };
 ?>
 
-<div class="{{ $classes }}">
+<div {{ $attributes->merge(['class'=> $classes]) }}>
     {{-- The best athlete wants his opponent at his best. --}}
     @if (! $showForm)
         <div wire:transition>

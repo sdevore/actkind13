@@ -5,7 +5,6 @@ use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 new class extends Component {
-    use \App\Traits\HasMergedClasses;
 
     public Comment $comment;
 
@@ -16,12 +15,10 @@ new class extends Component {
     public bool $showNames = true;
     public bool $showFlagForm = false;
 
-    public function mount(): void
-    {
-        $this->setMergedClasses('border-1 rounded border  p-4');
-    }
+    public string $classes = 'border-1 rounded border  p-4';
 
-    public function save()
+
+    public function save(): void
     {
         $this->authorize('flag', $this->comment);
         $this->comment->flag(
@@ -50,7 +47,7 @@ new class extends Component {
 };
 ?>
 
-<div class="{{ $classes }}">
+<div {{ $attributes->merge(['class'=> $classes]) }}>
     <span class="text-danger-600 flex items-center">
         <button wire:click="toggleFlagForm" class="btn btn-sm">
             <x-icon name="fas-flag" class="mr-2 h-4 w-4" />
