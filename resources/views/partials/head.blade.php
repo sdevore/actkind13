@@ -15,8 +15,7 @@
 @fluxAppearance
 @livewireStyles
 
-<!-- Filament Styles -->
-{{ filament()->getTheme()->getHtml() }} {{ filament()->getFontHtml() }}
+<!-- Filament Styles --> {{ filament()->getTheme()->getHtml() }} {{ filament()->getFontHtml() }}
 @filamentStyles
 
 <!-- turnstile -->

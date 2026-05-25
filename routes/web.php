@@ -14,12 +14,10 @@ Route::middleware('cache.headers:public;max_age=30;s_maxage=300;stale_while_reva
         Route::get('/policy', 'show')->name('policy');
         Route::get('/about', 'show')->name('about');
 
-
     });
 
     Route::resource('acts', ActController::class);
 });
-
 
 Route::get('/contact', function () {
     return view('contact_us.contact', ['title' => __('Contact Us')]);

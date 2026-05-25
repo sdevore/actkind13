@@ -2,7 +2,6 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
 <head>
     @include ('partials.head')
-
 </head>
 <body
     class="min-h-screen bg-gradient-to-r from-emerald-400/10 via-green-200/10 to-teal-400/10 font-sans antialiased selection:bg-[#FF2D20] selection:text-white dark:from-emerald-900/80 dark:via-green-800/90 dark:to-teal-800/90 dark:text-slate-200"

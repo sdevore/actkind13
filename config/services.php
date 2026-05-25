@@ -40,5 +40,4 @@ return [
         'secret' => env('TURNSTILE_SECRET'),
     ], // https://github.com/ryangjchandler/laravel-cloudflare-turnstile
 
-
 ];
