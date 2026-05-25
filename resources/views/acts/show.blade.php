@@ -1,5 +1,4 @@
 <x-layouts::app :title="$act->title">
-    @ray ($act)
     <h2 class="mt-4 flex w-full justify-around pb-2 text-xl leading-tight font-semibold text-gray-800 dark:text-gray-200/80">
         <a class="dark:text-slate-200/80 dark:hover:text-gray-700" href="{{ route('acts.index') }}">{{ __('Act of Kindness') }}</a>
         <span> {{ $act->title }} </span>
