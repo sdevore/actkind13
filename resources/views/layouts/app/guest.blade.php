@@ -17,6 +17,8 @@
     <!-- Styles -->
     @livewireStyles
     @stack ('head_scripts')
+    <!-- turnstile -->
+    <x-turnstile.scripts />
 </head>
 <body class="font-sans antialiased">
     @if (isset($header))

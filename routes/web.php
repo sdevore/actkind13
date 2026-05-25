@@ -23,7 +23,8 @@ Route::middleware('cache.headers:public;max_age=30;s_maxage=300;stale_while_reva
 
 Route::get('/contact', function () {
     return view('contact_us.contact', ['title' => __('Contact Us')]);
-})->name('contact-us');
+})->middleware('throttle:5,1')
+    ->name('contact-us');
 
 // acts
 

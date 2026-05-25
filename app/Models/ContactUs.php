@@ -25,6 +25,13 @@ class ContactUs extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $fillable = [
+        'name',
+        'email',
+        'where_from',
+        'message',
+    ];
+
     protected $guarded = [];
 
     /** @return BelongsTo<Invitation, ContactUs> */

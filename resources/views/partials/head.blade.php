@@ -14,4 +14,11 @@
 <!-- Styles -->
 @fluxAppearance
 @livewireStyles
+
+<!-- Filament Styles -->
+{{ filament()->getTheme()->getHtml() }} {{ filament()->getFontHtml() }}
+@filamentStyles
+
+<!-- turnstile -->
+<x-turnstile.scripts />
 @stack ('head_scripts')
