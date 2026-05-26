@@ -2,6 +2,7 @@
 
 use App\Mail\ContactUsMailable;
 use Livewire\Livewire;
+use RyanChandler\LaravelCloudflareTurnstile\Facades\Turnstile;
 
 it('renders successfully', function () {
     Livewire::test('contact-us.form')
@@ -90,12 +91,13 @@ it('allows nullable where_from and message', function () {
 
 it('sends an email and redirects to the home route on success', function () {
     Mail::fake();
-
+    Turnstile::fake()->pass();
     Livewire::test('contact-us.form')
         ->set('name', 'John Doe')
         ->set('email', 'john@example.com')
         ->set('where_from', 'Google')
         ->set('message', 'Hello, I would like to join.')
+        ->set('cf_turnstile_response', 'fake-token')
         ->call('submit')
         ->assertRedirect(route('home'));
 
