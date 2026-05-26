@@ -48,7 +48,6 @@ new class extends Component {
 ?>
 
 <div>
-    @xray ()
     <div class="p-2">
         <form wire:submit.prevent="submit" class="flex flex-col">
             <label for="name" class="block">
