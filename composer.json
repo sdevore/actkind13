@@ -19,6 +19,7 @@
         "owenvoke/blade-fontawesome": "^3.2",
         "ryangjchandler/laravel-cloudflare-turnstile": "^3.0",
         "spatie/color": "^2.1",
+        "spatie/laravel-login-link": "^1.6",
         "spatie/laravel-permission": "^7.4"
     },
     "require-dev": {
@@ -35,7 +36,6 @@
         "pestphp/pest": "^4.7",
         "pestphp/pest-plugin-laravel": "^4.1",
         "spatie/boost-spatie-guidelines": "^1.1",
-        "spatie/laravel-login-link": "^1.6",
         "spatie/laravel-ray": "^1.43"
     },
     "autoload": {
