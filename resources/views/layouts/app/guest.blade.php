@@ -31,7 +31,7 @@
             </div>
         </header>
     @else
-        <header class="bg-linear-to-r from-emerald-400 via-green-200 to-teal-400 shadow-xs">
+        <header class="bg-linear-to-r from-emerald-200 via-green-100 to-teal-200 shadow-xs">
             <div class="mx-auto max-w-7xl px-4 py-3 sm:px-2 lg:px-6">
                 <div class="flex items-center justify-between">
                     <x-application-logo class="block h-10 w-auto fill-current text-slate-700" />
@@ -74,7 +74,7 @@
         </header>
     @endif
     <div
-        class="relative flex min-h-screen flex-col bg-linear-to-r from-emerald-400/10 via-green-200/10 to-teal-400/10 selection:bg-[#FF2D20] selection:text-white dark:from-emerald-900/80 dark:via-green-800/90 dark:to-teal-800/90 dark:text-slate-200"
+        class="relative flex min-h-screen flex-col bg-linear-to-r from-emerald-200/10 via-green-100/10 to-teal-200/10 selection:bg-[#FF2D20] selection:text-white dark:from-emerald-900/80 dark:via-green-800/90 dark:to-teal-800/90 dark:text-slate-200"
     >
         <div class="relative w-full px-2 md:px-6">
             <x-flash.session />
