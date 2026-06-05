@@ -1,5 +1,6 @@
 <?php
 
+use App\Mail\ContactUsMailable;
 use App\Models\ContactUs;
 use Livewire\Component;
 use RyanChandler\LaravelCloudflareTurnstile\Rules\Turnstile;
@@ -39,18 +40,18 @@ new class extends Component {
             $contact->where_from = $this->where_from;
             $contact->message = $this->message;
             $contact->save();
-             Mail::send(new \App\Mail\ContactUsMailable($contact));
-             $this->reset();
-             session()->flash('danger', 'This email has already contacted us in the past.');
-             $this->redirect(route('home'));
+            Mail::send(new ContactUsMailable($contact));
+            $this->reset();
+            session()->flash('danger', 'This email has already contacted us in the past.');
+            $this->redirect(route('home'));
         } else {
-            $contact = \App\Models\ContactUs::firstOrCreate([
-                'name' => $this->name,
-                'email' => $this->email,
-                'where_from' => $this->where_from,
-                'message' => $this->message,
-            ]);
-            Mail::send(new \App\Mail\ContactUsMailable($contact));
+            $contact = new \App\Models\ContactUs;
+            $contact->name = $this->name;
+            $contact->email = $this->email;
+            $contact->where_from = $this->where_from;
+            $contact->message = $this->message;
+            $contact->save();
+            Mail::send(new ContactUsMailable($contact));
             $this->reset();
             session()->flash('success', 'Your message has been sent successfully.');
             $this->redirect(route('home'));
