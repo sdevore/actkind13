@@ -17,7 +17,6 @@ new class extends Component {
 
     protected function rules(): array
     {
-        ray('cf_turnstile_response', $this->cf_turnstile_response);
         return [
             'name' => ['required', 'string', 'max:255', 'min:3'],
             'email' => ['required', 'email', 'max:255', 'min:5'],
