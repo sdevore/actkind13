@@ -76,7 +76,7 @@ new class extends Component {
                 />
             </label>
             @error ('name')
-            <span class="mt-1 ml-1 text-sm text-red-700">{{ $message }}</span>
+                <span class="mt-1 ml-1 text-sm text-red-700">{{ $message }}</span>
             @enderror
 
             <label for="email" class="mt-4 block">
@@ -95,7 +95,7 @@ new class extends Component {
                 />
             </label>
             @error ('email')
-            <span class="mt-1 ml-1 text-sm text-red-700">{{ $message }}</span>
+                <span class="mt-1 ml-1 text-sm text-red-700">{{ $message }}</span>
             @enderror
 
             <label for="where_from" class="mt-4 hidden sm:block">
@@ -110,14 +110,13 @@ new class extends Component {
                 />
             </label>
             @error ('where_from')
-            <span class="mt-1 ml-1 text-sm text-red-700">{{ $message }}</span>
+                <span class="mt-1 ml-1 text-sm text-red-700">{{ $message }}</span>
             @enderror
 
             <label class="mt-4 block">
                 <span class="text-green-700 dark:text-slate-200">
                     Message
-                    <span
-                        class="text-xs text-green-600 dark:text-slate-200/80">Why do you want to join ActKind.online</span>
+                    <span class="text-xs text-green-600 dark:text-slate-200/80">Why do you want to join ActKind.online</span>
                 </span>
                 <textarea
                     class="form-textarea focus:ring-opacity-50 mt-1 block w-full rounded-md border-gray-300 placeholder-gray-200 shadow-sm focus:border-green-300 focus:ring focus:ring-indigo-200 dark:border-gray-800 dark:bg-slate-200/20"
@@ -127,11 +126,11 @@ new class extends Component {
                 ></textarea>
             </label>
             @error ('message')
-            <span class="mt-1 ml-1 text-sm text-red-700">{{ $message }}</span>
+                <span class="mt-1 ml-1 text-sm text-red-700">{{ $message }}</span>
             @enderror
-            <x-turnstile id="my_widget" wire:model="cf_turnstile_response"/>
+            <x-turnstile id="my_widget" wire:model="cf_turnstile_response" />
             @error ('cf_turnstile_response')
-            <span class="mt-1 ml-1 text-sm text-red-700">{{ $message }}</span>
+                <span class="mt-1 ml-1 text-sm text-red-700">{{ $message }}</span>
             @enderror
             <div class="mt-2">
                 <x-controls.success-button type="submit" class="w-auto">Send us a message</x-controls.success-button>
