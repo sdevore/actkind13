@@ -22,7 +22,7 @@
                 {{ __('Acts of your kindness') }}
             </flux:navbar.item>
             @can ('view admin panel')
-                <flux:navbar.item icon="shield-check" :href="route('filament.admin.pages.dashboard')" :current="request()->routeIs('filament.admin.pages.dashboard')" wire:navigate>
+                <flux:navbar.item icon="shield-check" :href="route('filament.admin.pages.dashboard')" :current="request()->routeIs('filament.admin.pages.dashboard')">
                     {{ __('Admin Panel') }}
                 </flux:navbar.item>
             @endcan
