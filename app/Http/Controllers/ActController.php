@@ -34,6 +34,7 @@ class ActController extends Controller
 
         }
         $acts->withPath('/acts');
+
         if ($request->expectsJson()) {
             return $acts;
         } else {
