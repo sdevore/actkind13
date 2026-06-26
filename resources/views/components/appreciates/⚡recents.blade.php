@@ -17,21 +17,16 @@ new class extends Component {
     {
         $this->appreciations = Appreciate::query()
             ->with('act', 'user')
-            ->whereHasMorph(
-                'appreciable',
-                [Act::class],
-                function (Builder $query) {
-                    $query->where('user_id', Auth::id());
-                }
-            )
+            ->whereHasMorph('appreciable', [Act::class], function (Builder $query) {
+                $query->where('user_id', Auth::id());
+            })
             ->limit($this->limit)
             ->get();
-
     }
 };
 ?>
 
-<div {{ $attributes->merge(['class'=> $classes]) }}>
+<div {{ $attributes->merge(['class' => $classes]) }}>
     {{-- Knowing others is intelligence; knowing yourself is true wisdom. --}}
     <h3 class="text-lg font-bold text-slate-600 dark:text-slate-300">Appreciate you</h3>
     <ul>

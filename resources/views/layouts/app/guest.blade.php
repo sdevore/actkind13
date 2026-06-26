@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
-    <title>{{ $title ?config('app.name', 'ActKind . online') .': '  . $title : config('app.name', 'ActKind . online') }}</title>
+    <title>{{ $title ? config('app.name', 'ActKind . online') . ': ' . $title : config('app.name', 'ActKind . online') }}</title>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net" />
     <link rel="preload" href="https://fonts.bunny.net/figtree/files/figtree-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
@@ -82,7 +82,7 @@
         </div>
     </div>
     @if (isset($footer))
-        <footer {{ $footer->attributes->class(['fixed inset-x-0 bottom-0 border border-t-2 border-neutral-200 p-2 text-center']) }}> {{ $footer }}</footer>
+        <footer {{ $footer->attributes->class(['fixed inset-x-0 bottom-0 border border-t-2 border-neutral-200 p-2 text-center']) }}>{{ $footer }}</footer>
     @else
         <footer
             class="fixed inset-x-0 bottom-0 flex items-center justify-between border border-t-2 border-neutral-200 bg-linear-to-r from-emerald-400/20 via-green-200/20 to-teal-400/20 p-2 text-center dark:border-neutral-500/50"

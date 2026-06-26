@@ -35,6 +35,6 @@
     </div>
 
 <?php else: ?>
-    <div {{ $attributes->class('block space-y-[2px]') }}> {{ $slot }}</div>
+    <div {{ $attributes->class('block space-y-[2px]') }}>{{ $slot }}</div>
 
 <?php endif; ?>

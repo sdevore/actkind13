@@ -14,7 +14,6 @@ new class extends Component {
 
         $this->act->refresh();
     }
-
 };
 ?>
 

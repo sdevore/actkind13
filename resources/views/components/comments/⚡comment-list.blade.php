@@ -19,13 +19,13 @@ new class extends Component {
 
     public function updateComments($commentId = null)
     {
-        $this->comments = $this->act->comments()
+        $this->comments = $this->act
+            ->comments()
             ->orderBy('created_at', 'desc')
             ->with(['user'])
             ->get();
         if ($commentId) {
-            $this->highlightedComment = Comment::find($commentId)
-                ->with(['user']);
+            $this->highlightedComment = Comment::find($commentId)->with(['user']);
         }
     }
 };

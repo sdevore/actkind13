@@ -19,40 +19,19 @@ new class extends Component implements HasActions, HasSchemas, HasTable {
     use InteractsWithSchemas;
     use InteractsWithTable;
 
-
     public function table(Table $table): Table
     {
         return $table
-            ->query(Invitation::query()
-                ->where('user_id', auth()->id()))
+            ->query(Invitation::query()->where('user_id', auth()->id()))
             ->defaultSort('created_at', 'desc')
             ->columns([
-                TextColumn::make('created_at')
-                    ->label('Invited At')
-                    ->since()->grow(false)
-                    ->sortable(),
+                TextColumn::make('created_at')->label('Invited At')->since()->grow(false)->sortable(),
 
-                TextColumn::make('name')
-                    ->label('Name')
-                    ->description(fn(Invitation $invitation) => $invitation->email)
-                    ->searchable()
-                    ->sortable(),
-                TextColumn::make('joined_at')
-                    ->label('Joined')
-                    ->datetime()
-                    ->grow(false)
-                    ->sortable(),
+                TextColumn::make('name')->label('Name')->description(fn(Invitation $invitation) => $invitation->email)->searchable()->sortable(),
+                TextColumn::make('joined_at')->label('Joined')->datetime()->grow(false)->sortable(),
             ])
-            ->filters([
-                TernaryFilter::make('Joined')
-                    ->nullable()
-                    ->default(false)
-                    ->trueLabel('Yes')
-                    ->falseLabel('Not Yet')
-                    ->attribute('joined_at'),
-            ])
+            ->filters([TernaryFilter::make('Joined')->nullable()->default(false)->trueLabel('Yes')->falseLabel('Not Yet')->attribute('joined_at')])
             ->actions([
-
                 Action::make('view')
                     ->label('View')
                     ->icon('heroicon-o-eye')

@@ -8,7 +8,6 @@ new class extends Component {
     public $limit = 5;
     public ?array $data = [];
 
-
     public ?string $classes = 'border-1 rounded border dark:border-slate-800 bg-gradient-to-r from-emerald-100 via-green-100 to-teal-100 dark:from-emerald-900 dark:via-green-900 dark:to-teal-900 p-4 shadow';
 
     public function mount(): void
@@ -24,7 +23,7 @@ new class extends Component {
 };
 ?>
 
-<div {{ $attributes->merge(['class'=> $classes]) }}>
+<div {{ $attributes->merge(['class' => $classes]) }}>
     {{-- The best athlete wants his opponent at his best. --}}
     <h3 class="text-lg font-bold text-slate-600 dark:text-slate-300">Recent Comments</h3>
     <ul>

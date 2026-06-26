@@ -9,14 +9,11 @@
         "lint:js": "eslint resources/js"
     },
     "dependencies": {
-        "@fortawesome/pro-solid-svg-icons": "^7.2.0",
+        "@awesome.me/kit-634f55b8fd": "^1.0.9",
         "@tailwindcss/vite": "^4.1.11",
         "autoprefixer": "^10.4.20",
         "concurrently": "^9.0.1",
         "laravel-vite-plugin": "^3.1",
-        "prettier": "^3.8.3",
-        "prettier-plugin-blade": "^3.1.6",
-        "prettier-plugin-tailwindcss": "^0.8.0",
         "tailwindcss": "^4.0.7",
         "vite": "^8.0.0"
     },
@@ -27,7 +24,11 @@
     },
     "devDependencies": {
         "@eslint/js": "^10.0.1",
+        "@prettier/plugin-php": "^0.24.0",
         "@tailwindcss/typography": "^0.5.19",
-        "eslint": "^10.3.0"
+        "eslint": "^10.3.0",
+        "prettier": "^3.8.5",
+        "prettier-plugin-blade": "^3.2.2",
+        "prettier-plugin-tailwindcss": "^0.8.0"
     }
 }

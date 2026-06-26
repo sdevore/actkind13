@@ -1,7 +1,7 @@
 @php
     $notices = session()->only(['status', 'error', 'warning', 'info', 'success']);
 
-    $show = ! empty($notices);
+    $show = !empty($notices);
     $ids = [];
 @endphp
 

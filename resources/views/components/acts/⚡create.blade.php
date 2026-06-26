@@ -21,8 +21,6 @@ new class extends Component implements HasSchemas {
     #[Session]
     public bool $showHelp = false;
 
-
-
     public string $classes = 'border-1 rounded border dark:border-slate-800 bg-slate-100 dark:bg-slate-900 p-4 shadow';
 
     public function mount(): void
@@ -33,19 +31,13 @@ new class extends Component implements HasSchemas {
     public function toggleHelp(): void
     {
         $this->showHelp = !$this->showHelp;
-
     }
 
     public function form(Schema $schema): Schema
     {
         return $schema
             ->components([
-                TextInput::make('title')
-                    ->label('The Act of Kindness')
-                    ->helperText(
-                        'This is the content above the field\'s error message'
-                    )
-                    ->required(),
+                TextInput::make('title')->label('The Act of Kindness')->helperText('This is the content above the field\'s error message')->required(),
                 Select::make('type')
                     ->label('Type of this act?')
                     ->helperText('Did you do, see, or receive this kindness?')
@@ -56,8 +48,7 @@ new class extends Component implements HasSchemas {
                     ->columnSpan(['md' => 2])
                     ->label('Describe the Act of Kindness')
                     ->helperText('If the title is not enough, please provide more details')
-                    ->required(false)
-
+                    ->required(false),
             ])
             ->statePath('data')
             ->model(Act::class);
@@ -79,11 +70,10 @@ new class extends Component implements HasSchemas {
             ->success()
             ->send();
     }
-
 };
 ?>
 
-<div {{ $attributes->merge(['class'=> $classes]) }}>
+<div {{ $attributes->merge(['class' => $classes]) }}>
     <form wire:submit="create">
         {{ $this->form }}
 

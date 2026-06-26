@@ -16,7 +16,6 @@ new class extends Component {
 
     public string $cf_turnstile_response = '';
 
-
     protected function rules(): array
     {
         return [
@@ -24,14 +23,12 @@ new class extends Component {
             'email' => ['required', 'email', 'max:255', 'min:5'],
             'where_from' => ['nullable', 'string', 'max:255'],
             'message' => ['nullable', 'string', 'max:255', 'min:10'],
-            'cf_turnstile_response' => ['required', new Turnstile,
-            ]
+            'cf_turnstile_response' => ['required', new Turnstile()],
         ];
     }
 
     public function submit()
     {
-
         $this->validate();
         // only create a new contact if there isn't one with the same email
         $contact = ContactUs::where('email', $this->email)->first();
@@ -45,7 +42,7 @@ new class extends Component {
             session()->flash('danger', 'This email has already contacted us in the past.');
             $this->redirect(route('home'));
         } else {
-            $contact = new \App\Models\ContactUs;
+            $contact = new \App\Models\ContactUs();
             $contact->name = $this->name;
             $contact->email = $this->email;
             $contact->where_from = $this->where_from;

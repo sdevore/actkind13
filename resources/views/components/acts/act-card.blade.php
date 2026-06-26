@@ -20,7 +20,7 @@
                 <span class="pl-2 text-sm text-slate-700 dark:text-slate-400">{{ $act->created_at->diffForHumans() }}</span>
             </span>
         </x-slot>
-        @if (! empty($act->description))
+        @if (!empty($act->description))
             <div class="prose p-4 text-sm dark:text-slate-300">
                 <p>{{ $act->description }}</p>
             </div>

@@ -17,12 +17,10 @@ new class extends Component {
                 ->take(10)
                 ->get();
         } else {
-            $this->acts = \App\Models\Act::latest()
-                ->take(10)
-                ->get();
+            $this->acts = \App\Models\Act::latest()->take(10)->get();
         }
     }
-}
+};
 ?>
 
 <div>

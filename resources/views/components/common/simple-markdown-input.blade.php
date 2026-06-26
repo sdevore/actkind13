@@ -1,13 +1,13 @@
 @props ([
-    "id" => "editor-" . str()->random(8),
-    "height" => "400px",
-    "label" => null,
-    "name" => null,
-    "value" => null,
-    "noMargin" => false,
-    "readonly" => false,
-    "disabled" => false,
-    "toolbar" => true,
+    'id' => 'editor-' . str()->random(8),
+    'height' => '400px',
+    'label' => null,
+    'name' => null,
+    'value' => null,
+    'noMargin' => false,
+    'readonly' => false,
+    'disabled' => false,
+    'toolbar' => true,
 ])
 {{-- see: https://stevencotterill.com/articles/adding-a-markdown-editor-to-laravel --}}
 <div class="{{ $noMargin ? "mb-0" : "mb-5" }}">
@@ -327,7 +327,7 @@
     @enderror
 </div>
 
-@pushOnce ("styles-head")
+@pushOnce ('styles-head')
     <style>
         .fullscreen {
             width: 100vw !important;
@@ -343,7 +343,7 @@
     </style>
 @endpushOnce
 
-@pushOnce ("scripts-footer")
+@pushOnce ('scripts-footer')
     <script src="https://cdn.jsdelivr.net/npm/marked@4.0.12/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dompurify@2.3.6/dist/purify.min.js"></script>
 @endpushOnce

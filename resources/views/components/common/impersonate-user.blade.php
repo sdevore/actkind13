@@ -1,6 +1,4 @@
-@props ([
-    'user',
-])
+@props (['user',])
 <span>
     @canImpersonate ($guard = null)
         <a href="{{ route('impersonate', $user->id) }}" class="btn btn-sm">

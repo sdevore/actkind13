@@ -23,7 +23,11 @@
                     @if ($twoFactorEnabled)
                         <div class="space-y-4">
                             <flux:text>
-                                {{ __('You will be prompted for a secure, random pin during login, which you can retrieve from the TOTP-supported application on your phone.') }}
+                                {{
+                                    __(
+                                        'You will be prompted for a secure, random pin during login, which you can retrieve from the TOTP-supported application on your phone.',
+                                    )
+                                }}
                             </flux:text>
 
                             <div class="flex justify-start">
@@ -35,7 +39,11 @@
                     @else
                         <div class="space-y-4">
                             <flux:text variant="subtle">
-                                {{ __('When you enable two-factor authentication, you will be prompted for a secure pin during login. This pin can be retrieved from a TOTP-supported application on your phone.') }}
+                                {{
+                                    __(
+                                        'When you enable two-factor authentication, you will be prompted for a secure pin during login. This pin can be retrieved from a TOTP-supported application on your phone.',
+                                    )
+                                }}
                             </flux:text>
 
                             <flux:button variant="primary" wire:click="enable"> {{ __('Enable 2FA') }} </flux:button>
@@ -98,14 +106,15 @@
                                     <div class="absolute inset-0 flex animate-pulse items-center justify-center bg-white dark:bg-stone-700">
                                         <flux:icon.loading />
                                     </div>
-                    @else
-                        <div x-data class="flex h-full items-center justify-center p-4">
-                            <div
-                                class="rounded bg-white p-3"
-                                :style="$flux.appearance === 'dark' || ($flux.appearance === 'system' && $flux.dark) ? 'filter: invert(1) brightness(1.5)' : ''"
-                            >
-                                {!! $qrCodeSvg !!} </div>
-                                </div>
+                                @else
+                                    <div x-data class="flex h-full items-center justify-center p-4">
+                                        <div
+                                            class="rounded bg-white p-3"
+                                            :style="$flux.appearance === 'dark' || ($flux.appearance === 'system' && $flux.dark) ? 'filter: invert(1) brightness(1.5)' : ''"
+                                        >
+                                            {!! $qrCodeSvg !!}
+                                        </div>
+                                    </div>
                                 @endempty
                             </div>
                         </div>
@@ -141,19 +150,23 @@
                                             <flux:icon.loading variant="mini" />
                                         </div>
 
-                    @else
-                        <input type="text" readonly value="{{ $manualSetupKey }}" class="w-full bg-transparent p-3 text-stone-900 outline-none dark:text-stone-100" />
-                        <button @click="copy()" class="cursor-pointer border-l border-stone-200 px-3 transition-colors dark:border-stone-600">
-                            <flux:icon.document-duplicate x-show="!copied" variant="outline">
-                                </flux:icon>
-                                <flux:icon.check x-show="copied" variant="solid" class="text-green-500">
-                                    </flux:icon>
-                                    </button>
+                                    @else
+                                        <input
+                                            type="text"
+                                            readonly
+                                            value="{{ $manualSetupKey }}"
+                                            class="w-full bg-transparent p-3 text-stone-900 outline-none dark:text-stone-100"
+                                        />
+                                        <button @click="copy()" class="cursor-pointer border-l border-stone-200 px-3 transition-colors dark:border-stone-600">
+                                            <flux:icon.document-duplicate x-show="!copied" variant="outline">
+                                                </flux:icon>
+                                                <flux:icon.check x-show="copied" variant="solid" class="text-green-500"> </flux:icon>
+                                        </button>
                                     @endempty
-                </div>
-                </div>
-                </div>
-                @endif
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </flux:modal>
         @endif

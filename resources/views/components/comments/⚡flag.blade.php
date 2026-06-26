@@ -5,9 +5,7 @@ use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 new class extends Component {
-
     public Comment $comment;
-
 
     #[Validate('required|min:5|max:255')]
     public string $reason = '';
@@ -17,37 +15,32 @@ new class extends Component {
 
     public string $classes = 'border-1 rounded border  p-4';
 
-
     public function save(): void
     {
         $this->authorize('flag', $this->comment);
-        $this->comment->flag(
-            auth()->user(),
-            $this->reason
-        );
+        $this->comment->flag(auth()->user(), $this->reason);
         $this->showFlagForm = false;
     }
 
     public function toggleFlagForm(): void
     {
         // search act->flags for one made by the current user
-        if ($this->comment->flags->some(function ($flag) {
-            return $flag->user_id === auth()->id();
-        })) {
+        if (
+            $this->comment->flags->some(function ($flag) {
+                return $flag->user_id === auth()->id();
+            })
+        ) {
             $this->showFlagForm = false;
-            Notification::make()
-                ->title('You have already flagged this comment')
-                ->warning()
-                ->send();
+            Notification::make()->title('You have already flagged this comment')->warning()->send();
 
             return;
         }
-        $this->showFlagForm = ! $this->showFlagForm;
+        $this->showFlagForm = !$this->showFlagForm;
     }
 };
 ?>
 
-<div {{ $attributes->merge(['class'=> $classes]) }}>
+<div {{ $attributes->merge(['class' => $classes]) }}>
     <span class="text-danger-600 flex items-center">
         <button wire:click="toggleFlagForm" class="btn btn-sm">
             <x-icon name="fas-flag" class="mr-2 h-4 w-4" />
