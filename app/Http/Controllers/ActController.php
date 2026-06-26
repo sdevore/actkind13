@@ -7,6 +7,7 @@ use App\Http\Requests\ActUpdateRequest;
 use App\Models\Act;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,21 +18,16 @@ class ActController extends Controller
 {
     public function index(Request $request): View|Collection|Paginator
     {
-
-        if (! Auth::check()) {
-
+        if ($this->isAuth()) {
+            $acts = Act::with(['user', 'appreciates'])
+                ->withCount(['appreciates', 'comments'])
+                ->simplePaginate(20);
+        } else {
             $acts = Cache::remember('acts', 600, function () {
                 return Act::with(['appreciates'])
                     ->withCount(['flags', 'comments', 'appreciates'])
                     ->simplePaginate(12);
             });
-
-        } else {
-
-            $acts = Act::with(['user', 'appreciates'])
-                ->withCount(['appreciates', 'comments'])
-                ->simplePaginate(20);
-
         }
         $acts->withPath('/acts');
 
@@ -63,12 +59,17 @@ class ActController extends Controller
         return view('acts.create');
     }
 
-    public function store(ActStoreRequest $request): RedirectResponse
+    public function store(ActStoreRequest $request): RedirectResponse|JsonResponse
     {
         if (! Auth::check()) {
             abort(401);
         }
+
         $act = Act::create($request->validated());
+
+        if ($request->expectsJson()) {
+            return response()->json($act, 201);
+        }
 
         $request->session()->flash('act.id', $act->id);
 

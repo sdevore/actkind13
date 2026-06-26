@@ -12,7 +12,8 @@
       "Bash(php -d error_reporting=E_ALL -d display_errors=1 artisan test --compact)",
       "Bash(./vendor/bin/phpstan analyse *)",
       "mcp__laravel-boost__database-schema",
-      "Bash(./vendor/bin/pint *)"
+      "Bash(./vendor/bin/pint *)",
+      "Bash(vendor/bin/pint *)"
     ]
   },
   "enableAllProjectMcpServers": true,
