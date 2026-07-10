@@ -31,7 +31,7 @@ jobs:
     with:
       status: failed
       cloud_application: ${{ vars.LARAVEL_CLOUD_APPLICATION }}
-      cloud_environment: ${{ vars.LARAVEL_CLOUD_ENVIRONMENT }}
+      cloud_environment: ${{ vars.LARAVEL_CLOUD_ENVIRONMENT_DEV }}
     secrets:
       SLACK_WEBHOOK_MAIN: ${{ secrets.SLACK_WEBHOOK_MAIN }}
 
