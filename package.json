@@ -24,10 +24,10 @@
     },
     "devDependencies": {
         "@eslint/js": "^10.0.1",
-        "@prettier/plugin-php": "^0.25.0",
+        "@prettier/plugin-php": "^0.24.0",
         "@tailwindcss/typography": "^0.5.19",
         "eslint": "^10.3.0",
-        "prettier": "^3.8.5",
+        "prettier": "^3.9.5",
         "prettier-plugin-blade": "^3.2.2",
         "prettier-plugin-tailwindcss": "^0.8.0"
     }
