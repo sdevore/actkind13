@@ -1,4 +1,4 @@
-name: Develop branch and PR test and deploy pipeline
+name: Staging - Feature branch test and PR deploy pipeline
 
 on:
   push:

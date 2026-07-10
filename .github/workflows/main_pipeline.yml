@@ -1,4 +1,4 @@
-name: Main branch and PR test and deploy pipeline
+name: Production - main branch test and deploy pipeline
 
 on:
   push:
