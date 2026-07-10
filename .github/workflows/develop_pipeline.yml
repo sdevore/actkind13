@@ -3,10 +3,10 @@ name: Develop branch and PR test and deploy pipeline
 on:
   push:
     branches:
-      - develop
+      - 'feature/*'
   pull_request:
     branches:
-      - develop
+      - main
 
 jobs:
   lint:
@@ -18,7 +18,7 @@ jobs:
     secrets: inherit
 
   deploy:
-    if: ${{ needs.lint.result == 'success' && needs.tests.result == 'success' && github.event_name == 'push' && github.ref == 'refs/heads/develop' }}
+    if: ${{ needs.lint.result == 'success' && needs.tests.result == 'success' && github.event_name == 'pull_request' }}
     needs: [lint, tests]
     uses: ./.github/workflows/deploy-laravel-cloud.yml
     secrets:
