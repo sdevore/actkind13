@@ -15,7 +15,7 @@ around you where you live.
 
 ## Inspiration
 
-There are sites/application like [Strava](https://www.strava.com), [RunKeeper](), [Nike Run Club]() that have had an
+There are sites/application like [Strava](https://www.strava.com), [RunKeeper](<>), [Nike Run Club](<>) that have had an
 impact on the way that people exercise and share their efforts to make themselves healthier, fitter, and part of a
 community of people trying to do the same. By sharing we find ourselves more accountable to an outside audience, when
 our **followers** give us Likes or thanks we find ourselves inspired to work harder, to go faster, to feel that
