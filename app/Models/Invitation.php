@@ -29,7 +29,7 @@ class Invitation extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var list<string>
      */
     protected $fillable = [
         'name',
@@ -44,7 +44,7 @@ class Invitation extends Model
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'id' => 'integer',
@@ -53,19 +53,19 @@ class Invitation extends Model
         'joined_id' => 'integer',
     ];
 
-    /** @return BelongsTo<User, Invitation> */
+    /** @return BelongsTo<User, $this> */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    /** @return BelongsTo<User, Invitation> */
+    /** @return BelongsTo<User, $this> */
     public function invited_by(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    /** @return BelongsTo<User, Invitation> */
+    /** @return BelongsTo<User, $this> */
     public function joinedAs(): BelongsTo
     {
         return $this->belongsTo(User::class, 'joined_id');

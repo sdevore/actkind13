@@ -34,7 +34,7 @@ class ContactUs extends Model
 
     protected $guarded = [];
 
-    /** @return BelongsTo<Invitation, ContactUs> */
+    /** @return BelongsTo<Invitation, $this> */
     public function invitation(): BelongsTo
     {
         return $this->belongsTo(Invitation::class);

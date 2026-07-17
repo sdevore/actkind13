@@ -33,7 +33,7 @@ class Act extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var list<string>
      */
     protected $fillable = [
         'title',
@@ -46,7 +46,7 @@ class Act extends Model
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'id' => 'integer',
@@ -54,13 +54,13 @@ class Act extends Model
         'type' => ActType::class,
     ];
 
-    /** @return BelongsTo<User, Act> */
+    /** @return BelongsTo<User, $this> */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    /** @return HasMany<Comment, Act> */
+    /** @return HasMany<Comment, $this> */
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
@@ -79,7 +79,7 @@ class Act extends Model
         return $comment;
     }
 
-    /** @return MorphMany<Appreciate, Act> */
+    /** @return MorphMany<Appreciate, $this> */
     public function appreciates(): MorphMany
     {
         return $this->morphMany(Appreciate::class, 'appreciable');
@@ -106,7 +106,7 @@ class Act extends Model
         return false;
     }
 
-    /** @return MorphMany<Flag, Act> */
+    /** @return MorphMany<Flag, $this> */
     public function flags(): MorphMany
     {
         return $this->morphMany(Flag::class, 'flaggable');

@@ -23,7 +23,7 @@ class Appreciate extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var list<string>
      */
     protected $fillable = [
         'user_id',
@@ -32,7 +32,7 @@ class Appreciate extends Model
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'id' => 'integer',
@@ -48,7 +48,7 @@ class Appreciate extends Model
         return $this->morphTo('appreciable');
     }
 
-    /** @return BelongsTo<User, Appreciate> */
+    /** @return BelongsTo<User, $this> */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
