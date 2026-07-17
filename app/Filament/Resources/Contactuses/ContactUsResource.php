@@ -6,6 +6,7 @@ use App\Filament\Resources\Contactuses\Pages\CreateContactUs;
 use App\Filament\Resources\Contactuses\Pages\EditContactUs;
 use App\Filament\Resources\Contactuses\Pages\ListContactUs;
 use App\Models\ContactUs;
+use App\Models\User;
 use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
@@ -21,8 +22,10 @@ use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 
 class ContactUsResource extends Resource
 {
@@ -89,7 +92,7 @@ class ContactUsResource extends Resource
                     ->icon('heroicon-o-envelope-open')
                     ->color('success')
                     ->action(function (ContactUs $contactUs) {
-                        $contactUs->sendInvitation();
+                        $contactUs->sendInvitation(self::getAuthenticatedUser());
                         Notification::make()
                             ->title($contactUs->name.' Invited')
                             ->body($contactUs->name.'has had an invitation sent to'.$contactUs->email)
@@ -105,7 +108,7 @@ class ContactUsResource extends Resource
                     ->icon('heroicon-o-envelope-open')
                     ->color('info')
                     ->action(function (ContactUs $contactUs) {
-                        $contactUs->resendInvitation();
+                        $contactUs->resendInvitation(self::getAuthenticatedUser());
                         Notification::make()
                             ->title($contactUs->name.' Invited')
                             ->body($contactUs->name.'has had an invitation re-sent to'.$contactUs->email)
@@ -146,5 +149,19 @@ class ContactUsResource extends Resource
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
+    }
+
+    /**
+     * @throws AuthenticationException
+     */
+    private static function getAuthenticatedUser(): User
+    {
+        $user = Auth::user();
+
+        if (! $user instanceof User) {
+            throw new AuthenticationException;
+        }
+
+        return $user;
     }
 }
