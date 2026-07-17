@@ -1,10 +1,10 @@
 <?php
 
 use App\Http\Controllers\ActController;
+use App\Http\Controllers\SanctumTokenController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Validation\ValidationException;
 
 // Route::get('/user', function (Request $request) {
 //    return $request->user();
@@ -26,23 +26,7 @@ Route::name('user.')->prefix('user')
         })->name('logout');
     });
 
-Route::post('/sanctum/token', function (Request $request) {
-    $request->validate([
-        'email' => 'required|email',
-        'password' => 'required',
-        'device_name' => 'required',
-    ]);
-
-    $user = User::where('email', $request->email)->first();
-
-    if (! $user || ! Hash::check($request->password, $user->password)) {
-        throw ValidationException::withMessages([
-            'email' => ['The provided credentials are incorrect.'],
-        ]);
-    }
-
-    return ['token' => $user->createToken($request->device_name)->plainTextToken];
-})->name('sanctum.token');
+Route::post('/sanctum/token', SanctumTokenController::class)->name('sanctum.token');
 
 Route::get('/acts', [ActController::class, 'index']);
 
