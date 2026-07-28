@@ -1,6 +1,8 @@
 <x-layouts::app :title="__('My Acts of Kindness')">
     <section class="border-b border-gray-200 bg-white p-6 lg:p-8 dark:border-gray-700 dark:bg-gray-800 dark:bg-gradient-to-bl dark:from-gray-700/50 dark:via-transparent">
-        <h3 class="mb-4 text-center text-lg leading-tight font-semibold text-gray-800 dark:text-gray-200">Add your Act of Kindness</h3>
+        <h3 class="mb-4 text-center text-lg leading-tight font-semibold text-gray-800 dark:text-gray-200">
+            Add your Act of Kindness
+        </h3>
         <livewire:acts.create class="mx-auto w-5/6 md:w-3/4 lg:w-1/2" />
     </section>
     @if ($acts->count())
@@ -9,7 +11,9 @@
         </section>
     @else
         <section class="flex h-64 items-center justify-center">
-            <p class="text-gray-500 dark:text-gray-400">You haven't shared any acts of kindness yet. Start by sharing one above!</p>
+            <p class="text-gray-500 dark:text-gray-400">
+                You haven't shared any acts of kindness yet. Start by sharing one above!
+            </p>
         </section>
     @endif
 </x-layouts::app>

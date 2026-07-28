@@ -1,11 +1,13 @@
 <?php
 
+use App\Models\Act;
 use App\Models\Comment;
-use Livewire\Component;
 use Livewire\Attributes\Validate;
+use Livewire\Component;
 
-new class extends Component {
-    public \App\Models\Act $act;
+new class extends Component
+{
+    public Act $act;
 
     #[Validate('required|min:5|max:255')]
     public string $body = '';
@@ -29,14 +31,14 @@ new class extends Component {
 
     public function toggleForm(): void
     {
-        $this->showForm = !$this->showForm;
+        $this->showForm = ! $this->showForm;
     }
 };
 ?>
 
 <div {{ $attributes->merge(['class' => $classes]) }}>
     {{-- The best athlete wants his opponent at his best. --}}
-    @if (!$showForm)
+    @if (! $showForm)
         <div wire:transition>
             <x-controls.primary-button wire:click="toggleForm" class="">Add Comment</x-controls.primary-button>
         </div>

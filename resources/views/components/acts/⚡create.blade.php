@@ -1,19 +1,18 @@
 <?php
 
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
-use Livewire\Component;
 use App\Enums\ActType;
 use App\Models\Act;
-use Filament\Forms;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Schemas\Concerns\InteractsWithSchemas;
 use Filament\Schemas\Contracts\HasSchemas;
-use Filament\Notifications\Notification;
-use Illuminate\Contracts\View\View;
 use Filament\Schemas\Schema;
+use Livewire\Component;
 
-new class extends Component implements HasSchemas {
+new class extends Component implements HasSchemas
+{
     use InteractsWithSchemas;
 
     public ?array $data = [];
@@ -30,7 +29,7 @@ new class extends Component implements HasSchemas {
 
     public function toggleHelp(): void
     {
-        $this->showHelp = !$this->showHelp;
+        $this->showHelp = ! $this->showHelp;
     }
 
     public function form(Schema $schema): Schema
@@ -66,7 +65,7 @@ new class extends Component implements HasSchemas {
         $this->form->model($record)->saveRelationships();
         $this->form->fill();
         Notification::make()
-            ->title($data['title'] . ' Saved successfully')
+            ->title($data['title'].' Saved successfully')
             ->success()
             ->send();
     }
@@ -92,7 +91,9 @@ new class extends Component implements HasSchemas {
             <ul class="list-inside list-disc">
                 <li>Your name will only be shown to members that are signed in</li>
                 <li>Comments are only shown to signed in members</li>
-                <li class="italic">While we are testing you or I can always delete any experiments before things open up</li>
+                <li class="italic">
+                    While we are testing you or I can always delete any experiments before things open up
+                </li>
             </ul>
         </div>
     @endif

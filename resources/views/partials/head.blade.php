@@ -1,7 +1,9 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<title>{{ filled($title ?? null) ? config('app.name', 'ActKind . online') . ': ' . $title : config('app.name', 'ActKind . online') }}</title>
+<title>
+    {{ filled($title ?? null) ? config('app.name', 'ActKind . online') . ': ' . $title : config('app.name', 'ActKind . online') }}
+</title>
 
 <link rel="icon" href="/favicon.ico" sizes="any" />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -9,7 +11,7 @@
 
 @fonts
 
-@vite (['resources/css/app.css', 'resources/js/app.js'])
+@vite(['resources/css/app.css', 'resources/js/app.js'])
 
 <!-- Styles -->
 @fluxAppearance
@@ -20,4 +22,4 @@
 
 <!-- turnstile -->
 <x-turnstile.scripts />
-@stack ('head_scripts')
+@stack('head_scripts')

@@ -4,7 +4,8 @@ use App\Models\Act;
 use App\Models\Comment;
 use Livewire\Component;
 
-new class extends Component {
+new class extends Component
+{
     public $comments;
 
     public $highlightedComment;
@@ -40,14 +41,14 @@ new class extends Component {
     @forelse ($comments as $comment)
         <div class="my-4 bg-white p-4 shadow-sm sm:rounded-lg dark:bg-gray-800/30 dark:text-slate-200">
             <div class="flex w-full justify-between space-x-0.5">
-                @auth ()
+                @auth()
                     <strong class="pr-1">{{ $comment->user->name }}</strong>
                 @endauth
 
                 <span class="text-sm text-slate-400">{{ $comment->created_at->diffForHumans() }}</span>
             </div>
             <div class="prose p-4">{!! Str::markdown($comment->body) !!}</div>
-            @can ('view flags')
+            @can('view flags')
                 <livewire:comments.flag :comment="$comment" />
             @endcan
         </div>

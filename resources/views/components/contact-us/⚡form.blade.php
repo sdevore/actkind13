@@ -5,7 +5,8 @@ use App\Models\ContactUs;
 use Livewire\Component;
 use RyanChandler\LaravelCloudflareTurnstile\Rules\Turnstile;
 
-new class extends Component {
+new class extends Component
+{
     public string $name = '';
 
     public string $email = '';
@@ -23,7 +24,7 @@ new class extends Component {
             'email' => ['required', 'email', 'max:255', 'min:5'],
             'where_from' => ['nullable', 'string', 'max:255'],
             'message' => ['nullable', 'string', 'max:255', 'min:10'],
-            'cf_turnstile_response' => ['required', new Turnstile()],
+            'cf_turnstile_response' => ['required', new Turnstile],
         ];
     }
 
@@ -42,7 +43,7 @@ new class extends Component {
             session()->flash('danger', 'This email has already contacted us in the past.');
             $this->redirect(route('home'));
         } else {
-            $contact = new \App\Models\ContactUs();
+            $contact = new ContactUs;
             $contact->name = $this->name;
             $contact->email = $this->email;
             $contact->where_from = $this->where_from;
@@ -72,7 +73,7 @@ new class extends Component {
                     required
                 />
             </label>
-            @error ('name')
+            @error('name')
                 <span class="mt-1 ml-1 text-sm text-red-700">{{ $message }}</span>
             @enderror
 
@@ -91,7 +92,7 @@ new class extends Component {
                     required
                 />
             </label>
-            @error ('email')
+            @error('email')
                 <span class="mt-1 ml-1 text-sm text-red-700">{{ $message }}</span>
             @enderror
 
@@ -106,7 +107,7 @@ new class extends Component {
                     type="text"
                 />
             </label>
-            @error ('where_from')
+            @error('where_from')
                 <span class="mt-1 ml-1 text-sm text-red-700">{{ $message }}</span>
             @enderror
 
@@ -122,11 +123,11 @@ new class extends Component {
                     placeholder="I am interested in..."
                 ></textarea>
             </label>
-            @error ('message')
+            @error('message')
                 <span class="mt-1 ml-1 text-sm text-red-700">{{ $message }}</span>
             @enderror
             <x-turnstile id="my_widget" wire:model="cf_turnstile_response" />
-            @error ('cf_turnstile_response')
+            @error('cf_turnstile_response')
                 <span class="mt-1 ml-1 text-sm text-red-700">{{ $message }}</span>
             @enderror
             <div class="mt-2">

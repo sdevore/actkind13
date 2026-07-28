@@ -1,6 +1,9 @@
 <x-layouts::app :title="$act->title">
     <h2 class="mt-4 flex w-full justify-around pb-2 text-xl leading-tight font-semibold text-gray-800 dark:text-gray-200/80">
-        <a class="dark:text-slate-200/80 dark:hover:text-gray-700" href="{{ route('acts.index') }}">{{ __('Act of Kindness') }}</a>
+        <a
+            class="dark:text-slate-200/80 dark:hover:text-gray-700"
+            href="{{ route('acts.index') }}"
+        >{{ __('Act of Kindness') }}</a>
         <span> {{ $act->title }} </span>
     </h2>
 
@@ -8,10 +11,10 @@
         <div class="mx-auto max-w-3xl sm:px-6 lg:px-8">
             <div class="flex items-center justify-between py-2 dark:text-slate-200">
                 <span class="flex">
-                    <x-icon class="h-6 px-2" name="{{$act->type->getIcon()}}" />
+                    <x-icon class="h-6 px-2" name="{{ $act->type->getIcon() }}" />
                     {!! $act->type->getBadge() !!}
                 </span>
-                @auth ()
+                @auth()
                     <span>
                         By:
                         <strong>{{ $act->user->name }}</strong>
@@ -27,11 +30,11 @@
                 <div class="prose p-6 dark:text-slate-200">{!! Str::markdown($act->description) !!}</div>
             </div>
             <div class="mt-4">
-                @auth ()
+                @auth()
                     <livewire:acts.appreciate :act="$act" :show-names="true" />
                 @endauth
 
-                @guest ()
+                @guest()
                     @if ($act->appreciates->count() > 0)
                         <span class="{{ $act->type->getTextColor() }} flex items-center">
                             <x-icon name="fas-hand-heart" class="mr-2 h-4 w-4" />
@@ -40,7 +43,7 @@
                     @endif
                 @endguest
             </div>
-            @can ('view flags')
+            @can('view flags')
                 <div class="mt-4">
                     <livewire:acts.flag :act="$act" />
                 </div>

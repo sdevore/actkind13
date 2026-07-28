@@ -21,7 +21,14 @@
                             <div>
                                 <x-label for="name" :value="__('Name')" />
 
-                                <x-input id="name" class="mt-1 block w-full" type="text" name="name" required autofocus />
+                                <x-input
+                                    id="name"
+                                    class="mt-1 block w-full"
+                                    type="text"
+                                    name="name"
+                                    required
+                                    autofocus
+                                />
                             </div>
 
                             <div>
@@ -31,7 +38,10 @@
                             </div>
                         </div>
 
-                        <x-common.simple-markdown-input label="Short text to include in the invitation" name="message" />
+                        <x-common.simple-markdown-input
+                            label="Short text to include in the invitation"
+                            name="message"
+                        />
                         <div class="mt-4 flex items-center justify-end">
                             <x-button class="ml-4"> {{ __('Send Invitation') }} </x-button>
                         </div>

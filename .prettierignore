@@ -6,6 +6,7 @@ public/
 .git
 package-lock.json
 composer.lock
+resources/views/
 resources/views/mail/
 resources/views/emails/
 **/*.svg

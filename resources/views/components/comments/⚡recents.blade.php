@@ -3,9 +3,12 @@
 use App\Models\Comment;
 use Livewire\Component;
 
-new class extends Component {
+new class extends Component
+{
     public $comments = [];
+
     public $limit = 5;
+
     public ?array $data = [];
 
     public ?string $classes = 'border-1 rounded border dark:border-slate-800 bg-gradient-to-r from-emerald-100 via-green-100 to-teal-100 dark:from-emerald-900 dark:via-green-900 dark:to-teal-900 p-4 shadow';
@@ -38,7 +41,12 @@ new class extends Component {
                     </em>
                 </span>
 
-                <x-controls.info-link href="{{ route('acts.show',['act'=>$comment->act->id,'comment'=>$comment->id]) }}" class="text-nowrap" title="view act" wire:navigate>
+                <x-controls.info-link
+                    href="{{ route('acts.show',['act'=>$comment->act->id,'comment'=>$comment->id]) }}"
+                    class="text-nowrap"
+                    title="view act"
+                    wire:navigate
+                >
                     <x-icon name="heroicon-o-eye" class="h-4 pr-1" />
                     <span class="sr-only">View Act</span>
                 </x-controls.info-link>

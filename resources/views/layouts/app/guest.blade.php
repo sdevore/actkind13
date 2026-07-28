@@ -5,18 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
-    <title>{{ $title ? config('app.name', 'ActKind . online') . ': ' . $title : config('app.name', 'ActKind . online') }}</title>
+    <title>
+        {{ $title ? config('app.name', 'ActKind . online') . ': ' . $title : config('app.name', 'ActKind . online') }}
+    </title>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net" />
-    <link rel="preload" href="https://fonts.bunny.net/figtree/files/figtree-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="https://fonts.bunny.net/figtree/files/figtree-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link
+        rel="preload"
+        href="https://fonts.bunny.net/figtree/files/figtree-latin-400-normal.woff2"
+        as="font"
+        type="font/woff2"
+        crossorigin
+    />
+    <link
+        rel="preload"
+        href="https://fonts.bunny.net/figtree/files/figtree-latin-500-normal.woff2"
+        as="font"
+        type="font/woff2"
+        crossorigin
+    />
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
     <!-- Scripts -->
-    @vite (['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <!-- Styles -->
     @livewireStyles
-    @stack ('head_scripts')
+    @stack('head_scripts')
     <!-- turnstile -->
     <x-turnstile.scripts />
 </head>
@@ -73,20 +87,18 @@
             </div>
         </header>
     @endif
-    <div
-        class="relative flex min-h-screen flex-col bg-linear-to-r from-emerald-200/10 via-green-100/10 to-teal-200/10 selection:bg-[#FF2D20] selection:text-white dark:from-emerald-900/80 dark:via-green-800/90 dark:to-teal-800/90 dark:text-slate-200"
-    >
+    <div class="relative flex min-h-screen flex-col bg-linear-to-r from-emerald-200/10 via-green-100/10 to-teal-200/10 selection:bg-[#FF2D20] selection:text-white dark:from-emerald-900/80 dark:via-green-800/90 dark:to-teal-800/90 dark:text-slate-200">
         <div class="relative w-full px-2 md:px-6">
             <x-flash.session />
             <main class="prose max-w-none p-0">{{ $slot }}</main>
         </div>
     </div>
     @if (isset($footer))
-        <footer {{ $footer->attributes->class(['fixed inset-x-0 bottom-0 border border-t-2 border-neutral-200 p-2 text-center']) }}>{{ $footer }}</footer>
+        <footer {{ $footer->attributes->class(['fixed inset-x-0 bottom-0 border border-t-2 border-neutral-200 p-2 text-center']) }}>
+            {{ $footer }}
+        </footer>
     @else
-        <footer
-            class="fixed inset-x-0 bottom-0 flex items-center justify-between border border-t-2 border-neutral-200 bg-linear-to-r from-emerald-400/20 via-green-200/20 to-teal-400/20 p-2 text-center dark:border-neutral-500/50"
-        >
+        <footer class="fixed inset-x-0 bottom-0 flex items-center justify-between border border-t-2 border-neutral-200 bg-linear-to-r from-emerald-400/20 via-green-200/20 to-teal-400/20 p-2 text-center dark:border-neutral-500/50">
             <span class="text-sm text-slate-500 dark:text-slate-200">&copy; {{ date('Y') }} ActKind . online</span>
             <span class="mx-2 text-slate-700">
                 <a
@@ -103,16 +115,16 @@
                     Privacy Policy
                 </a>
             </span>
-            @env (['local', 'staging'])
+            @env(['local', 'staging'])
                 <span class="text-sm text-slate-500 dark:text-slate-200">Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})</span>
             @endenv
         </footer>
     @endif
     <x-display-breakpoint />
-    @auth ()
-        @livewire ('notifications')
+    @auth()
+        @livewire('notifications')
     @endauth
 
-    @stack ('footer_scripts')
+    @stack('footer_scripts')
 </body>
 </html>

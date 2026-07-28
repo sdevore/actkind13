@@ -20,13 +20,13 @@
                 <span class="pl-2 text-sm text-slate-700 dark:text-slate-400">{{ $act->created_at->diffForHumans() }}</span>
             </span>
         </x-slot>
-        @if (!empty($act->description))
+        @if (! empty($act->description))
             <div class="prose p-4 text-sm dark:text-slate-300">
                 <p>{{ $act->description }}</p>
             </div>
         @endif
 
-        @auth ()
+        @auth()
             <x-slot name="footer">
                 <span class="flex items-center justify-between">
                     <livewire:acts.appreciate :act="$act" />
@@ -35,7 +35,7 @@
             </x-slot>
         @endauth
 
-        @guest ()
+        @guest()
             @if ($act->appreciates->count() > 0)
                 <x-slot name="footer">
                     <span class="{{ $act->type->getTextColor() }} flex items-center">

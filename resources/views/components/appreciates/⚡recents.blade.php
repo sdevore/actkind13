@@ -5,7 +5,8 @@ use App\Models\Appreciate;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Livewire\Component;
 
-new class extends Component {
+new class extends Component
+{
     public int $limit = 5;
 
     /** @var array */
@@ -40,7 +41,12 @@ new class extends Component {
                     </em>
                 </span>
 
-                <x-controls.info-link wire:navigate href="{{ route('acts.show',['act'=>$appreciation->appreciable->id]) }}" class="text-nowrap" title="view act">
+                <x-controls.info-link
+                    wire:navigate
+                    href="{{ route('acts.show',['act'=>$appreciation->appreciable->id]) }}"
+                    class="text-nowrap"
+                    title="view act"
+                >
                     <x-icon name="heroicon-o-eye" class="h-4 pr-1" />
                     <span class="sr-only">View Act</span>
                 </x-controls.info-link>

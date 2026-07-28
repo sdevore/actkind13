@@ -1,19 +1,17 @@
 <?php
 
+use App\Models\Invitation;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Schemas\Concerns\InteractsWithSchemas;
 use Filament\Schemas\Contracts\HasSchemas;
-use App\Models\Invitation;
-use Filament\Forms;
-use Filament\Forms\Concerns\InteractsWithForms;
-use Filament\Forms\Contracts\HasForms;
 use Filament\Schemas\Schema;
-use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
-new class extends Component implements HasSchemas {
+new class extends Component implements HasSchemas
+{
     use InteractsWithSchemas;
 
     public ?array $data = [];
@@ -62,7 +60,10 @@ new class extends Component implements HasSchemas {
 ?>
 
 <div {{ $attributes->merge(['class' => $classes]) }}>
-    <p class="mb-2 rounded border border-green-900 bg-green-200/80 p-2 font-bold text-green-700 shadow-sm">Be thoughtful about who you invite we are trying to make this a thoughtful kind community. Invitations are sent via email.</p>
+    <p class="mb-2 rounded border border-green-900 bg-green-200/80 p-2 font-bold text-green-700 shadow-sm">
+        Be thoughtful about who you invite we are trying to make this a thoughtful kind community. Invitations are sent
+        via email.
+    </p>
     <form wire:submit="create">
         {{ $this->form }}
         <x-controls.primary-button type="submit" class="mt-4">Invite</x-controls.primary-button>

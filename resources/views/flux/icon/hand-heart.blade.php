@@ -1,8 +1,8 @@
-@blaze (fold: true)
+@blaze(fold: true)
 
 {{-- Credit: Lucide (https://lucide.dev) --}}
 
-@props ([
+@props([
     'variant' => 'outline',
 ])
 
