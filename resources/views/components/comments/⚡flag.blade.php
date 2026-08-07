@@ -4,13 +4,15 @@ use App\Models\Comment;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
-new class extends Component {
+new class extends Component
+{
     public Comment $comment;
 
     #[Validate('required|min:5|max:255')]
     public string $reason = '';
 
     public bool $showNames = true;
+
     public bool $showFlagForm = false;
 
     public string $classes = 'border-1 rounded border  p-4';
@@ -35,7 +37,7 @@ new class extends Component {
 
             return;
         }
-        $this->showFlagForm = !$this->showFlagForm;
+        $this->showFlagForm = ! $this->showFlagForm;
     }
 };
 ?>
@@ -61,7 +63,11 @@ new class extends Component {
             <span class="ml-2 flex items-center space-x-1">
                 @foreach ($comment->flags as $flag)
                     <span class="flex items-center">
-                        <img class="h-6 w-6 rounded-full object-cover" src="{{ $flag->user->profile_photo_url }}" alt="{{ $flag->user->name }}" />
+                        <img
+                            class="h-6 w-6 rounded-full object-cover"
+                            src="{{ $flag->user->profile_photo_url }}"
+                            alt="{{ $flag->user->name }}"
+                        />
                         {{ $flag->user->name }}
                     </span>
                 @endforeach

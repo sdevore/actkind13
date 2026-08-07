@@ -27,7 +27,7 @@ class Comment extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var list<string>
      */
     protected $fillable = [
         'body',
@@ -38,7 +38,7 @@ class Comment extends Model
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'id' => 'integer',
@@ -46,25 +46,25 @@ class Comment extends Model
         'act_id' => 'integer',
     ];
 
-    /** @return BelongsTo<User, Comment> */
+    /** @return BelongsTo<User, $this> */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    /** @return BelongsTo<Act, Comment> */
+    /** @return BelongsTo<Act, $this> */
     public function act(): BelongsTo
     {
         return $this->belongsTo(Act::class);
     }
 
-    /** @return MorphMany<Appreciate, Comment> */
+    /** @return MorphMany<Appreciate, $this> */
     public function appreciates(): MorphMany
     {
         return $this->morphMany(Appreciate::class, 'appreciable');
     }
 
-    /** @return MorphMany<Flag, Comment> */
+    /** @return MorphMany<Flag, $this> */
     public function flags(): MorphMany
     {
         return $this->morphMany(Flag::class, 'flaggable');

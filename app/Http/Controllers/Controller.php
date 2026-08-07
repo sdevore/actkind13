@@ -22,8 +22,15 @@ abstract class Controller
             return $this->resolvedUser;
         }
 
-        // Prioritize Sanctum token/cookie, fallback to standard web session
-        return $this->resolvedUser = Auth::guard('sanctum')->user() ?? Auth::user();
+        $user = Auth::guard('sanctum')->user() ?? Auth::user();
+
+        if (! $user instanceof User) {
+            $this->resolvedUser = null;
+
+            return null;
+        }
+
+        return $this->resolvedUser = $user;
     }
 
     /**

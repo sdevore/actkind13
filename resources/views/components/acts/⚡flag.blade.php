@@ -5,7 +5,8 @@ use Filament\Notifications\Notification;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
-new class extends Component {
+new class extends Component
+{
     public Act $act;
 
     #[Validate('required|min:5|max:255')]
@@ -37,7 +38,7 @@ new class extends Component {
 
             return;
         }
-        $this->showFlagForm = !$this->showFlagForm;
+        $this->showFlagForm = ! $this->showFlagForm;
     }
 };
 ?>
@@ -63,7 +64,11 @@ new class extends Component {
             <span class="ml-2 flex items-center space-x-1">
                 @foreach ($act->flags as $flag)
                     <span class="flex items-center">
-                        <img class="h-6 w-6 rounded-full object-cover" src="{{ $flag->user->profile_photo_url }}" alt="{{ $flag->user->name }}" />
+                        <img
+                            class="h-6 w-6 rounded-full object-cover"
+                            src="{{ $flag->user->profile_photo_url }}"
+                            alt="{{ $flag->user->name }}"
+                        />
                         {{ $flag->user->name }}
                     </span>
                 @endforeach

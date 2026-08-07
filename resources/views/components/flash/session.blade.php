@@ -1,7 +1,7 @@
 @php
     $notices = session()->only(['status', 'error', 'warning', 'info', 'success']);
 
-    $show = !empty($notices);
+    $show = ! empty($notices);
     $ids = [];
 @endphp
 
@@ -40,7 +40,7 @@
 
         <script>
             setTimeout(() => {
-                const ids = @json ($ids);
+                const ids = @json($ids);
                 ids.forEach((id) => {
                     const element = document.getElementById(id);
                     element.classList.add('transition-opacity', 'duration-500', 'opacity-0');

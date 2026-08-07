@@ -1,5 +1,5 @@
-@props ([
-    'id' => 'editor-' . str()->random(8),
+@props([
+    'id' => 'editor-'.str()->random(8),
     'height' => '400px',
     'label' => null,
     'name' => null,
@@ -19,8 +19,8 @@
         x-data="{
 	height: '{{ $height }}',
 	tab: 'write',
-	@if ($attributes->has("wire:model"))
-     content: @entangle($attributes->wire("model"))
+	@if ($attributes->has('wire:model'))
+     content: @entangle($attributes->wire('model'))
      ,
  @else
      content: {{ collect($value) }},
@@ -117,7 +117,12 @@
                 </button>
             </div>
             @if ($toolbar)
-                <button x-tooltip="'bold'" type="button" class="group inline-block px-2 py-2" x-on:click.prevent="toggleMenu('bold')">
+                <button
+                    x-tooltip="'bold'"
+                    type="button"
+                    class="group inline-block px-2 py-2"
+                    x-on:click.prevent="toggleMenu('bold')"
+                >
                     <svg class="h-4 w-4 text-gray-500 group-hover:text-indigo-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M12.0009 12.75H4.88086C4.47086 12.75 4.13086 12.41 4.13086 12V4.5C4.13086 2.98 5.36086 1.75 6.88086 1.75H12.0009C15.0309 1.75 17.5009 4.22 17.5009 7.25C17.5009 10.28 15.0309 12.75 12.0009 12.75ZM5.62086 11.25H12.0009C14.2109 11.25 16.0009 9.46 16.0009 7.25C16.0009 5.04 14.2109 3.25 12.0009 3.25H6.88086C6.19086 3.25 5.63086 3.81 5.63086 4.5V11.25H5.62086Z"
@@ -129,7 +134,12 @@
                         />
                     </svg>
                 </button>
-                <button x-tooltip="'italic'" type="button" class="group inline-block px-2 py-2" x-on:click.prevent="toggleMenu('italic')">
+                <button
+                    x-tooltip="'italic'"
+                    type="button"
+                    class="group inline-block px-2 py-2"
+                    x-on:click.prevent="toggleMenu('italic')"
+                >
                     <svg class="h-4 w-4 text-gray-500 group-hover:text-indigo-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M18.8809 3.75H9.62086C9.21086 3.75 8.88086 3.41 8.88086 3C8.88086 2.59 9.22086 2.25 9.63086 2.25H18.8809C19.2909 2.25 19.6309 2.59 19.6309 3C19.6309 3.41 19.2909 3.75 18.8809 3.75Z"
@@ -145,7 +155,12 @@
                         />
                     </svg>
                 </button>
-                <button x-tooltip="'quote'" type="button" class="group inline-block px-2 py-2" x-on:click.prevent="toggleMenu('quote')">
+                <button
+                    x-tooltip="'quote'"
+                    type="button"
+                    class="group inline-block px-2 py-2"
+                    x-on:click.prevent="toggleMenu('quote')"
+                >
                     <svg class="h-4 w-4 text-gray-500 group-hover:text-indigo-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M7.79999 21.4698H4.58002C2.75002 21.4698 1.25 19.9798 1.25 18.1398V12.3398C1.25 11.9298 1.59 11.5898 2 11.5898H7.79999C9.69999 11.5898 11.13 13.0198 11.13 14.9198V18.1398C11.12 20.0398 9.68999 21.4698 7.79999 21.4698ZM2.75 13.0998V18.1498C2.75 19.1598 3.57002 19.9798 4.58002 19.9798H7.79999C8.85999 19.9798 9.63 19.2098 9.63 18.1498V14.9298C9.63 13.8698 8.85999 13.0998 7.79999 13.0998H2.75Z"
@@ -165,7 +180,12 @@
                         />
                     </svg>
                 </button>
-                <button x-tooltip="'link'" type="button" class="group inline-block px-2 py-2" x-on:click.prevent="toggleMenu('link')">
+                <button
+                    x-tooltip="'link'"
+                    type="button"
+                    class="group inline-block px-2 py-2"
+                    x-on:click.prevent="toggleMenu('link')"
+                >
                     <svg class="h-4 w-4 text-gray-500 group-hover:text-indigo-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M8.98969 21.5001C7.32969 21.5001 5.65969 20.8701 4.38969 19.6001C1.85969 17.0601 1.85969 12.9401 4.38969 10.4101C4.67969 10.1201 5.15969 10.1201 5.44969 10.4101C5.73969 10.7001 5.73969 11.1801 5.44969 11.4701C3.49969 13.4201 3.49969 16.5901 5.44969 18.5401C7.39969 20.4901 10.5697 20.4901 12.5197 18.5401C13.4597 17.6001 13.9797 16.3401 13.9797 15.0001C13.9797 13.6701 13.4597 12.4101 12.5197 11.4601C12.2297 11.1701 12.2297 10.6901 12.5197 10.4001C12.8097 10.1101 13.2897 10.1101 13.5797 10.4001C14.8097 11.6301 15.4797 13.2601 15.4797 15.0001C15.4797 16.7401 14.7997 18.3701 13.5797 19.6001C12.3197 20.8701 10.6597 21.5001 8.98969 21.5001Z"
@@ -177,7 +197,12 @@
                         />
                     </svg>
                 </button>
-                <button x-tooltip="'image'" type="button" class="group inline-block px-2 py-2" x-on:click.prevent="toggleMenu('image')">
+                <button
+                    x-tooltip="'image'"
+                    type="button"
+                    class="group inline-block px-2 py-2"
+                    x-on:click.prevent="toggleMenu('image')"
+                >
                     <svg class="h-4 w-4 text-gray-500 group-hover:text-indigo-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M15 22.75H9C3.57 22.75 1.25 20.43 1.25 15V9C1.25 3.57 3.57 1.25 9 1.25H15C20.43 1.25 22.75 3.57 22.75 9V15C22.75 20.43 20.43 22.75 15 22.75ZM9 2.75C4.39 2.75 2.75 4.39 2.75 9V15C2.75 19.61 4.39 21.25 9 21.25H15C19.61 21.25 21.25 19.61 21.25 15V9C21.25 4.39 19.61 2.75 15 2.75H9Z"
@@ -193,7 +218,12 @@
                         />
                     </svg>
                 </button>
-                <button x-tooltip="'fullscreen'" type="button" class="group inline-block px-2 py-2" x-on:click.prevent="toggleMenu('fullscreen')">
+                <button
+                    x-tooltip="'fullscreen'"
+                    type="button"
+                    class="group inline-block px-2 py-2"
+                    x-on:click.prevent="toggleMenu('fullscreen')"
+                >
                     <svg class="h-4 w-4 text-gray-500 group-hover:text-indigo-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M2 9.75C1.59 9.75 1.25 9.41 1.25 9V6.5C1.25 3.61 3.61 1.25 6.5 1.25H9C9.41 1.25 9.75 1.59 9.75 2C9.75 2.41 9.41 2.75 9 2.75H6.5C4.43 2.75 2.75 4.43 2.75 6.5V9C2.75 9.41 2.41 9.75 2 9.75Z"
@@ -215,12 +245,17 @@
                 </button>
             @endif
 
-            <div class="relative" x-data="{ open: false }" x-on:click.away="open = false" x-on:close.stop="open = false">
+            <div
+                class="relative"
+                x-data="{ open: false }"
+                x-on:click.away="open = false"
+                x-on:close.stop="open = false"
+            >
                 <button
                     x-tooltip="'Markdown Cheatsheet'"
                     type="button"
                     class="group inline-block rounded-lg px-2 py-2 focus:ring-1 focus:ring-indigo-200"
-                    x-on:click="open = !open"
+                    x-on:click="open = ! open"
                 >
                     <svg class="h-5 w-5 rotate-180 transform text-gray-500 group-hover:text-indigo-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -304,7 +339,7 @@
 
         <textarea
             spellcheck="false"
-            x-show="!showConvertedMarkdown"
+            x-show="! showConvertedMarkdown"
             id="{{ $id }}"
             x-ref="input"
             x-model="content"
@@ -322,12 +357,12 @@
         </div>
     </div>
 
-    @error ($name)
+    @error($name)
         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
     @enderror
 </div>
 
-@pushOnce ('styles-head')
+@pushOnce('styles-head')
     <style>
         .fullscreen {
             width: 100vw !important;
@@ -343,7 +378,7 @@
     </style>
 @endpushOnce
 
-@pushOnce ('scripts-footer')
+@pushOnce('scripts-footer')
     <script src="https://cdn.jsdelivr.net/npm/marked@4.0.12/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dompurify@2.3.6/dist/purify.min.js"></script>
 @endpushOnce

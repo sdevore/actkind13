@@ -3,7 +3,8 @@
 use App\Models\Act;
 use Livewire\Component;
 
-new class extends Component {
+new class extends Component
+{
     public Act $act;
 
     public bool $showNames = false;
@@ -26,7 +27,9 @@ new class extends Component {
         @if ($showNames)
             <span class="ml-2 flex items-center space-x-1 divide-x divide-solid divide-gray-300">
                 @foreach ($act->appreciates as $appreciate)
-                    <span class="flex-auto items-center px-2 text-sm text-gray-600 dark:text-gray-400"> {{ $appreciate->user->name }} </span>
+                    <span class="flex-auto items-center px-2 text-sm text-gray-600 dark:text-gray-400">
+                        {{ $appreciate->user->name }}
+                    </span>
                 @endforeach
             </span>
         @endif

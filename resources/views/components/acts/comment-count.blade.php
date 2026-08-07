@@ -1,5 +1,5 @@
 @php
-    $classes = 'flex items-center ' . $act->type->getTextColor();
+    $classes = 'flex items-center '.$act->type->getTextColor();
 @endphp
 
 <span {{ $attributes->merge(['class' => $classes]) }}>
