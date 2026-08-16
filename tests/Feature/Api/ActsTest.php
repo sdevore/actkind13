@@ -70,8 +70,8 @@ test('sanctum authenticated request to api/acts returns correct appreciates_coun
         ->and($actData['appreciates'])->toHaveCount(2);
 });
 
-test('unauthenticated post to api/acts returns 401', function () {
-    $this->postJson('/api/acts', [
+test('unauthenticated post to api/private/acts returns 401', function () {
+    $this->postJson('/api/private/acts', [
         'title' => 'A kind act',
         'description' => 'Something good happened',
         'type' => 'did',
@@ -79,11 +79,11 @@ test('unauthenticated post to api/acts returns 401', function () {
     ])->assertUnauthorized();
 });
 
-test('sanctum authenticated post to api/acts creates an act attributed to the authenticated user', function () {
+test('sanctum authenticated post to api/private/acts creates an act attributed to the authenticated user', function () {
     $user = User::factory()->create();
 
     $this->actingAs($user, 'sanctum')
-        ->postJson('/api/acts', [
+        ->postJson('/api/private/acts', [
             'title' => 'A kind act',
             'description' => 'Something good happened',
             'type' => 'did',
@@ -92,4 +92,54 @@ test('sanctum authenticated post to api/acts creates an act attributed to the au
         ->assertCreated();
 
     expect(Act::where(['user_id' => $user->id, 'title' => 'A kind act'])->exists())->toBeTrue();
+});
+
+test('public request to api/acts/{act} returns the act without content bug', function () {
+    $act = Act::factory()->create();
+
+    $this->getJson("/api/acts/{$act->id}")
+        ->assertOk()
+        ->assertJsonPath('data.id', $act->id)
+        ->assertJsonPath('data.title', $act->title)
+        ->assertJsonPath('data.description', $act->description)
+        ->assertJsonMissingPath('data.content')
+        ->assertJsonMissingPath('data.user');
+});
+
+test('sanctum authenticated request to api/private/acts/{act} includes user data and relations', function () {
+    $user = User::factory()->create();
+    $act = Act::factory()->create();
+
+    $this->actingAs($user, 'sanctum')
+        ->getJson("/api/private/acts/{$act->id}")
+        ->assertOk()
+        ->assertJsonPath('data.id', $act->id)
+        ->assertJsonPath('data.title', $act->title)
+        ->assertJsonPath('data.user.id', $act->user_id);
+});
+
+test('unauthenticated request to api/private/acts/{act} is unauthorized', function () {
+    $act = Act::factory()->create();
+
+    $this->getJson("/api/private/acts/{$act->id}")
+        ->assertUnauthorized();
+});
+
+test('sanctum authenticated request to api/private/acts/mine only returns the authenticated users acts', function () {
+    $user = User::factory()->create();
+    $mine = Act::factory()->count(2)->create(['user_id' => $user->id]);
+    Act::factory()->count(3)->create();
+
+    $data = $this->actingAs($user, 'sanctum')
+        ->getJson('/api/private/acts/mine')
+        ->assertOk()
+        ->json('data');
+
+    expect(collect($data)->pluck('id')->sort()->values()->all())
+        ->toBe($mine->pluck('id')->sort()->values()->all());
+});
+
+test('unauthenticated request to api/private/acts/mine is unauthorized', function () {
+    $this->getJson('/api/private/acts/mine')
+        ->assertUnauthorized();
 });

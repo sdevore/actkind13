@@ -28,8 +28,22 @@ Route::name('user.')->prefix('user')
 
 Route::post('/sanctum/token', SanctumTokenController::class)->name('sanctum.token');
 
-Route::get('/acts', [ActController::class, 'index']);
+Route::get('/acts', [ActController::class, 'api_index'])
+    ->name('acts.index');
+Route::get('/acts/{act}', [ActController::class, 'api_public_show'])->name('acts.show');
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/acts', [ActController::class, 'store']);
-});
+Route::middleware('auth:sanctum')
+    ->prefix('private')
+    ->name('private.')
+    ->group(function () {
+        Route::prefix('acts')
+            ->name('acts.')
+            ->group(function () {
+                Route::get('/', [ActController::class, 'api_index'])
+                    ->name('index');
+                Route::post('/', [ActController::class, 'api_store'])->name('store');
+                Route::get('/mine', [ActController::class, 'api_mine'])->name('mine');
+                Route::get('/{act}', [ActController::class, 'api_show'])->name('show');
+            });
+
+    });

@@ -43,5 +43,30 @@ class TestUserSeeder extends Seeder
         $moderator->assignRole('moderator');
 
         $admin->assignRole('administrator');
+
+        // 2. Generate Sanctum token
+        $token = $regular->createToken('seeder-token')->plainTextToken;
+
+        // 3. Path to .env file
+        $envFile = base_path('.env');
+
+        if (file_exists($envFile)) {
+            $envContent = file_get_contents($envFile);
+            $tokenKey = 'SANCTUM_TEST_TOKEN';
+
+            // 4. Replace if exists, or append if missing
+            if (str_contains($envContent, "{$token}=")) {
+                $envContent = preg_replace(
+                    "/{$tokenKey}=.*/",
+                    "{$tokenKey}={$token}",
+                    $envContent
+                );
+            } else {
+                $envContent .= "\n{$tokenKey}={$token}\n";
+            }
+
+            file_put_contents($envFile, $envContent);
+        }
+
     }
 }

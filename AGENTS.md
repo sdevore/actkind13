@@ -416,3 +416,23 @@ livewire(ListUsers::class)
 - Always activate the `spatie-laravel-php-standards` skill whenever writing, editing, reviewing, or formatting Laravel or PHP code.
 
 </laravel-boost-guidelines>
+
+## Project Learnings
+
+### Scramble: declare `#[SchemaVariant]` on JsonResources with conditional fields
+
+`Dedoc\Scramble\Attributes\SchemaVariant` is a repeatable class attribute for `JsonResource` classes. Without it, Scramble treats the resource as "anonymous" and caches ONE OpenAPI schema component per resource class name, shared across every call site — so a `whenLoaded('relation')` field loaded at any one call site leaks into the documented schema for every other call site, even ones that never load it.
+
+Fix: declare named variants keyed by which relations are statically known to be loaded (via `->load()`/`->with()`, not `->loadCount()`) at each call site:
+
+```php
+#[SchemaVariant(name: 'ActResource', whenLoaded: [], default: true)]
+#[SchemaVariant(name: 'ActResourceWithAuth', whenLoaded: ['user'])]
+class Act extends JsonResource
+```
+
+Scramble then matches each call site to the best-fitting variant and produces a distinct, correctly-scoped schema per variant.
+
+**Naming collision risk**: OpenAPI schema names are deduplicated by `class_basename()` (`Components::uniqueSchemaName()`). A `SchemaVariant` name must not collide with another schema's short name in the same app (e.g. a Model referenced via `@response ModelName` PHPDoc) or one will silently overwrite the other in the generated spec.
+
+See `app/Http/Resources/Act.php` for a live example.
