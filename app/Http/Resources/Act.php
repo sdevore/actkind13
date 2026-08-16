@@ -27,8 +27,8 @@ class Act extends JsonResource
             'updated_at' => $this->updated_at,
             'appreciates_count' => $this->appreciates_count ?? 0,
             'comments_count' => $this->comments_count ?? 0,
-            'appreciates'=> $this->whenLoaded('appreciates'),
-            'comments'=> $this->whenLoaded('comments'),
+            'appreciates' => $this->whenLoaded('appreciates'),
+            'comments' => $this->whenLoaded('comments'),
         ];
     }
 }
