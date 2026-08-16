@@ -2,10 +2,12 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Act as ActModel;
 use Dedoc\Scramble\Attributes\SchemaVariant;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/** @mixin ActModel */
 #[SchemaVariant(name: 'ActResource', whenLoaded: [], default: true)]
 #[SchemaVariant(name: 'ActResourceWithAuth', whenLoaded: ['user'])]
 class Act extends JsonResource
