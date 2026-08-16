@@ -6,8 +6,6 @@ use App\Http\Controllers\ActController;
 use App\Http\Controllers\SanctumTokenController;
 use Illuminate\Support\Facades\Route;
 
-
-
 Route::post('/sanctum/token', SanctumTokenController::class)->name('sanctum.token');
 
 Route::name('guest.')->group(function () {
@@ -43,7 +41,3 @@ Route::middleware('auth:sanctum')
 
             });
     });
-
-
-
-
