@@ -9,9 +9,11 @@ use App\Models\Act;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 
 class ActController extends Controller
@@ -65,25 +67,22 @@ class ActController extends Controller
             abort(401);
         }
 
-        $act = Act::create($request->validated());
+        $act = Act::create([...$request->validated(), 'user_id' => Auth::id()]);
 
         $request->session()->flash('act.id', $act->id);
 
         return redirect()->route('acts.index');
     }
 
-    /**
-     * @response Act
-     */
     public function api_store(ActStoreRequest $request): JsonResponse
     {
         if (! Auth::check()) {
             abort(401);
         }
 
-        $act = Act::create($request->validated());
+        $act = Act::create([...$request->validated(), 'user_id' => Auth::id()]);
 
-        return response()->json($act, 201);
+        return ActResource::make($act)->response()->setStatusCode(201);
     }
 
     public function show(Request $request, Act $act): View
@@ -103,6 +102,22 @@ class ActController extends Controller
         $relations = ['appreciates', 'comments'];
 
         return ActResource::make($act->loadCount($relations));
+    }
+
+    public function api_update(ActUpdateRequest $request, Act $act): ActResource
+    {
+        $act->update($request->validated());
+
+        return ActResource::make($act);
+    }
+
+    public function api_destroy(Act $act): Response
+    {
+        Gate::authorize('delete', $act);
+
+        $act->delete();
+
+        return response()->noContent();
     }
 
     public function edit(Request $request, Act $act): View

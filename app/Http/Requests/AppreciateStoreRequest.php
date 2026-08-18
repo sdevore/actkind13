@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Appreciate;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AppreciateStoreRequest extends FormRequest
@@ -11,7 +12,7 @@ class AppreciateStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return $this->user() && $this->user()->can('create', [Appreciate::class, $this->route('act')]);
     }
 
     /**
@@ -19,10 +20,6 @@ class AppreciateStoreRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'user_id' => ['required', 'integer', 'exists:users,id'],
-            'act_id' => ['required', 'integer', 'exists:acts,id'],
-            'comment_id' => ['required', 'integer', 'exists:comments,id'],
-        ];
+        return [];
     }
 }

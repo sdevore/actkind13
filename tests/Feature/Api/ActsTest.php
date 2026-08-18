@@ -70,28 +70,43 @@ test('sanctum authenticated request to api/acts returns correct appreciates_coun
         ->and($actData['appreciates'])->toHaveCount(2);
 });
 
-test('unauthenticated post to api/private/acts returns 401', function () {
-    $this->postJson('/api/private/acts', [
+test('unauthenticated put to api/private/acts returns 401', function () {
+    $this->putJson('/api/private/acts', [
         'title' => 'A kind act',
         'description' => 'Something good happened',
         'type' => 'did',
-        'user_id' => User::factory()->create()->id,
     ])->assertUnauthorized();
 });
 
-test('sanctum authenticated post to api/private/acts creates an act attributed to the authenticated user', function () {
+test('sanctum authenticated put to api/private/acts creates an act attributed to the authenticated user', function () {
     $user = User::factory()->create();
 
     $this->actingAs($user, 'sanctum')
-        ->postJson('/api/private/acts', [
+        ->putJson('/api/private/acts', [
             'title' => 'A kind act',
             'description' => 'Something good happened',
             'type' => 'did',
-            'user_id' => $user->id,
         ])
         ->assertCreated();
 
     expect(Act::where(['user_id' => $user->id, 'title' => 'A kind act'])->exists())->toBeTrue();
+});
+
+test('sanctum authenticated put to api/private/acts ignores a spoofed user_id and attributes the act to the authenticated user', function () {
+    $user = User::factory()->create();
+    $otherUser = User::factory()->create();
+
+    $this->actingAs($user, 'sanctum')
+        ->putJson('/api/private/acts', [
+            'title' => 'A kind act',
+            'description' => 'Something good happened',
+            'type' => 'did',
+            'user_id' => $otherUser->id,
+        ])
+        ->assertCreated();
+
+    expect(Act::where(['user_id' => $user->id, 'title' => 'A kind act'])->exists())->toBeTrue()
+        ->and(Act::where(['user_id' => $otherUser->id, 'title' => 'A kind act'])->exists())->toBeFalse();
 });
 
 test('public request to api/acts/{act} returns the act without content bug', function () {
@@ -141,5 +156,71 @@ test('sanctum authenticated request to api/private/acts/mine only returns the au
 
 test('unauthenticated request to api/private/acts/mine is unauthorized', function () {
     $this->getJson('/api/private/acts/mine')
+        ->assertUnauthorized();
+});
+
+test('sanctum authenticated post to api/private/acts/{act} updates the owners act', function () {
+    $user = User::factory()->create();
+    $act = Act::factory()->create(['user_id' => $user->id]);
+
+    $this->actingAs($user, 'sanctum')
+        ->postJson("/api/private/acts/{$act->id}", [
+            'title' => 'Updated title',
+            'description' => $act->description,
+            'type' => $act->type->value,
+        ])
+        ->assertOk()
+        ->assertJsonPath('data.title', 'Updated title');
+
+    expect($act->fresh()->title)->toBe('Updated title');
+});
+
+test('sanctum authenticated post to api/private/acts/{act} is forbidden for a non-owner', function () {
+    $user = User::factory()->create();
+    $act = Act::factory()->create();
+
+    $this->actingAs($user, 'sanctum')
+        ->postJson("/api/private/acts/{$act->id}", [
+            'title' => 'Updated title',
+            'description' => $act->description,
+            'type' => $act->type->value,
+        ])
+        ->assertForbidden();
+});
+
+test('unauthenticated post to api/private/acts/{act} returns 401', function () {
+    $act = Act::factory()->create();
+
+    $this->postJson("/api/private/acts/{$act->id}", [
+        'title' => 'Updated title',
+        'description' => $act->description,
+        'type' => $act->type->value,
+    ])->assertUnauthorized();
+});
+
+test('sanctum authenticated delete to api/private/acts/{act} deletes the owners act', function () {
+    $user = User::factory()->create();
+    $act = Act::factory()->create(['user_id' => $user->id]);
+
+    $this->actingAs($user, 'sanctum')
+        ->deleteJson("/api/private/acts/{$act->id}")
+        ->assertNoContent();
+
+    expect($act->fresh()->trashed())->toBeTrue();
+});
+
+test('sanctum authenticated delete to api/private/acts/{act} is forbidden for a non-owner', function () {
+    $user = User::factory()->create();
+    $act = Act::factory()->create();
+
+    $this->actingAs($user, 'sanctum')
+        ->deleteJson("/api/private/acts/{$act->id}")
+        ->assertForbidden();
+});
+
+test('unauthenticated delete to api/private/acts/{act} returns 401', function () {
+    $act = Act::factory()->create();
+
+    $this->deleteJson("/api/private/acts/{$act->id}")
         ->assertUnauthorized();
 });

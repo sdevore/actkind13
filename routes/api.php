@@ -3,6 +3,8 @@
 use App\Actions\Api\User\LogoutUserAction;
 use App\Actions\Api\User\ShowUserAction;
 use App\Http\Controllers\ActController;
+use App\Http\Controllers\AppreciateController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\SanctumTokenController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,10 +36,35 @@ Route::middleware('auth:sanctum')
                     ->group(function () {
                         Route::get('/', 'api_index')
                             ->name('index');
-                        Route::post('/', 'api_store')->name('store');
+                        Route::put('/', 'api_store')->name('store');
                         Route::get('/mine', 'api_mine')->name('mine');
                         Route::get('/{act}', 'api_show')->name('show');
+                        Route::post('/{act}', 'api_update')->name('update');
+                        Route::delete('/{act}', 'api_destroy')->name('destroy');
                     });
 
+                Route::prefix('acts/{act}')
+                    ->name('acts.')
+                    ->group(function () {
+                        Route::put('/appreciations', [AppreciateController::class, 'store'])
+                            ->name('appreciations.store');
+                        Route::put('/comments', [CommentController::class, 'store'])
+                            ->name('comments.store');
+                    });
+
+                Route::prefix('comments')
+                    ->controller(CommentController::class)
+                    ->name('comments.')
+                    ->group(function () {
+                        Route::post('/{comment}', 'update')->name('update');
+                        Route::delete('/{comment}', 'destroy')->name('destroy');
+                    });
+
+                Route::prefix('appreciations')
+                    ->controller(AppreciateController::class)
+                    ->name('appreciations.')
+                    ->group(function () {
+                        Route::delete('/{appreciation}', 'destroy')->name('destroy');
+                    });
             });
     });
