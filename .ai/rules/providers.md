@@ -19,3 +19,15 @@ Gate::define('viewApiDocs', function (?User $user): bool {
 });
 ```
 If you need to debug "why does my Gate closure never run," check `Gate::has($ability)` (registered?) vs `Gate::allows($ability)` (evaluates true/false) — if `has` is true but the closure's side effects (logging, etc.) never happen, this is almost certainly the cause.
+
+## Auth::guard('sanctum')->check() also passes for logged-in web-session users
+`Laravel\Sanctum\Guard::__invoke()` checks the STATEFUL guard(s) (`config('sanctum.guard', 'web')`) FIRST, before ever looking at the `Authorization: Bearer` header — so `Auth::guard('sanctum')->check()` (or `->user()`) returns truthy for ANY request with a logged-in `web` session, not just requests carrying a real API token. The resolved user gets wrapped in a `Laravel\Sanctum\TransientToken`, not a real `PersonalAccessToken`.
+
+This bit the `viewApiDocs` Gate in `app/Providers/AppServiceProvider.php` — the intent was "valid API token OR administrator role", but `Auth::guard('sanctum')->check()` alone also silently let in *any* logged-in web user regardless of role, since session-authenticated requests pass through the stateful fallback.
+
+To check for a **real** Sanctum API token specifically (excluding the stateful/session fallback), inspect the resolved user's access token type:
+```php
+$sanctumUser = Auth::guard('sanctum')->user();
+return $sanctumUser?->currentAccessToken() instanceof \Laravel\Sanctum\PersonalAccessToken;
+```
+See also [[gate-guest-callback-nullable-param]] for the related "closure never runs for guests" Gate gotcha hit in the same file.

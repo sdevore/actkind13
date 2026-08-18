@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -58,7 +59,13 @@ class AppServiceProvider extends ServiceProvider
     protected function configureApiDocsAccess(): void
     {
         Gate::define('viewApiDocs', function (?User $user): bool {
-            return Auth::guard('sanctum')->check();
+            if ($user?->hasRole('administrator')) {
+                return true;
+            }
+
+            $sanctumUser = Auth::guard('sanctum')->user();
+
+            return $sanctumUser?->currentAccessToken() instanceof PersonalAccessToken;
         });
     }
 }

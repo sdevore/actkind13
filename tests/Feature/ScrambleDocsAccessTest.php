@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Spatie\Permission\Models\Role;
 
 test('api docs are forbidden without a token outside the local environment', function () {
     $this->get('/docs/api')
@@ -20,4 +21,22 @@ test('api docs are accessible with a valid sanctum token outside the local envir
     $this->withHeader('Authorization', "Bearer {$token}")
         ->get('/docs/api')
         ->assertOk();
+});
+
+test('api docs are accessible to a logged in administrator outside the local environment', function () {
+    Role::create(['name' => 'administrator']);
+    $admin = User::factory()->create();
+    $admin->assignRole('administrator');
+
+    $this->actingAs($admin)
+        ->get('/docs/api')
+        ->assertOk();
+});
+
+test('api docs are forbidden to a logged in non administrator without a token outside the local environment', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)
+        ->get('/docs/api')
+        ->assertForbidden();
 });
