@@ -9,6 +9,7 @@ use Filament\Panel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
@@ -66,29 +67,28 @@ class User extends Authenticatable implements FilamentUser
             ->implode('');
     }
 
-    public function acts(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function acts(): HasMany
     {
         return $this->hasMany(Act::class);
     }
 
-    public function comments(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }
 
-    public function invitations(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function invitations(): HasMany
     {
         return $this->hasMany(Invitation::class);
     }
 
-    public function appreciates(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function appreciates(): HasMany
     {
         return $this->hasMany(Appreciate::class);
     }
 
-    public function flags(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function flags(): HasMany
     {
         return $this->hasMany(Flag::class);
     }
 }
-
