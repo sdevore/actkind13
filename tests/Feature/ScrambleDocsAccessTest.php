@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 test('api docs are forbidden without a token outside the local environment', function () {
@@ -24,9 +25,11 @@ test('api docs are accessible with a valid sanctum token outside the local envir
 });
 
 test('api docs are accessible to a logged in administrator outside the local environment', function () {
-    Role::create(['name' => 'administrator']);
+    $adminRole = Role::create(['name' => 'super-admin']);
+    Permission::create(['name' => 'view admin panel']);
+    $adminRole->givePermissionTo('view admin panel');
     $admin = User::factory()->create();
-    $admin->assignRole('administrator');
+    $admin->assignRole('super-admin');
 
     $this->actingAs($admin)
         ->get('/docs/api')

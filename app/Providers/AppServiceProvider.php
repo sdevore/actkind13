@@ -27,7 +27,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        ray('AppServiceProvider booting...');
         $this->configureDefaults();
         $this->configureApiDocsAccess();
     }
@@ -59,9 +58,7 @@ class AppServiceProvider extends ServiceProvider
      */
     protected function configureApiDocsAccess(): void
     {
-        ray('Configuring API docs access gate...');
         Gate::define('viewApiDocs', function (?User $user): bool {
-            ray('Checking if user can view API docs...', $user, $user?->roles, Auth::guard('sanctum')->user(), Auth::guard('sanctum')->user()?->currentAccessToken());
             if ($user?->can('view admin panel')) {
                 return true;
             }
