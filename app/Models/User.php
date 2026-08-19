@@ -65,4 +65,30 @@ class User extends Authenticatable implements FilamentUser
             ->map(fn ($word) => Str::substr($word, 0, 1))
             ->implode('');
     }
+
+    public function acts(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Act::class);
+    }
+
+    public function comments(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function invitations(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Invitation::class);
+    }
+
+    public function appreciates(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Appreciate::class);
+    }
+
+    public function flags(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Flag::class);
+    }
 }
+
