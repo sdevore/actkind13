@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - main
+
+concurrency:
+  group: deploy-main
+  cancel-in-progress: true
+  
 jobs:
   lint:
     uses: ./.github/workflows/lint.yml
