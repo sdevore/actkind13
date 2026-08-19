@@ -7,3 +7,4 @@ Before planning or editing, find the row whose globs match the file's path and r
 | app/Http/Controllers/** | .ai/rules/controllers.md |
 | {AGENTS,CLAUDE,GEMINI}.md | .ai/rules/general.md |
 | app/Providers/** | .ai/rules/providers.md |
+| routes/** | .ai/rules/routes.md |
