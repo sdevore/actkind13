@@ -9,6 +9,7 @@ use App\Models\Act;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
@@ -26,15 +27,12 @@ class ActController extends Controller
         return view('acts.index', compact('acts'));
     }
 
-    /**
-     * @response Paginator<int, Act>
-     */
-    public function api_index(Request $request): Paginator
+    public function api_index(Request $request): AnonymousResourceCollection
     {
         $acts = $this->fetchIndexActs($request);
         $acts->withPath('/acts');
 
-        return $acts;
+        return ActResource::collection($acts);
     }
 
     public function mine(Request $request): View
@@ -44,12 +42,9 @@ class ActController extends Controller
         return view('acts.mine', compact('acts'));
     }
 
-    /**
-     * @response Paginator<int, Act>
-     */
-    public function api_mine(Request $request): Paginator
+    public function api_mine(Request $request): AnonymousResourceCollection
     {
-        return $this->fetchMineActs($request);
+        return ActResource::collection($this->fetchMineActs($request));
     }
 
     public function create(Request $request): View

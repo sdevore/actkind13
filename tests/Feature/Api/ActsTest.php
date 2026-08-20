@@ -86,6 +86,39 @@ test('sanctum authenticated request to api/acts returns correct appreciates_coun
         ->and($actData['appreciates'])->toHaveCount(2);
 });
 
+test('unauthenticated request to api/acts does not expose raw model fields like deleted_at or user_id', function () {
+    Act::factory()->count(2)->create();
+
+    $data = $this->getJson('/api/acts')
+        ->assertOk()
+        ->json('data');
+
+    collect($data)->each(function (array $act) {
+        expect($act)->not->toHaveKey('deleted_at')
+            ->and($act)->not->toHaveKey('user_id');
+    });
+});
+
+test('sanctum authenticated request to api/acts returns nested appreciates through AppreciateResource, not raw models', function () {
+    $act = Act::factory()->create();
+    Appreciate::factory()->count(2)->create([
+        'appreciable_id' => $act->id,
+        'appreciable_type' => (new Act)->getMorphClass(),
+    ]);
+    $user = User::factory()->create();
+
+    $data = $this->actingAs($user, 'sanctum')
+        ->getJson('/api/acts')
+        ->assertOk()
+        ->json('data');
+
+    $appreciate = collect($data)->firstWhere('id', $act->id)['appreciates'][0];
+
+    expect($appreciate)->toHaveKeys(['id', 'appreciable_id', 'appreciable_type', 'created_at'])
+        ->and($appreciate)->not->toHaveKey('user_id')
+        ->and($appreciate)->not->toHaveKey('updated_at');
+});
+
 test('unauthenticated request to api/acts honours per_page', function () {
     Act::factory()->count(15)->create();
 
@@ -239,6 +272,21 @@ test('sanctum authenticated request to api/private/acts orders newest first', fu
         ->and($data[1]['id'])->toBe($older->id);
 });
 
+test('sanctum authenticated request to api/private/acts does not expose raw model fields like deleted_at or user_id', function () {
+    $user = User::factory()->create();
+    Act::factory()->count(2)->create();
+
+    $data = $this->actingAs($user, 'sanctum')
+        ->getJson('/api/private/acts')
+        ->assertOk()
+        ->json('data');
+
+    collect($data)->each(function (array $act) {
+        expect($act)->not->toHaveKey('deleted_at')
+            ->and($act)->not->toHaveKey('user_id');
+    });
+});
+
 test('sanctum authenticated request to api/private/acts honours per_page', function () {
     $user = User::factory()->create();
     Act::factory()->count(15)->create();
@@ -277,6 +325,21 @@ test('sanctum authenticated request to api/private/acts/mine only returns the au
 
     expect(collect($data)->pluck('id')->sort()->values()->all())
         ->toBe($mine->pluck('id')->sort()->values()->all());
+});
+
+test('sanctum authenticated request to api/private/acts/mine does not expose raw model fields like deleted_at or user_id', function () {
+    $user = User::factory()->create();
+    Act::factory()->count(2)->create(['user_id' => $user->id]);
+
+    $data = $this->actingAs($user, 'sanctum')
+        ->getJson('/api/private/acts/mine')
+        ->assertOk()
+        ->json('data');
+
+    collect($data)->each(function (array $act) {
+        expect($act)->not->toHaveKey('deleted_at')
+            ->and($act)->not->toHaveKey('user_id');
+    });
 });
 
 test('sanctum authenticated request to api/private/acts/mine honours per_page', function () {
