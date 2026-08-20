@@ -44,10 +44,7 @@ class ActController extends Controller
     #[WithRelations(ActResource::class, ['user', 'appreciates'])]
     public function api_index_private(Request $request): AnonymousResourceCollection
     {
-        $acts = $this->fetchIndexActs($request);
-        $acts->withPath('/acts');
-
-        return ActResource::collection($acts);
+        return ActResource::collection($this->fetchIndexActs($request));
     }
 
     public function mine(Request $request): View

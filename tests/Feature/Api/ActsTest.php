@@ -313,6 +313,18 @@ test('sanctum authenticated request to api/private/acts returns the correct seco
         ->and(collect($page2)->pluck('id')->all())->toBe($expectedIds->slice(5, 5)->values()->all());
 });
 
+test('sanctum authenticated request to api/private/acts returns links and meta pointing at the private path', function () {
+    $user = User::factory()->create();
+    Act::factory()->count(3)->create();
+
+    $response = $this->actingAs($user, 'sanctum')
+        ->getJson('/api/private/acts?per_page=2')
+        ->assertOk();
+
+    expect($response->json('links.next'))->toContain('/private/acts')
+        ->and($response->json('meta.path'))->toContain('/private/acts');
+});
+
 test('sanctum authenticated request to api/private/acts/mine only returns the authenticated users acts', function () {
     $user = User::factory()->create();
     $mine = Act::factory()->count(2)->create(['user_id' => $user->id]);
