@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Notifications\CommentFlagged;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -20,6 +21,7 @@ use Illuminate\Validation\UnauthorizedException;
  * @property Carbon $updated_at
  * @property Carbon $deleted_at
  */
+#[Hidden(['deleted_at'])]
 class Comment extends Model
 {
     use HasFactory, SoftDeletes;

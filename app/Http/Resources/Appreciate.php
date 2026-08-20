@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\User as UserResource;
 use App\Models\Appreciate as AppreciateModel;
 use Dedoc\Scramble\Attributes\SchemaVariant;
 use Illuminate\Http\Request;
@@ -23,7 +24,7 @@ class Appreciate extends JsonResource
             'id' => $this->id,
             'appreciable_id' => $this->appreciable_id,
             'appreciable_type' => $this->appreciable_type,
-            'user' => $this->whenLoaded('user'),
+            'user' => UserResource::make($this->whenLoaded('user')),
             'created_at' => $this->created_at,
         ];
     }

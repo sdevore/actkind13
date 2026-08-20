@@ -20,7 +20,7 @@ class ActController extends Controller
 {
     public function index(Request $request): View
     {
-        $acts = $this->fetchIndexActs();
+        $acts = $this->fetchIndexActs($request);
         $acts->withPath('/acts');
 
         return view('acts.index', compact('acts'));
@@ -31,7 +31,7 @@ class ActController extends Controller
      */
     public function api_index(Request $request): Paginator
     {
-        $acts = $this->fetchIndexActs();
+        $acts = $this->fetchIndexActs($request);
         $acts->withPath('/acts');
 
         return $acts;
@@ -39,7 +39,7 @@ class ActController extends Controller
 
     public function mine(Request $request): View
     {
-        $acts = $this->fetchMineActs();
+        $acts = $this->fetchMineActs($request);
 
         return view('acts.mine', compact('acts'));
     }
@@ -49,7 +49,7 @@ class ActController extends Controller
      */
     public function api_mine(Request $request): Paginator
     {
-        return $this->fetchMineActs();
+        return $this->fetchMineActs($request);
     }
 
     public function create(Request $request): View
@@ -92,9 +92,10 @@ class ActController extends Controller
 
     public function api_show(Request $request, Act $act): ActResource
     {
-        $relations = ['user', 'appreciates', 'comments'];
+        $relations = ['user', 'appreciates.user', 'comments.user'];
 
-        return ActResource::make($act->load($relations));
+        return ActResource::make($act->load($relations)
+            ->loadCount(['appreciates', 'comments']));
     }
 
     public function api_public_show(Request $request, Act $act): ActResource
@@ -151,26 +152,46 @@ class ActController extends Controller
         return redirect()->route('acts.index');
     }
 
-    private function fetchIndexActs(): Paginator
+    private function fetchIndexActs(Request $request): Paginator
     {
         if ($this->isAuth()) {
+            $perPage = $this->resolvePerPage($request, default: 20);
+
             return Act::with(['user', 'appreciates'])
                 ->withCount(['appreciates', 'comments'])
-                ->simplePaginate(20);
+                ->orderByDesc('created_at')
+                ->simplePaginate($perPage);
         }
 
-        return Cache::remember('acts', 600, function () {
-            return Act::with(['appreciates'])
-                ->withCount(['flags', 'comments', 'appreciates'])
-                ->simplePaginate(12);
+        $perPage = $this->resolvePerPage($request, default: 12);
+        $page = $request->integer('page', 1);
+
+        return Cache::remember("acts.{$page}.{$perPage}", 600, function () use ($perPage) {
+            return Act::withCount(['comments', 'appreciates'])
+                ->orderByDesc('created_at')
+                ->simplePaginate($perPage);
         });
     }
 
-    private function fetchMineActs(): Paginator
+    private function resolvePerPage(Request $request, int $default, int $max = 50): int
     {
+        $perPage = (int) $request->query('per_page', $default);
+
+        if ($perPage < 1) {
+            return $default;
+        }
+
+        return min($perPage, $max);
+    }
+
+    private function fetchMineActs(Request $request): Paginator
+    {
+        $perPage = $this->resolvePerPage($request, default: 20);
+
         return Act::with(['user', 'appreciates'])
             ->where('user_id', Auth::id())
             ->withCount(['appreciates', 'comments'])
-            ->simplePaginate(20);
+            ->orderByDesc('created_at')
+            ->simplePaginate($perPage);
     }
 }

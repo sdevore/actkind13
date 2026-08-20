@@ -2,8 +2,10 @@
 
 namespace App\Actions\Api\User;
 
+use App\Http\Resources\User as UserResource;
 use App\Models\User;
 use Dedoc\Scramble\Attributes\Group;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 #[Group('User')]
@@ -18,8 +20,8 @@ class ShowUserAction
      *
      * @response User
      */
-    public function __invoke(Request $request): User
+    public function __invoke(Request $request): JsonResponse|UserResource
     {
-        return $request->user();
+        return UserResource::make($request->user());
     }
 }

@@ -18,7 +18,8 @@ use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
 #[Fillable(['name', 'email', 'password'])]
-#[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
+#[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token', 'email_verified_at',
+    'two_factor_confirmed_at', 'flag_ct'])]
 class User extends Authenticatable implements FilamentUser
 {
     use HasApiTokens;

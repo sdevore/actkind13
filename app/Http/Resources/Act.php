@@ -2,6 +2,9 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\Appreciate as AppreciateResource;
+use App\Http\Resources\Comment as CommentResource;
+use App\Http\Resources\User as UserResource;
 use App\Models\Act as ActModel;
 use Dedoc\Scramble\Attributes\SchemaVariant;
 use Illuminate\Http\Request;
@@ -21,7 +24,7 @@ class Act extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user' => $this->whenLoaded('user'),
+            'user' => UserResource::make($this->whenLoaded('user')),
             'title' => $this->title,
             'description' => $this->description,
             'type' => $this->type,
@@ -29,8 +32,8 @@ class Act extends JsonResource
             'updated_at' => $this->updated_at,
             'appreciates_count' => $this->appreciates_count ?? 0,
             'comments_count' => $this->comments_count ?? 0,
-            'appreciates' => $this->whenLoaded('appreciates'),
-            'comments' => $this->whenLoaded('comments'),
+            'appreciates' => AppreciateResource::collection($this->whenLoaded('appreciates')),
+            'comments' => CommentResource::collection($this->whenLoaded('comments')),
         ];
     }
 }
