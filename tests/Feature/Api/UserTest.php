@@ -17,6 +17,19 @@ test('authenticated request to api/user returns the user', function () {
         ->assertJsonFragment(['email' => $user->email]);
 });
 
+test('authenticated request to api/user does not expose internal account fields', function () {
+    $user = User::factory()->create();
+
+    $data = $this->actingAs($user, 'sanctum')
+        ->getJson('/api/user')
+        ->assertOk()
+        ->json();
+
+    expect($data)->not->toHaveKey('email_verified_at')
+        ->and($data)->not->toHaveKey('two_factor_confirmed_at')
+        ->and($data)->not->toHaveKey('flag_ct');
+});
+
 test('sanctum token endpoint issues a token for valid credentials', function () {
     $user = User::factory()->create();
 
