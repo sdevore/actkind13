@@ -36,7 +36,7 @@ Route::name('api.')->group(function () {
                         ->controller(ActController::class)
                         ->name('acts.')
                         ->group(function () {
-                            Route::get('/', 'api_index')
+                            Route::get('/', 'api_index_private')
                                 ->name('index');
                             Route::put('/', 'api_store')->name('store');
                             Route::get('/mine', 'api_mine')->name('mine');

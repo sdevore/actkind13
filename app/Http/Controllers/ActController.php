@@ -6,6 +6,7 @@ use App\Http\Requests\ActStoreRequest;
 use App\Http\Requests\ActUpdateRequest;
 use App\Http\Resources\Act as ActResource;
 use App\Models\Act;
+use Dedoc\Scramble\Attributes\WithRelations;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -35,6 +36,20 @@ class ActController extends Controller
         return ActResource::collection($acts);
     }
 
+    /**
+     * Always authenticated (behind auth:sanctum), so the response always
+     * includes `user` and `appreciates` — unlike api_index, which also
+     * backs the guest /acts route and can't declare a single fixed shape.
+     */
+    #[WithRelations(ActResource::class, ['user', 'appreciates'])]
+    public function api_index_private(Request $request): AnonymousResourceCollection
+    {
+        $acts = $this->fetchIndexActs($request);
+        $acts->withPath('/acts');
+
+        return ActResource::collection($acts);
+    }
+
     public function mine(Request $request): View
     {
         $acts = $this->fetchMineActs($request);
@@ -42,6 +57,7 @@ class ActController extends Controller
         return view('acts.mine', compact('acts'));
     }
 
+    #[WithRelations(ActResource::class, ['user', 'appreciates'])]
     public function api_mine(Request $request): AnonymousResourceCollection
     {
         return ActResource::collection($this->fetchMineActs($request));
