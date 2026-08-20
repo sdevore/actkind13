@@ -30,8 +30,8 @@ class Act extends JsonResource
             'type' => $this->type,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'appreciates_count' => $this->appreciates_count ?? 0,
-            'comments_count' => $this->comments_count ?? 0,
+            'appreciates_count' => (int) ($this->appreciates_count ?? 0),
+            'comments_count' => (int) ($this->comments_count ?? 0),
             'appreciates' => AppreciateResource::collection($this->whenLoaded('appreciates')),
             'comments' => CommentResource::collection($this->whenLoaded('comments')),
         ];
