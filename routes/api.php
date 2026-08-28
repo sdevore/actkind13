@@ -1,35 +1,73 @@
 <?php
 
+use App\Actions\Api\User\LogoutUserAction;
+use App\Actions\Api\User\ShowUserAction;
 use App\Http\Controllers\ActController;
+use App\Http\Controllers\AppreciateController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\SanctumTokenController;
-use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/user', function (Request $request) {
-//    return $request->user();
-// })->middleware('auth:sanctum');
+Route::name('api.')->group(function () {
+    Route::post('/sanctum/token', SanctumTokenController::class)->name('sanctum.token');
 
-Route::name('user.')->prefix('user')
-    ->middleware('auth:sanctum')
-    ->group(function () {
-        Route::get('/', function (Request $request) {
-            return $request->user();
-        })->name('show');
-
-        Route::post('/logout', function (Request $request) {
-            $user = $request->user();
-            $token = $request->user('sanctum')->currentAccessToken();
-            $token->delete();
-
-            return response()->json(['message' => 'Logged out successfully.']);
-        })->name('logout');
+    Route::name('guest.')->group(function () {
+        Route::controller(ActController::class)
+            ->name('acts.')
+            ->group(function () {
+                Route::get('/acts', 'api_index')->name('index');
+                Route::get('/acts/{act}', 'api_public_show')->name('show');
+            });
     });
 
-Route::post('/sanctum/token', SanctumTokenController::class)->name('sanctum.token');
+    Route::middleware('auth:sanctum')
+        ->group(function () {
+            Route::prefix('user')
+                ->name('user.')
+                ->group(function () {
+                    Route::get('/', ShowUserAction::class)->name('show');
+                    Route::post('/logout', LogoutUserAction::class)->name('logout');
+                });
 
-Route::get('/acts', [ActController::class, 'index']);
+            Route::prefix('private')
+                ->name('private.')
+                ->group(function () {
+                    Route::prefix('acts')
+                        ->controller(ActController::class)
+                        ->name('acts.')
+                        ->group(function () {
+                            Route::get('/', 'api_index_private')
+                                ->name('index');
+                            Route::put('/', 'api_store')->name('store');
+                            Route::get('/mine', 'api_mine')->name('mine');
+                            Route::get('/{act}', 'api_show')->name('show');
+                            Route::post('/{act}', 'api_update')->name('update');
+                            Route::delete('/{act}', 'api_destroy')->name('destroy');
+                        });
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/acts', [ActController::class, 'store']);
+                    Route::prefix('acts/{act}')
+                        ->name('acts.')
+                        ->group(function () {
+                            Route::put('/appreciations', [AppreciateController::class, 'store'])
+                                ->name('appreciations.store');
+                            Route::put('/comments', [CommentController::class, 'store'])
+                                ->name('comments.store');
+                        });
+
+                    Route::prefix('comments')
+                        ->controller(CommentController::class)
+                        ->name('comments.')
+                        ->group(function () {
+                            Route::post('/{comment}', 'update')->name('update');
+                            Route::delete('/{comment}', 'destroy')->name('destroy');
+                        });
+
+                    Route::prefix('appreciations')
+                        ->controller(AppreciateController::class)
+                        ->name('appreciations.')
+                        ->group(function () {
+                            Route::delete('/{appreciation}', 'destroy')->name('destroy');
+                        });
+                });
+        });
 });

@@ -17,10 +17,23 @@ test('authenticated request to api/user returns the user', function () {
         ->assertJsonFragment(['email' => $user->email]);
 });
 
+test('authenticated request to api/user does not expose internal account fields', function () {
+    $user = User::factory()->create();
+
+    $data = $this->actingAs($user, 'sanctum')
+        ->getJson('/api/user')
+        ->assertOk()
+        ->json();
+
+    expect($data)->not->toHaveKey('email_verified_at')
+        ->and($data)->not->toHaveKey('two_factor_confirmed_at')
+        ->and($data)->not->toHaveKey('flag_ct');
+});
+
 test('sanctum token endpoint issues a token for valid credentials', function () {
     $user = User::factory()->create();
 
-    $this->postJson(route('sanctum.token'), [
+    $this->postJson(route('api.sanctum.token'), [
         'email' => $user->email,
         'password' => 'password',
         'device_name' => 'test-device',
@@ -30,7 +43,7 @@ test('sanctum token endpoint issues a token for valid credentials', function () 
 });
 
 test('sanctum token endpoint requires email', function () {
-    $this->postJson(route('sanctum.token'), [
+    $this->postJson(route('api.sanctum.token'), [
         'password' => 'password',
         'device_name' => 'test-device',
     ])
@@ -39,7 +52,7 @@ test('sanctum token endpoint requires email', function () {
 });
 
 test('sanctum token endpoint requires a valid email format', function () {
-    $this->postJson(route('sanctum.token'), [
+    $this->postJson(route('api.sanctum.token'), [
         'email' => 'not-an-email',
         'password' => 'password',
         'device_name' => 'test-device',
@@ -51,7 +64,7 @@ test('sanctum token endpoint requires a valid email format', function () {
 test('sanctum token endpoint requires password', function () {
     $user = User::factory()->create();
 
-    $this->postJson(route('sanctum.token'), [
+    $this->postJson(route('api.sanctum.token'), [
         'email' => $user->email,
         'device_name' => 'test-device',
     ])
@@ -62,7 +75,7 @@ test('sanctum token endpoint requires password', function () {
 test('sanctum token endpoint requires device name', function () {
     $user = User::factory()->create();
 
-    $this->postJson(route('sanctum.token'), [
+    $this->postJson(route('api.sanctum.token'), [
         'email' => $user->email,
         'password' => 'password',
     ])
@@ -73,7 +86,7 @@ test('sanctum token endpoint requires device name', function () {
 test('sanctum token endpoint rejects incorrect password', function () {
     $user = User::factory()->create();
 
-    $this->postJson(route('sanctum.token'), [
+    $this->postJson(route('api.sanctum.token'), [
         'email' => $user->email,
         'password' => 'wrong-password',
         'device_name' => 'test-device',
@@ -85,7 +98,7 @@ test('sanctum token endpoint rejects incorrect password', function () {
 test('sanctum token can be used to authenticate api/user', function () {
     $user = User::factory()->create();
 
-    $token = $this->postJson(route('sanctum.token'), [
+    $token = $this->postJson(route('api.sanctum.token'), [
         'email' => $user->email,
         'password' => 'password',
         'device_name' => 'test-device',
@@ -98,7 +111,7 @@ test('sanctum token can be used to authenticate api/user', function () {
 });
 
 test('unauthenticated request to logout returns 401', function () {
-    $this->postJson(route('user.logout'))
+    $this->postJson(route('api.user.logout'))
         ->assertUnauthorized();
 });
 
@@ -107,7 +120,7 @@ test('authenticated logout deletes the token and returns success message', funct
     $token = $user->createToken('test-device')->plainTextToken;
 
     $this->withToken($token)
-        ->postJson(route('user.logout'))
+        ->postJson(route('api.user.logout'))
         ->assertOk()
         ->assertJson(['message' => 'Logged out successfully.']);
 
@@ -118,7 +131,7 @@ test('revoked token can no longer authenticate after logout', function () {
     $user = User::factory()->create();
     $token = $user->createToken('test-device')->plainTextToken;
 
-    $this->withToken($token)->postJson(route('user.logout'))->assertOk();
+    $this->withToken($token)->postJson(route('api.user.logout'))->assertOk();
 
     Auth::forgetGuards();
 

@@ -4,9 +4,12 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
@@ -15,8 +18,9 @@ use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
 #[Fillable(['name', 'email', 'password'])]
-#[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
-class User extends Authenticatable
+#[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token', 'email_verified_at',
+    'two_factor_confirmed_at', 'flag_ct'])]
+class User extends Authenticatable implements FilamentUser
 {
     use HasApiTokens;
 
@@ -38,6 +42,11 @@ class User extends Authenticatable
         ];
     }
 
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->can('view admin panel');
+    }
+
     public function sendInvitation(Invitation $invitation, ?int $userId = null): Invitation
     {
         $invitation->user_id = $userId ?? $this->id;
@@ -57,5 +66,30 @@ class User extends Authenticatable
             ->take(2)
             ->map(fn ($word) => Str::substr($word, 0, 1))
             ->implode('');
+    }
+
+    public function acts(): HasMany
+    {
+        return $this->hasMany(Act::class);
+    }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function invitations(): HasMany
+    {
+        return $this->hasMany(Invitation::class);
+    }
+
+    public function appreciates(): HasMany
+    {
+        return $this->hasMany(Appreciate::class);
+    }
+
+    public function flags(): HasMany
+    {
+        return $this->hasMany(Flag::class);
     }
 }

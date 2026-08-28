@@ -2,11 +2,15 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use Carbon\CarbonImmutable;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureDefaults();
+        $this->configureApiDocsAccess();
     }
 
     /**
@@ -46,5 +51,21 @@ class AppServiceProvider extends ServiceProvider
                 ->uncompromised()
             : null,
         );
+    }
+
+    /**
+     * Allow a valid Sanctum API token to unlock the Scramble API docs on non-local servers.
+     */
+    protected function configureApiDocsAccess(): void
+    {
+        Gate::define('viewApiDocs', function (?User $user): bool {
+            if ($user?->can('view admin panel')) {
+                return true;
+            }
+
+            $sanctumUser = Auth::guard('sanctum')->user();
+
+            return $sanctumUser?->currentAccessToken() instanceof PersonalAccessToken;
+        });
     }
 }

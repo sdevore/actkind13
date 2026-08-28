@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SanctumTokenRequest;
 use App\Models\User;
+use Dedoc\Scramble\Attributes\Group;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
+#[Group('Auth')]
 class SanctumTokenController extends Controller
 {
     /**

@@ -37,9 +37,9 @@ class ActCommented extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->line('Your act of kindness "'.$this->comment->act->title.'" has been commented by '.$this->comment->user->name.'.')
+            ->line('Your act of kindness "'.$this->comment->act->title.'" has been commented on by '.$this->comment->user->name.'.')
             ->action('Go to Act', route('acts.show', $this->comment->act))
-            ->line('Thank you for using our application!');
+            ->line('Thank you for being a part of our community!');
     }
 
     /**

@@ -40,7 +40,7 @@ class CommentFlagged extends Notification
             ->error()
             ->line('Your item was flagged.')
             ->action('Review', route('flags.show', $this->flag))
-            ->line('You should review it and possible change your mind');
+            ->line('You should review it and possibly change your mind');
     }
 
     /**
