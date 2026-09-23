@@ -84,7 +84,7 @@ class Invitation extends Model
         }
 
         Mail::to(new Address($this->email, $this->name))
-            ->bcc('sdevore@me.com')
+            ->bcc(array_filter([config('mail.invitations.bcc')]))
             ->cc(config('mail.from.address'))
             ->send(new InviteUser($this));
     }
