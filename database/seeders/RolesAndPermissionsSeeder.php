@@ -18,7 +18,6 @@ class RolesAndPermissionsSeeder extends Seeder
             'acts', 'comments', 'flags', 'appreciates', 'invitations'];
         // create permissions
         foreach ($subjects as $subject) {
-            Permission::create(['name' => 'update '.$subject]);
             Permission::create(['name' => 'delete '.$subject]);
             Permission::create(['name' => 'view '.$subject]);
             Permission::create(['name' => 'edit '.$subject]);
