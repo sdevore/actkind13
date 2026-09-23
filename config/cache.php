@@ -1,8 +1,5 @@
 <?php
 
-use App\Models\Act;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Str;
 
 return [
@@ -128,10 +125,6 @@ return [
     |
     */
 
-    'serializable_classes' => [
-        Act::class,
-        Carbon\Carbon::class,
-        Collection::class,
-        Paginator::class, ],
+    'serializable_classes' => false,
 
 ];
