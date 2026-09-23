@@ -1,23 +1,21 @@
 <?php
 
-namespace App\Actions\Api\User;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Http\Resources\User as UserResource;
 use Dedoc\Scramble\Attributes\Group;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 #[Group('User')]
-class ShowUserAction
+class UserController extends Controller
 {
     /**
      * show
      *
      * Show the authenticated API user.
-     *
-     * @tags User
      */
-    public function __invoke(Request $request): JsonResponse|UserResource
+    public function show(Request $request): UserResource
     {
         return UserResource::make($request->user());
     }

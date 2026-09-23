@@ -1,24 +1,23 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\AppreciateStoreRequest;
 use App\Http\Resources\Appreciate as AppreciateResource;
 use App\Models\Act;
-use App\Models\Appreciate;
+use Dedoc\Scramble\Attributes\Group;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
 
-class AppreciateController extends Controller
+#[Group('Appreciate')]
+class ActAppreciationsController extends Controller
 {
     public function store(AppreciateStoreRequest $request, Act $act): JsonResponse
     {
-        $isNew = $act->appreciate(Auth::user());
+        $isNew = $act->appreciate($request->user());
 
         $appreciate = $act->appreciates()
-            ->where('user_id', Auth::id())
+            ->where('user_id', $request->user()->id)
             ->firstOrFail()
             ->load('user');
 
@@ -27,14 +26,5 @@ class AppreciateController extends Controller
         }
 
         return AppreciateResource::make($appreciate)->response()->setStatusCode(200);
-    }
-
-    public function destroy(Appreciate $appreciation): Response
-    {
-        Gate::authorize('delete', $appreciation);
-
-        $appreciation->delete();
-
-        return response()->noContent();
     }
 }
