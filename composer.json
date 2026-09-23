@@ -39,6 +39,7 @@
         "pestphp/pest": "^5.0",
         "pestphp/pest-plugin-agent": "^5.0",
         "pestphp/pest-plugin-laravel": "^5.0",
+        "pestphp/pest-plugin-phpstan": "^5.2",
         "spatie/boost-spatie-guidelines": "^1.1",
         "spatie/laravel-ray": "^1.43"
     },
