@@ -14,7 +14,7 @@
 > | 5 | `deleted_at` exposed, feed ordered oldest-first | Fixed — `deleted_at` gone, feed now newest-first |
 > | 6 | Spec drifted from the live API | Fixed — spec regenerated and matches |
 >
-> Two follow-ups remain open; see "Still outstanding" at the end.
+> Both follow-ups in "Still outstanding" are now fixed as well — no open items.
 
 Found against `https://dev.actkind.online/api` on 2026-08-19, using the
 `regular@example.com` test account. Each item lists how to reproduce it, what
@@ -256,15 +256,16 @@ violations.
 
 ## Still outstanding
 
-Minor, and neither blocks the app.
+None — both items below are fixed.
 
 1. ~~**`per_page` is still ignored.**~~ Fixed — `resolvePerPage()` now backs
    every acts list endpoint (guest and private), verified live and covered by
    `ActsTest.php`.
 
-2. **Paginator `links`/`meta` paths are wrong on private routes.**
-   `GET /api/private/acts` returns `"next": "/acts?page=2"` and
-   `"path": "/acts"` — the public path, not `/private/acts`. Following those
+2. ~~**Paginator `links`/`meta` paths are wrong on private routes.**~~ Fixed in
+   `8a7115d13` — private list endpoints no longer force the public path; covered
+   by `ActsTest.php`. Original report: `GET /api/private/acts` returned
+   `"next": "/acts?page=2"` and `"path": "/acts"` — the public path, not `/private/acts`. Following those
    links would silently fetch the wrong collection. The app paginates by page
    number and only reads `links.next` as a has-more flag, so it isn't affected,
    but a client that follows the URLs would be.
