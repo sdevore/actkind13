@@ -74,7 +74,7 @@ class Comment extends Model
         return $this->morphMany(Flag::class, 'flaggable');
     }
 
-    public function flag(User $user, string $reason): Flag|Model|bool
+    public function flag(User $user, string $reason): Flag|false
     {
         if (! $user->can('flag comments')) {
             throw new UnauthorizedException('You are not authorized to flag comments');
