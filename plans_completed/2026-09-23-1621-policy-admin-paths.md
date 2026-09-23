@@ -28,7 +28,6 @@ Item 6 of the testing-gap review. The item 5 probe had shown that moderators cou
 - PHPStan: 0 errors. Full suite: 226/226 (forced full run, `--no-tia`).
 
 ## Follow-ups
-- `restore {subject}` permissions are checked by the Act, Comment and Invitation policies but never seeded, so only owners can restore. Decide whether admins should restore too, perhaps via `edit` or `delete`.
-- The `update {subject}` permissions are now unused, apart from super-admin holding everything. Consider removing them from the seeder.
+- ~~Restoring deleted content~~ and ~~unused `update` permissions~~: resolved in `2026-09-23-1631-admin-restore-and-permission-cleanup.md`.
 - The `UserResource` bulk email action is now protected by `viewAny`, but has no `authorize` of its own.
 - Remaining testing gaps: web pages (7) and public cache headers on `/acts` (8).
