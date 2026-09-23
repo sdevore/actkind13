@@ -7,6 +7,9 @@ use App\Models\Act;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<Act>
+ */
 class ActFactory extends Factory
 {
     /**

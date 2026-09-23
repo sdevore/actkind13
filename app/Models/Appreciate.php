@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Database\Factories\AppreciateFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  */
 class Appreciate extends Model
 {
+    /** @use HasFactory<AppreciateFactory> */
     use HasFactory;
 
     /**

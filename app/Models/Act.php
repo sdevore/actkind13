@@ -7,6 +7,7 @@ use App\Notifications\ActAppreciated;
 use App\Notifications\ActCommented;
 use App\Notifications\ActFlagged;
 use Carbon\Carbon;
+use Database\Factories\ActFactory;
 use Exception;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
@@ -30,6 +31,7 @@ use Illuminate\Validation\UnauthorizedException;
  */
 class Act extends Model
 {
+    /** @use HasFactory<ActFactory> */
     use HasFactory, SoftDeletes;
 
     /**
