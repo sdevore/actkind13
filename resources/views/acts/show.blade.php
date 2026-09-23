@@ -49,9 +49,11 @@
                 </div>
             @endcan
 
-            <div>
-                <livewire:comments.comment-list :act="$act" />
-            </div>
+            @auth
+                <div>
+                    <livewire:comments.comment-list :act="$act" />
+                </div>
+            @endauth
         </div>
     </div>
 </x-layouts::app>
