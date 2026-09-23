@@ -16,7 +16,8 @@ use Illuminate\Support\Facades\Mail;
  * @property string $name
  * @property string $email
  * @property string $code
- * @property Carbon $joined
+ * @property ?Carbon $joined_at
+ * @property ?int $joined_id
  * @property int $user_id
  * @property Carbon $created_at
  * @property Carbon $updated_at
@@ -36,7 +37,7 @@ class Invitation extends Model
         'email',
         'code',
         'message',
-        'joined',
+        'joined_at',
         'user_id',
         'joined_id',
     ];
@@ -48,7 +49,7 @@ class Invitation extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'joined' => 'datetime',
+        'joined_at' => 'datetime',
         'user_id' => 'integer',
         'joined_id' => 'integer',
     ];
@@ -86,6 +87,5 @@ class Invitation extends Model
             ->bcc('sdevore@me.com')
             ->cc(config('mail.from.address'))
             ->send(new InviteUser($this));
-
     }
 }

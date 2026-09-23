@@ -49,4 +49,20 @@ class InvitationFactory extends Factory
             return ['created_at' => fake()->dateTimeBetween('-3 months', 'now')];
         });
     }
+
+    public function unused(): Factory
+    {
+        return $this->state(fn (array $attributes) => [
+            'joined_at' => null,
+            'joined_id' => null,
+        ]);
+    }
+
+    public function joined(): Factory
+    {
+        return $this->state(fn (array $attributes) => [
+            'joined_at' => now(),
+            'joined_id' => User::factory(),
+        ]);
+    }
 }
