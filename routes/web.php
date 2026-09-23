@@ -32,9 +32,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('dashboard', 'dashboard')->name('dashboard');
 });
 
-// invitations
-Route::resource('invitations', InvitationController::class)->middleware([
-    'auth',
-]);
+Route::resource('invitations', InvitationController::class)
+    ->only(['index', 'show'])
+    ->middleware('auth');
 
 require __DIR__.'/settings.php';
