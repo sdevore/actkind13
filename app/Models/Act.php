@@ -23,7 +23,7 @@ use Illuminate\Validation\UnauthorizedException;
  * @property int $id
  * @property string $title
  * @property string $description
- * @property string $type
+ * @property ActType $type
  * @property int $user_id
  * @property Carbon $created_at
  * @property Carbon $updated_at
