@@ -27,6 +27,6 @@
     </section>
 
     <section>
-        <x-acts.acts :acts="$acts" :show-names="true" />
+        <x-acts.acts :acts="$acts" :show-names="false" />
     </section>
 </x-layouts::app>
