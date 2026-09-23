@@ -15,7 +15,12 @@ class BulkEmailUsers extends Mailable
     use Queueable, SerializesModels;
 
     /**
-     * Create a new message instance.
+     * @param array{
+     *     subject: string,
+     *     body: string,
+     *     email: string,
+     *     name: string
+     * } $data
      */
     public function __construct(
         public array $data,
@@ -30,8 +35,7 @@ class BulkEmailUsers extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: $this->data['subject']
-
+            subject: $this->data['subject'],
         );
     }
 
@@ -41,7 +45,7 @@ class BulkEmailUsers extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'mail.users.bulk-email',
+            markdown: 'emails.user.bulk',
 
         );
     }
