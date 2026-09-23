@@ -28,6 +28,11 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'flag comments']);
         Permission::create(['name' => 'invite users']);
 
+        $restorableSubjects = ['acts', 'comments', 'invitations'];
+        foreach ($restorableSubjects as $subject) {
+            Permission::create(['name' => 'restore '.$subject]);
+        }
+
         // create roles and assign created permissions
 
         $moderator = Role::create(['name' => 'moderator']);
@@ -45,6 +50,9 @@ class RolesAndPermissionsSeeder extends Seeder
         $role->givePermissionTo('impersonate');
         foreach ($subjects as $subject) {
             $role->givePermissionTo('edit '.$subject);
+        }
+        foreach ($restorableSubjects as $subject) {
+            $role->givePermissionTo('restore '.$subject);
         }
         $role = Role::create(['name' => 'super-admin']);
         $role->givePermissionTo(Permission::all());
