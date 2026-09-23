@@ -22,3 +22,9 @@ test('the bulk email renders the subject and markdown body for the recipient', f
         ->assertSeeInHtml('Jamie')
         ->assertSeeInHtml('being kind</strong>', false);
 });
+
+test('the bulk email is sent from the address chosen in the form', function () {
+    $mail = new BulkEmailUsers(bulkEmailData(), User::factory()->create());
+
+    $mail->assertFrom('team@example.com', 'The Kind Team');
+});
