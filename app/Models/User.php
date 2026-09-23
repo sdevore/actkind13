@@ -68,26 +68,31 @@ class User extends Authenticatable implements FilamentUser
             ->implode('');
     }
 
+    /** @return HasMany<Act, $this> */
     public function acts(): HasMany
     {
         return $this->hasMany(Act::class);
     }
 
+    /** @return HasMany<Comment, $this> */
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }
 
+    /** @return HasMany<Invitation, $this> */
     public function invitations(): HasMany
     {
         return $this->hasMany(Invitation::class);
     }
 
+    /** @return HasMany<Appreciate, $this> */
     public function appreciates(): HasMany
     {
         return $this->hasMany(Appreciate::class);
     }
 
+    /** @return HasMany<Flag, $this> */
     public function flags(): HasMany
     {
         return $this->hasMany(Flag::class);
