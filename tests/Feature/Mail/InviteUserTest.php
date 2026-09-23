@@ -2,6 +2,7 @@
 
 use App\Mail\InviteUser;
 use App\Models\Invitation;
+use App\Models\User;
 
 test('the invitation email is addressed from the app and replies to the inviter', function () {
     $invitation = Invitation::factory()->create();
@@ -14,12 +15,15 @@ test('the invitation email is addressed from the app and replies to the inviter'
 });
 
 test('the invitation email includes the invitee name, inviter, code and a signup link carrying the code', function () {
-    $invitation = Invitation::factory()->create();
+    $invitation = Invitation::factory()->create([
+        'name' => "Merritt D'Amore",
+        'user_id' => User::factory()->create(['name' => "Pat O'Brien"])->id,
+    ]);
 
     $mail = new InviteUser($invitation);
 
-    $mail->assertSeeInHtml($invitation->name)
-        ->assertSeeInHtml($invitation->user->name)
+    $mail->assertSeeInHtml("Merritt D'Amore", false)
+        ->assertSeeInHtml("Pat O'Brien", false)
         ->assertSeeInHtml($invitation->code)
         ->assertSeeInHtml(route('register', ['code' => $invitation->code]), false);
 });
