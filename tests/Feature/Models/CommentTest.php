@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Notifications\CommentFlagged;
 use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Validation\UnauthorizedException;
 
 test('deleting a comment soft-deletes its flags and removes its appreciations', function () {
     $comment = Comment::factory()->create();
@@ -46,6 +47,18 @@ test('flagging the same comment twice does not create a second flag or notificat
 
     expect($comment->flag($moderator, 'Still rude'))->toBeFalse()
         ->and($comment->flags()->count())->toBe(1);
+    Notification::assertNothingSent();
+});
+
+test('users without the flag comments permission cannot flag a comment', function () {
+    $this->seed(RolesAndPermissionsSeeder::class);
+    Notification::fake();
+    $comment = Comment::factory()->create();
+
+    expect(fn () => $comment->flag(User::factory()->create(), 'Rude'))
+        ->toThrow(UnauthorizedException::class, 'You are not authorized to flag comments');
+
+    expect($comment->flags()->count())->toBe(0);
     Notification::assertNothingSent();
 });
 
