@@ -77,6 +77,11 @@ class CommentPolicy
         return false;
     }
 
+    public function restoreAny(User $user): bool
+    {
+        return $user->can('restore comments');
+    }
+
     /**
      * Determine whether the user can permanently delete the model.
      */

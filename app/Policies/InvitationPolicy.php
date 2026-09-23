@@ -65,6 +65,11 @@ class InvitationPolicy
         return false;
     }
 
+    public function restoreAny(User $user): bool
+    {
+        return $user->can('restore invitations');
+    }
+
     /**
      * Determine whether the user can permanently delete the model.
      */
