@@ -10,7 +10,7 @@ Route::get('/acts/mine', [ActsController::class, 'mine'])
     ->middleware('auth')
     ->name('acts.mine');
 
-Route::middleware('cache.headers:public;max_age=30;s_maxage=300;stale_while_revalidate=600;etag')->group(function () {
+Route::middleware('cache.headers:private;etag')->group(function () {
     Route::get('/', WelcomeController::class)->name('home');
 
     Route::controller(MarkdownPagesController::class)->group(function () {
