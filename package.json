@@ -27,6 +27,7 @@
         "@prettier/plugin-php": "^0.24.0",
         "@tailwindcss/typography": "^0.5.19",
         "eslint": "^10.3.0",
+        "playwright": "^1.63.0",
         "prettier": "^3.9.5",
         "prettier-plugin-blade": "^3.2.2",
         "prettier-plugin-tailwindcss": "^0.8.0"
