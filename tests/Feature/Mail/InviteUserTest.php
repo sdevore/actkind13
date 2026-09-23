@@ -30,3 +30,9 @@ test('the invitation email links to the support address', function () {
 
     (new InviteUser($invitation))->assertSeeInHtml('mailto:help@example.com', false);
 });
+
+test('the invitation email does not require registering with the invited address', function () {
+    $invitation = Invitation::factory()->create();
+
+    (new InviteUser($invitation))->assertDontSeeInText('use the same email');
+});
