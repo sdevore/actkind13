@@ -27,7 +27,7 @@
                 </span>
             </div>
             <div class="bg-white text-slate-800 shadow-lg sm:rounded-lg dark:bg-gray-800/30 dark:text-slate-200">
-                <div class="prose p-6 dark:text-slate-200">{!! Str::markdown($act->description) !!}</div>
+                <div class="prose p-6 dark:text-slate-200"><x-user-markdown :markdown="$act->description" /></div>
             </div>
             <div class="mt-4">
                 @auth()

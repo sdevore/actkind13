@@ -47,7 +47,7 @@ new class extends Component
 
                 <span class="text-sm text-slate-400">{{ $comment->created_at->diffForHumans() }}</span>
             </div>
-            <div class="prose p-4">{!! Str::markdown($comment->body) !!}</div>
+            <div class="prose p-4"><x-user-markdown :markdown="$comment->body" /></div>
             @can('view flags')
                 <livewire:comments.flag :comment="$comment" />
             @endcan
