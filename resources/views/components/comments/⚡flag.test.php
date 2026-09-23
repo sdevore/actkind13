@@ -56,3 +56,16 @@ it('lets moderators flag a comment with a reason', function () {
 
     expect($comment->flags()->sole()->reason)->toBe('This is not kind at all');
 });
+
+it('requires a reason to flag a comment', function () {
+    $this->seed(RolesAndPermissionsSeeder::class);
+    Notification::fake();
+    $comment = Comment::factory()->create();
+
+    Livewire::actingAs(User::factory()->create()->assignRole('moderator'))
+        ->test('comments.flag', ['comment' => $comment])
+        ->call('save')
+        ->assertHasErrors(['reason' => 'required']);
+
+    expect($comment->flags()->count())->toBe(0);
+});

@@ -21,6 +21,7 @@ new class extends Component
     public function save(): void
     {
         $this->authorize('flag', $this->act);
+        $this->validate();
         $this->act->flag(auth()->user(), $this->reason);
         $this->showFlagForm = false;
     }

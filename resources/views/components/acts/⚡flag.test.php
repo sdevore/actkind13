@@ -57,3 +57,16 @@ it('lets moderators flag a act with a reason', function () {
 
     expect($act->flags()->sole()->reason)->toBe('This is not kind at all');
 });
+
+it('requires a reason to flag a act', function () {
+    $this->seed(RolesAndPermissionsSeeder::class);
+    Notification::fake();
+    $act = Act::factory()->create();
+
+    Livewire::actingAs(User::factory()->create()->assignRole('moderator'))
+        ->test('acts.flag', ['act' => $act])
+        ->call('save')
+        ->assertHasErrors(['reason' => 'required']);
+
+    expect($act->flags()->count())->toBe(0);
+});
