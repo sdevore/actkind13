@@ -3,6 +3,8 @@
 use App\Models\Act;
 use App\Models\Comment;
 use App\Models\User;
+use App\Notifications\ActCommented;
+use Illuminate\Support\Facades\Notification;
 
 test('sanctum authenticated put to api/private/acts/{act}/comments creates a comment attributed to the authenticated user', function () {
     $user = User::factory()->create();
@@ -95,4 +97,15 @@ test('unauthenticated delete to api/private/comments/{comment} returns 401', fun
 
     $this->deleteJson("/api/private/comments/{$comment->id}")
         ->assertUnauthorized();
+});
+
+test('commenting on an act notifies the acts owner', function () {
+    Notification::fake();
+    $act = Act::factory()->create();
+
+    $this->actingAs(User::factory()->create(), 'sanctum')
+        ->putJson("/api/private/acts/{$act->id}/comments", ['body' => 'Lovely'])
+        ->assertCreated();
+
+    Notification::assertSentTo($act->user, ActCommented::class);
 });
