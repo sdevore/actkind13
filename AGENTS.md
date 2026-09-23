@@ -211,3 +211,7 @@ Scramble then matches each call site to the best-fitting variant and produces a 
 **Naming collision risk**: OpenAPI schema names are deduplicated by `class_basename()` (`Components::uniqueSchemaName()`). A `SchemaVariant` name must not collide with another schema's short name in the same app (e.g. a Model referenced via `@response ModelName` PHPDoc) or one will silently overwrite the other in the generated spec.
 
 See `app/Http/Resources/Act.php` for a live example.
+
+### Completed plans are recorded in `plans_completed/`
+
+When an implementation plan is completed, write it up as a markdown file in `plans_completed/` at the repo root, named with a timestamp and a short kebab-case summary: `plans_completed/YYYY-MM-DD-HHMM-short-summary.md`. Include the context (why), what changed, files touched, how it was verified, and any follow-ups.
