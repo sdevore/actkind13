@@ -36,7 +36,7 @@ class CommentPolicy
      */
     public function update(User $user, Comment $comment): bool
     {
-        if ($user->id === $comment->user_id || $user->can('update comments')) {
+        if ($user->id === $comment->user_id || $user->can('edit comments')) {
             return true;
         }
 

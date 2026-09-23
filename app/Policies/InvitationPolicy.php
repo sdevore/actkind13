@@ -37,7 +37,7 @@ class InvitationPolicy
      */
     public function update(User $user, Invitation $invitation): bool
     {
-        if ($user->id === $invitation->user_id || $user->can('update invitations')) {
+        if ($user->id === $invitation->user_id || $user->can('edit invitations')) {
             return true;
         }
 

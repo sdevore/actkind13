@@ -40,7 +40,7 @@ class ActPolicy
     public function update(User $user, Act $act): bool
     {
         //
-        if ($user->id === $act->user_id || $user->can('update acts')) {
+        if ($user->id === $act->user_id || $user->can('edit acts')) {
             return true;
         }
 
