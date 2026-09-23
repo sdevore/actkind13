@@ -19,7 +19,7 @@ new class extends Component
                 ->take(10)
                 ->get();
         } else {
-            $this->acts = Act::latest()->take(10)->get();
+            $this->acts = Act::withEngagementCounts()->latest()->take(10)->get();
         }
     }
 };
