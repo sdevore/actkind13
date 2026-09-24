@@ -12,23 +12,48 @@ dataset('public pages', [
     'about' => fn () => route('about'),
 ]);
 
-test('public pages are never cacheable by shared caches because they carry a session and CSRF token', function (string $url) {
-    $cacheControl = $this->get($url)->assertOk()->headers->get('Cache-Control');
+test('cookieless guests get an edge-cacheable page with no session, cookies or CSRF token', function (string $url) {
+    $response = $this->get($url)->assertOk();
 
-    expect($cacheControl)->toContain('private')
+    expect($response->headers->getCookies())->toBeEmpty()
+        ->and($response->headers->get('Cache-Control'))->toContain('public')
+        ->toContain('s-maxage=300')
+        ->toContain('max-age=0')
+        ->and($response->getContent())->not->toContain('csrf-token');
+})->with('public pages');
+
+test('cookieless guests all receive the same page, so one cached copy is valid for every guest', function () {
+    $first = $this->get(route('about'))->headers->get('ETag');
+    Livewire::flushState();
+    $second = $this->get(route('about'))->headers->get('ETag');
+
+    expect($first)->not->toBeEmpty()->toBe($second);
+});
+
+test('visitors who already have a session get a private page with their session', function (string $url) {
+    $response = $this->withCookie(config('session.cookie'), 'existing-session')->get($url)->assertOk();
+
+    expect($response->headers->get('Cache-Control'))->toContain('private')
         ->not->toContain('public')
-        ->not->toContain('s-maxage');
+        ->and(collect($response->headers->getCookies())->map->getName())->toContain(config('session.cookie'))
+        ->and($response->getContent())->toContain('csrf-token');
 })->with('public pages');
 
-test('public pages are not served fresh from the browser cache, so logging in shows the member view at once', function (string $url) {
-    expect($this->get($url)->headers->get('Cache-Control'))->not->toMatch('/max-age=[1-9]/');
-})->with('public pages');
+test('visitors with a remember-me cookie get a private page', function () {
+    $response = $this->withCookie('remember_web_abc', 'token')->get(route('acts.index'))->assertOk();
 
-test('signed-in pages are private', function () {
-    $this->actingAs(User::factory()->create());
+    expect($response->headers->get('Cache-Control'))->toContain('private')->not->toContain('public');
+});
 
-    expect($this->get(route('acts.index'))->headers->get('Cache-Control'))->toContain('private')
-        ->not->toContain('public');
+test('signed-in members get a private page with the member view', function () {
+    $act = Act::factory()->create();
+
+    $response = $this->actingAs(User::factory()->create())
+        ->get(route('acts.show', $act))
+        ->assertOk()
+        ->assertSee($act->user->name);
+
+    expect($response->headers->get('Cache-Control'))->toContain('private')->not->toContain('public');
 });
 
 test('unchanged public pages revalidate with a 304 via their ETag', function () {
