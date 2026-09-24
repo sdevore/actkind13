@@ -215,3 +215,7 @@ See `app/Http/Resources/Act.php` for a live example.
 ### Completed plans are recorded in `plans_completed/`
 
 When an implementation plan is completed, write it up as a markdown file in `plans_completed/` at the repo root, named with a timestamp and a short kebab-case summary: `plans_completed/YYYY-MM-DD-HHMM-short-summary.md`. Include the context (why), what changed, files touched, how it was verified, and any follow-ups.
+
+### Run PHPStan before pushing
+
+CI's lint job runs `./vendor/bin/phpstan analyse` (Larastan, level 3, `app/`) and fails the pipeline on any error, even when every test passes. The local pre-commit hook only runs Pint and Prettier, so run `./vendor/bin/phpstan analyse` before every push and fix errors at their source rather than ignoring or baselining them. A common trap: Eloquent relations without generic return types (`/** @return HasMany<Act, $this> */`) stop Larastan from resolving the related model's scopes, e.g. `$user->acts()->withEngagementCounts()`.

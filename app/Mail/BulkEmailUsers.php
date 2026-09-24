@@ -5,6 +5,7 @@ namespace App\Mail;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -15,7 +16,12 @@ class BulkEmailUsers extends Mailable
     use Queueable, SerializesModels;
 
     /**
-     * Create a new message instance.
+     * @param array{
+     *     subject: string,
+     *     body: string,
+     *     email: string,
+     *     name: string
+     * } $data
      */
     public function __construct(
         public array $data,
@@ -30,8 +36,8 @@ class BulkEmailUsers extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: $this->data['subject']
-
+            from: new Address($this->data['email'], $this->data['name']),
+            subject: $this->data['subject'],
         );
     }
 
@@ -41,7 +47,7 @@ class BulkEmailUsers extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'mail.users.bulk-email',
+            markdown: 'emails.user.bulk',
 
         );
     }
