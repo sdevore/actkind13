@@ -7,6 +7,9 @@ use App\Models\Appreciate;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<Appreciate>
+ */
 class AppreciateFactory extends Factory
 {
     /**

@@ -36,7 +36,7 @@ test('the appreciations stat counts appreciations, not acts', function () {
     );
 
     $widget = Livewire::test(AppreciatesStatsWidget::class)->instance();
-    $stats = (fn (): array => $this->getStats())->call($widget);
+    $stats = (new ReflectionMethod($widget, 'getStats'))->invoke($widget);
 
     expect($stats[0]->getLabel())->toBe('Appreciation Count')
         ->and($stats[0]->getValue())->toBe(3);

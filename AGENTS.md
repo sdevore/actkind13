@@ -183,6 +183,49 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 - Run `vendor/bin/pest` to call the test runner directly. It accepts the same file path and `--filter=testName` arguments.
 - After the feature tests pass, ask the user to run the complete suite with `php artisan test --compact`.
 
+=== pestphp/pest-plugin-agent/core rules ===
+
+## Pest Agent Plugin
+
+`vendor/bin/pest --agent="<code>"` runs a one-off Pest assertion without creating a test file — the fastest way to verify that a change actually works (a route response, a model relationship, a rendered page, a form submission, mail firing, a screenshot, JavaScript errors, and so on).
+
+### ALWAYS load the skill first
+
+Whenever the user asks you to check, verify, confirm, or "make sure" something **works** — and it can be exercised on a route, page, form, model, job, mail, notification, or screenshot — you **MUST** load the **`pest-plugin-agent` skill before doing anything else**. Do not reach for a shell command, a throwaway test file, or manual reasoning first. This includes prompts like "verify the login form works", "did my change break X", "screenshot the homepage", "check this route returns 200", "make sure the mail fires", "is the form working", or any behavioral check after a Blade, Livewire, CSS, or JS change. Load the skill, then follow it exactly.
+
+### NEVER fight shell escaping — use SINGLE outer quotes
+
+Inline the snippet, but wrap it in **single** quotes, not double. Single quotes tell the shell to interpret nothing, so `$variables`, `\App\Models\User`, backticks, and `!` all pass through to PHP literally — **there is nothing to escape.** Use double quotes for PHP string literals inside:
+
+```bash
+vendor/bin/pest --agent='$user = \App\Models\User::factory()->create(); visit("/login")->type("email", $user->email)->press("Log in")->assertPathIs("/dashboard");'
+```
+
+Double outer quotes are the trap the shell springs on you — `--agent="…$user…"` makes the shell interpolate `$user` to nothing. Never do that, and never hand-escape `\$`.
+
+The one thing single quotes can't contain is a literal single quote (an apostrophe in the PHP). Only then, fall back to a file: **Write** the snippet to a `.php` file (plain body statements — no `<?php`, no `use`, fully qualified class names) and run `vendor/bin/pest --agent="$(cat /path/to/snippet.php)"`. `"$(cat …)"` passes the contents verbatim without re-parsing. The plugin resolves the test suite's `uses`/namespace itself, so the file's location does not matter (a scratch/temp path is fine — it need not live under `tests/`).
+
+### Browser checks require the browser plugin — ask before installing
+
+Whenever the request can only be answered in a real browser — "does login work", "is the page responsive", "screenshot the homepage", "check the mobile layout", "does the button click through", "are there JS/console errors", or any visual/interaction check — the `visit()` browser API is needed. It comes from a **separate** package, `pestphp/pest-plugin-browser`, which is powered by Playwright.
+
+If `visit()` is undefined (or the package is not installed), **do not install it silently — ask the user for permission first**, since it pulls in Node/Playwright dependencies and downloads browser binaries. Explain that the browser check needs it and confirm before running these commands:
+
+```bash
+composer require pestphp/pest-plugin-browser --dev   # the browser plugin (needs Node.js)
+npm install playwright@latest                         # Playwright driver
+npx playwright install                                # download the browser binaries
+```
+
+Once the user approves and it's installed, add `tests/Browser/Screenshots` to `.gitignore` so captured screenshots aren't committed. Browser assertions then run through the same `vendor/bin/pest --agent='…'` flow:
+
+```bash
+vendor/bin/pest --agent='visit("/login")->type("email", "test@example.com")->type("password", "password")->press("Log in")->assertPathIs("/dashboard");'
+vendor/bin/pest --agent='visit("/")->on()->mobile()->screenshot(fullPage: false, filename: "home-mobile");'
+```
+
+For full usage — backend examples, browser testing, screenshots, responsive checks, combining frontend and backend assertions, RefreshDatabase guidance, and pitfalls — load the **`pest-plugin-agent` skill**.
+
 === spatie/boost-spatie-guidelines/core rules ===
 
 # Project Coding Guidelines
@@ -218,4 +261,8 @@ When an implementation plan is completed, write it up as a markdown file in `pla
 
 ### Run PHPStan before pushing
 
-CI's lint job runs `./vendor/bin/phpstan analyse` (Larastan, level 3, `app/`) and fails the pipeline on any error, even when every test passes. The local pre-commit hook only runs Pint and Prettier, so run `./vendor/bin/phpstan analyse` before every push and fix errors at their source rather than ignoring or baselining them. A common trap: Eloquent relations without generic return types (`/** @return HasMany<Act, $this> */`) stop Larastan from resolving the related model's scopes, e.g. `$user->acts()->withEngagementCounts()`.
+CI's lint job runs `./vendor/bin/phpstan analyse` (Larastan plus `pest-plugin-phpstan`, level 3, `app/` and `tests/`) and fails the pipeline on any error, even when every test passes. The local pre-commit hook only runs Pint and Prettier, so run `./vendor/bin/phpstan analyse` before every push and fix errors at their source rather than ignoring or baselining them. Common traps: Eloquent relations without generic return types (`/** @return HasMany<Act, $this> */`) stop Larastan from resolving the related model's scopes, e.g. `$user->acts()->withEngagementCounts()`; and models without `/** @use HasFactory<ActFactory> */` (with `@extends Factory<Act>` on the factory) make `Act::factory()->create()` return a bare `Model` in tests.
+
+### Run tests through Herd's Xdebug so the Tia Engine works
+
+`tests/Pest.php` enables Pest's Tia Engine with `pest()->tia()->locally()`: unchanged tests are replayed from cache and only tests affected by your edits re-run (a no-change run replays all tests in well under a second). Tracking which tests a PHP change affects needs a coverage driver, which Herd only loads on demand — so run tests with `composer test` or `herd coverage vendor/bin/pest --compact` (add a path or `--filter` as usual). Call `vendor/bin/pest` directly: `php artisan test` runs Pest in a child process that does not inherit Herd's Xdebug, so TIA can only replay there and falls back to the full suite whenever it needs to record. Use `--no-tia` to force a full run, and `--tia --fresh` to re-record the graph after large refactors. CI runs `./vendor/bin/pest --ci`, which always executes the full suite — never add TIA to CI.

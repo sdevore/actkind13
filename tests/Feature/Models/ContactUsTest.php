@@ -14,9 +14,7 @@ test('contact us can create and attach an invitation for a specific inviter', fu
 
     $invitation = $contactUs->sendInvitation($inviter);
 
-    expect($invitation)
-        ->toBeInstanceOf(Invitation::class)
-        ->and($invitation->user_id)->toBe($inviter->id)
+    expect($invitation->user_id)->toBe($inviter->id)
         ->and($invitation->email)->toBe($contactUs->email)
         ->and($invitation->send_ct)->toBe(1)
         ->and($contactUs->fresh()->invitation_id)->toBe($invitation->id);

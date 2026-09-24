@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Mail\InviteUser;
 use Carbon\Carbon;
+use Database\Factories\InvitationFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -25,6 +26,7 @@ use Illuminate\Support\Facades\Mail;
  */
 class Invitation extends Model
 {
+    /** @use HasFactory<InvitationFactory> */
     use HasFactory, SoftDeletes;
 
     /**

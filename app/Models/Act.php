@@ -7,6 +7,7 @@ use App\Notifications\ActAppreciated;
 use App\Notifications\ActCommented;
 use App\Notifications\ActFlagged;
 use Carbon\Carbon;
+use Database\Factories\ActFactory;
 use Exception;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
@@ -22,7 +23,7 @@ use Illuminate\Validation\UnauthorizedException;
  * @property int $id
  * @property string $title
  * @property string $description
- * @property string $type
+ * @property ActType $type
  * @property int $user_id
  * @property Carbon $created_at
  * @property Carbon $updated_at
@@ -30,6 +31,7 @@ use Illuminate\Validation\UnauthorizedException;
  */
 class Act extends Model
 {
+    /** @use HasFactory<ActFactory> */
     use HasFactory, SoftDeletes;
 
     /**
@@ -128,7 +130,7 @@ class Act extends Model
         return $this->morphMany(Flag::class, 'flaggable');
     }
 
-    public function flag(User $user, string $reason): Flag|Model|bool
+    public function flag(User $user, string $reason): Flag|false
     {
         if (! $user->can('flag acts')) {
             throw new UnauthorizedException('You are not authorized to flag acts');
