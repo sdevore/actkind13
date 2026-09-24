@@ -2,10 +2,12 @@
 
 namespace App\Notifications;
 
+use App\Models\Comment;
 use App\Models\Flag;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use LogicException;
 
 class CommentFlagged extends Notification
 {
@@ -36,10 +38,16 @@ class CommentFlagged extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
+        $comment = $this->flag->flaggable;
+
+        if (! $comment instanceof Comment) {
+            throw new LogicException('A CommentFlagged notification requires a flagged comment.');
+        }
+
         return (new MailMessage)
             ->error()
             ->line('Your item was flagged.')
-            ->action('Review', route('flags.show', $this->flag))
+            ->action('Review', route('acts.show', $comment->act))
             ->line('You should review it and possibly change your mind');
     }
 

@@ -75,7 +75,7 @@ class Comment extends Model
     public function flag(User $user, string $reason): Flag|Model|bool
     {
         if (! $user->can('flag comments')) {
-            throw new UnauthorizedException('You are not authorized to flag acts');
+            throw new UnauthorizedException('You are not authorized to flag comments');
         }
         $flag = $this->flags()->firstOrNew([
             'user_id' => $user->id,
