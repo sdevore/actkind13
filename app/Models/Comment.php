@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Notifications\CommentFlagged;
 use Carbon\Carbon;
+use Database\Factories\CommentFactory;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -24,6 +25,7 @@ use Illuminate\Validation\UnauthorizedException;
 #[Hidden(['deleted_at'])]
 class Comment extends Model
 {
+    /** @use HasFactory<CommentFactory> */
     use HasFactory, SoftDeletes;
 
     /**
@@ -72,10 +74,10 @@ class Comment extends Model
         return $this->morphMany(Flag::class, 'flaggable');
     }
 
-    public function flag(User $user, string $reason): Flag|Model|bool
+    public function flag(User $user, string $reason): Flag|false
     {
         if (! $user->can('flag comments')) {
-            throw new UnauthorizedException('You are not authorized to flag acts');
+            throw new UnauthorizedException('You are not authorized to flag comments');
         }
         $flag = $this->flags()->firstOrNew([
             'user_id' => $user->id,

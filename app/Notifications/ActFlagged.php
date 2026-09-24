@@ -39,7 +39,7 @@ class ActFlagged extends Notification
         return (new MailMessage)
             ->error()
             ->line('Your item was flagged.')
-            ->action('Review', route('flags.show', $this->flag))
+            ->action('Review', route('acts.show', $this->flag->flaggable))
             ->line('You should review it and possibly change your mind');
     }
 
