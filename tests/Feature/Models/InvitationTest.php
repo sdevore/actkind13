@@ -25,3 +25,14 @@ test('sending an invitation without a configured bcc sends no blind copy', funct
     Mail::assertSent(InviteUser::class, fn (InviteUser $mail) => $mail->hasTo($invitation->email)
         && $mail->bcc === []);
 });
+
+test('queueing an invitation queues the invite email to the invitee and counts the send', function () {
+    Mail::fake();
+    $invitation = Invitation::factory()->create(['send_ct' => 0]);
+
+    $invitation->send(shouldQueue: true);
+
+    Mail::assertQueued(InviteUser::class, fn (InviteUser $mail) => $mail->hasTo($invitation->email));
+    Mail::assertNothingSent();
+    expect($invitation->fresh()->send_ct)->toBe(1);
+});

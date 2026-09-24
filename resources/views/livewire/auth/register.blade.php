@@ -37,7 +37,7 @@
             <flux:input
                 name="code"
                 :label="__('Invitation Code')"
-                :value="old('code')"
+                :value="old('code', request()->query('code'))"
                 type="text"
                 required
                 autofocus

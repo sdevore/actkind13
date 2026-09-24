@@ -14,6 +14,12 @@ test('registration screen can be rendered', function () {
     $response->assertOk();
 });
 
+test('registration screen prefills the invitation code from the signup link', function () {
+    $this->get(route('register', ['code' => 'INVITE123']))
+        ->assertOk()
+        ->assertSee('value="INVITE123"', false);
+});
+
 function registrationData(string $code): array
 {
     return [
