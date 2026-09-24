@@ -37,7 +37,7 @@ class InvitationPolicy
      */
     public function update(User $user, Invitation $invitation): bool
     {
-        if ($user->id === $invitation->user_id || $user->can('update invitations')) {
+        if ($user->id === $invitation->user_id || $user->can('edit invitations')) {
             return true;
         }
 
@@ -63,6 +63,11 @@ class InvitationPolicy
         }
 
         return false;
+    }
+
+    public function restoreAny(User $user): bool
+    {
+        return $user->can('restore invitations');
     }
 
     /**

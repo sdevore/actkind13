@@ -16,7 +16,6 @@ class WelcomeController extends Controller
         }
 
         $acts = Act::query()
-            ->with('user')
             ->withEngagementCounts()
             ->limit(10)
             ->get();

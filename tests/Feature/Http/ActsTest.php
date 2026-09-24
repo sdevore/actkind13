@@ -26,3 +26,25 @@ test('guests can view the acts feed', function () {
         ->assertOk()
         ->assertSee($act->title);
 });
+
+test('guests see an act without its author or comments', function () {
+    $act = Act::factory()->create();
+    $act->comments()->create(['body' => 'A comment only members may read', 'user_id' => User::factory()->create()->id]);
+
+    $this->get(route('acts.show', $act))
+        ->assertOk()
+        ->assertSee($act->title)
+        ->assertDontSee($act->user->name)
+        ->assertDontSee('A comment only members may read');
+});
+
+test('signed-in users see an acts author and comments', function () {
+    $act = Act::factory()->create();
+    $act->comments()->create(['body' => 'A comment only members may read', 'user_id' => User::factory()->create()->id]);
+
+    $this->actingAs(User::factory()->create())
+        ->get(route('acts.show', $act))
+        ->assertOk()
+        ->assertSee($act->user->name)
+        ->assertSee('A comment only members may read');
+});
