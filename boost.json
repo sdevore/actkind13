@@ -18,6 +18,7 @@
     "sail": false,
     "skills": [
         "infer-conventions",
+        "deploying-to-cloud",
         "fortify-development",
         "laravel-best-practices",
         "testing-best-practices",
@@ -25,6 +26,7 @@
         "fluxui-development",
         "livewire-development",
         "tailwindcss-development",
+        "filament-development",
         "laravel-permission-development",
         "spatie-laravel-php-standards",
         "debugging-output-and-previewing-html-using-ray",
