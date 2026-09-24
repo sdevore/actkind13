@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Mail\InviteUser;
 use Carbon\Carbon;
+use Database\Factories\InvitationFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -16,7 +17,8 @@ use Illuminate\Support\Facades\Mail;
  * @property string $name
  * @property string $email
  * @property string $code
- * @property Carbon $joined
+ * @property ?Carbon $joined_at
+ * @property ?int $joined_id
  * @property int $user_id
  * @property Carbon $created_at
  * @property Carbon $updated_at
@@ -24,6 +26,7 @@ use Illuminate\Support\Facades\Mail;
  */
 class Invitation extends Model
 {
+    /** @use HasFactory<InvitationFactory> */
     use HasFactory, SoftDeletes;
 
     /**
@@ -36,7 +39,7 @@ class Invitation extends Model
         'email',
         'code',
         'message',
-        'joined',
+        'joined_at',
         'user_id',
         'joined_id',
     ];
@@ -48,7 +51,7 @@ class Invitation extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'joined' => 'datetime',
+        'joined_at' => 'datetime',
         'user_id' => 'integer',
         'joined_id' => 'integer',
     ];
@@ -83,9 +86,8 @@ class Invitation extends Model
         }
 
         Mail::to(new Address($this->email, $this->name))
-            ->bcc('sdevore@me.com')
+            ->bcc(array_filter([config('mail.invitations.bcc')]))
             ->cc(config('mail.from.address'))
             ->send(new InviteUser($this));
-
     }
 }

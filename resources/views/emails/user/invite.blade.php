@@ -26,13 +26,10 @@ email.
 </x-mail::panel>
 
 <x-mail::panel>
-If you have any questions or need help, please email us at [{{ config('mail.from.address') }}](mailto:{{ config('
-mail.from.address') }}).
+If you have any questions or need help, please email us at [{{ config('mail.from.address') }}](mailto:{{ config('mail.from.address') }}).
 
-Also, your invitation code is: {{ $invitation->code }} and your invitation email is: {{ $invitation->email }}. You need
-to use the same email to register, if you need to change it, you should reach out to the person who invited you, and
-they
-can send you a new invitation to your preferred email.
+Your invitation code is: {{ $invitation->code }}. You can register with this email address or any other address you
+prefer.
 </x-mail::panel>
 
 -

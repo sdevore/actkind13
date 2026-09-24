@@ -451,3 +451,25 @@ test('unauthenticated delete to api/private/acts/{act} returns 401', function ()
     $this->deleteJson("/api/private/acts/{$act->id}")
         ->assertUnauthorized();
 });
+
+test('api/acts caps per_page at the maximum', function () {
+    Act::factory()->count(55)->create();
+
+    $this->getJson('/api/acts?per_page=500')
+        ->assertOk()
+        ->assertJsonCount(50, 'data');
+});
+
+test('api/acts falls back to the default page size when per_page is below one', function () {
+    Act::factory()->count(15)->create();
+
+    $this->getJson('/api/acts?per_page=0')
+        ->assertOk()
+        ->assertJsonCount(12, 'data');
+});
+
+test('api/acts rejects a non-integer per_page', function () {
+    $this->getJson('/api/acts?per_page=abc')
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors('per_page');
+});

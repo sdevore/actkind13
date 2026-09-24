@@ -115,4 +115,18 @@ return [
         'name' => env('MAIL_FROM_NAME', env('APP_NAME', 'Laravel')),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Invitation Copies
+    |--------------------------------------------------------------------------
+    |
+    | An optional address that is blind-copied on every invitation email sent
+    | directly (not queued). Leave empty to send invitations without a BCC.
+    |
+    */
+
+    'invitations' => [
+        'bcc' => env('MAIL_INVITATIONS_BCC'),
+    ],
+
 ];

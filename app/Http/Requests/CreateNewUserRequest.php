@@ -6,6 +6,7 @@ use App\Concerns\PasswordValidationRules;
 use App\Concerns\ProfileValidationRules;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CreateNewUserRequest extends FormRequest
 {
@@ -30,7 +31,24 @@ class CreateNewUserRequest extends FormRequest
             ...$this->profileRules(),
             'password' => $this->passwordRules(),
             'terms' => ['required', 'accepted'],
-            'code' => ['required', 'string', 'max:255'],
+            'code' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::exists('invitations', 'code')
+                    ->whereNull('joined_id')
+                    ->whereNull('deleted_at'),
+            ],
+        ];
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'code.exists' => __('This invitation code is invalid or has already been used.'),
         ];
     }
 }

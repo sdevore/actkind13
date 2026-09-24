@@ -11,6 +11,7 @@
     "nightwatch": false,
     "packages": [
         "filament/filament",
+        "pestphp/pest-plugin-agent",
         "spatie/boost-spatie-guidelines",
         "spatie/laravel-permission",
         "spatie/laravel-ray"
@@ -28,6 +29,7 @@
         "tailwindcss-development",
         "filament-development",
         "laravel-permission-development",
+        "pest-plugin-agent",
         "spatie-laravel-php-standards",
         "debugging-output-and-previewing-html-using-ray",
         "deploying-laravel-cloud",

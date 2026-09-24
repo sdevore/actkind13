@@ -23,6 +23,20 @@ uses(UnitTestCase::class)->in('Unit');
 
 /*
 |--------------------------------------------------------------------------
+| Test Impact Analysis
+|--------------------------------------------------------------------------
+|
+| Locally, only the tests affected by your changes are re-run and the rest are replayed from
+| cache. Recording the dependency graph needs Xdebug, so run the suite with `composer test`
+| or `herd coverage vendor/bin/pest` (`php artisan test` runs Pest in a child process that
+| does not inherit Herd's Xdebug). Runs with --ci (as CI does) always execute the full suite.
+|
+*/
+
+pest()->tia()->locally();
+
+/*
+|--------------------------------------------------------------------------
 | Expectations
 |--------------------------------------------------------------------------
 |

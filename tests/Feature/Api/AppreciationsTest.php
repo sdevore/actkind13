@@ -3,6 +3,8 @@
 use App\Models\Act;
 use App\Models\Appreciate;
 use App\Models\User;
+use App\Notifications\ActAppreciated;
+use Illuminate\Support\Facades\Notification;
 
 test('sanctum authenticated put to api/private/acts/{act}/appreciations creates an appreciation attributed to the authenticated user', function () {
     $user = User::factory()->create();
@@ -85,4 +87,28 @@ test('unauthenticated delete to api/private/appreciations/{appreciation} returns
 
     $this->deleteJson("/api/private/appreciations/{$appreciation->id}")
         ->assertUnauthorized();
+});
+
+test('appreciating an act notifies the acts owner', function () {
+    Notification::fake();
+    $act = Act::factory()->create();
+
+    $this->actingAs(User::factory()->create(), 'sanctum')
+        ->putJson("/api/private/acts/{$act->id}/appreciations")
+        ->assertCreated();
+
+    Notification::assertSentTo($act->user, ActAppreciated::class);
+});
+
+test('appreciating an act again does not notify the acts owner a second time', function () {
+    $act = Act::factory()->create();
+    $user = User::factory()->create();
+    $act->appreciate($user);
+    Notification::fake();
+
+    $this->actingAs($user, 'sanctum')
+        ->putJson("/api/private/acts/{$act->id}/appreciations")
+        ->assertOk();
+
+    Notification::assertNothingSent();
 });

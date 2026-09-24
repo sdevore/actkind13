@@ -42,7 +42,7 @@ new class extends Component implements HasActions, HasSchemas, HasTable
                     }),
                 Action::make('resend')
                     ->label('Resend')
-                    ->hidden(fn (Invitation $invitation) => $invitation->joined !== null)
+                    ->hidden(fn (Invitation $invitation) => $invitation->joined_at !== null)
                     ->icon('heroicon-o-paper-airplane')
                     ->requiresConfirmation()
                     ->button()
@@ -56,7 +56,7 @@ new class extends Component implements HasActions, HasSchemas, HasTable
                     }),
                 Action::make('delete')
                     ->label('Delete')
-                    ->hidden(fn (Invitation $invitation) => $invitation->joined !== null)
+                    ->hidden(fn (Invitation $invitation) => $invitation->joined_at !== null)
                     ->icon('heroicon-o-trash')
                     ->requiresConfirmation()
                     ->button()

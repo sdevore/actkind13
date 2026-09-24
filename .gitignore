@@ -23,3 +23,6 @@ yarn-error.log
 /.vscode
 /.zed
 /storage/coverage
+
+# Pest browser testing screenshots
+/tests/Browser/Screenshots

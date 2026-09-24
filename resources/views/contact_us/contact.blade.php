@@ -1,4 +1,4 @@
-<x-layouts::app :title="__('Welcome to ActKind.online')">
+<x-layouts::app :title="$title">
     <section class="m-2 mb-2 border-b-2 border-neutral-500/50 text-center text-sm text-slate-700 md:text-lg lg:m-6 dark:text-slate-200">
         <p class="mx-auto text-left md:w-3/4 lg:w-1/2">
             Working to make the world a better place by helping share and to be thanked for those intentional acts of
@@ -22,4 +22,4 @@
             <livewire:contact-us.form></livewire:contact-us.form>
         </div>
     </div>
-    </x-layouts::guest>
+</x-layouts::app>
