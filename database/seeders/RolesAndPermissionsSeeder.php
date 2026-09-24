@@ -18,7 +18,6 @@ class RolesAndPermissionsSeeder extends Seeder
             'acts', 'comments', 'flags', 'appreciates', 'invitations'];
         // create permissions
         foreach ($subjects as $subject) {
-            Permission::create(['name' => 'update '.$subject]);
             Permission::create(['name' => 'delete '.$subject]);
             Permission::create(['name' => 'view '.$subject]);
             Permission::create(['name' => 'edit '.$subject]);
@@ -28,6 +27,11 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'flag acts']);
         Permission::create(['name' => 'flag comments']);
         Permission::create(['name' => 'invite users']);
+
+        $restorableSubjects = ['acts', 'comments', 'invitations'];
+        foreach ($restorableSubjects as $subject) {
+            Permission::create(['name' => 'restore '.$subject]);
+        }
 
         // create roles and assign created permissions
 
@@ -46,6 +50,9 @@ class RolesAndPermissionsSeeder extends Seeder
         $role->givePermissionTo('impersonate');
         foreach ($subjects as $subject) {
             $role->givePermissionTo('edit '.$subject);
+        }
+        foreach ($restorableSubjects as $subject) {
+            $role->givePermissionTo('restore '.$subject);
         }
         $role = Role::create(['name' => 'super-admin']);
         $role->givePermissionTo(Permission::all());

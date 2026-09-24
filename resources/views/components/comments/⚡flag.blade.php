@@ -20,6 +20,7 @@ new class extends Component
     public function save(): void
     {
         $this->authorize('flag', $this->comment);
+        $this->validate();
         $this->comment->flag(auth()->user(), $this->reason);
         $this->showFlagForm = false;
     }
