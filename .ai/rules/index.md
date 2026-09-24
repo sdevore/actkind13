@@ -7,5 +7,6 @@ Before planning or editing, find the row whose globs match the file's path and r
 | app/Http/Controllers/** | .ai/rules/controllers.md |
 | app/Filament/** | .ai/rules/filament.md |
 | {AGENTS,CLAUDE,GEMINI}.md | .ai/rules/general.md |
+| plans_completed/** | .ai/rules/plans-completed.md |
 | app/Providers/** | .ai/rules/providers.md |
 | routes/** | .ai/rules/routes.md |

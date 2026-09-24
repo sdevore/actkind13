@@ -36,11 +36,11 @@
         @endauth
 
         @guest()
-            @if ($act->appreciates->count() > 0)
+            @if ($act->appreciates_count > 0)
                 <x-slot name="footer">
                     <span class="{{ $act->type->getTextColor() }} flex items-center">
                         <x-icon name="fas-hand-heart" class="mr-2 h-4 w-4" />
-                        {{ $act->appreciates->count() }}
+                        {{ $act->appreciates_count }}
                     </span>
                 </x-slot>
             @endif

@@ -8,6 +8,8 @@ use App\Notifications\ActCommented;
 use App\Notifications\ActFlagged;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -104,6 +106,20 @@ class Act extends Model
         }
 
         return false;
+    }
+
+    /** @param Builder<Act> $query */
+    #[Scope]
+    protected function withEngagementCounts(Builder $query): void
+    {
+        $query->withCount(['appreciates', 'comments']);
+    }
+
+    /** @param Builder<Act> $query */
+    #[Scope]
+    protected function newestFirst(Builder $query): void
+    {
+        $query->orderByDesc('created_at');
     }
 
     /** @return MorphMany<Flag, $this> */

@@ -3,22 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\Act;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class WelcomeController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): View|RedirectResponse
     {
-        //
-        // if the user is logged in, redirect to dashboard
         if ($request->user()) {
             return redirect()->route('dashboard');
         }
-        // get a random set of acts to display on the welcome page
-        $acts = Act::with(['appreciates'])->limit(10)->get();
+
+        $acts = Act::query()
+            ->with('user')
+            ->withEngagementCounts()
+            ->limit(10)
+            ->get();
 
         return view('welcome', compact('acts'));
     }

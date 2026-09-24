@@ -1,27 +1,25 @@
 <?php
 
-namespace App\Actions\Api\User;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use Dedoc\Scramble\Attributes\Group;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 #[Group('Auth')]
-class LogoutUserAction
+class LogoutController extends Controller
 {
     /**
      * logout
      *
      * Revoke the current Sanctum access token.
      *
-     * @tags User
-     *
      * @response array{message: string}
      */
     public function __invoke(Request $request): JsonResponse
     {
-        $token = $request->user('sanctum')->currentAccessToken();
-        $token->delete();
+        $request->user('sanctum')->currentAccessToken()->delete();
 
         return response()->json(['message' => 'Logged out successfully.']);
     }

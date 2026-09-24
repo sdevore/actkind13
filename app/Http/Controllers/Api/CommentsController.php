@@ -1,28 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use App\Http\Requests\CommentStoreRequest;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\CommentUpdateRequest;
 use App\Http\Resources\Comment as CommentResource;
-use App\Models\Act;
 use App\Models\Comment;
-use Illuminate\Http\JsonResponse;
+use Dedoc\Scramble\Attributes\Group;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
-class CommentController extends Controller
+#[Group('Comment')]
+class CommentsController extends Controller
 {
-    public function store(CommentStoreRequest $request, Act $act): JsonResponse
-    {
-        $comment = $act->comment(Auth::user(), $request->validated()['body']);
-
-        return CommentResource::make($comment->load('user'))
-            ->response()
-            ->setStatusCode(201);
-    }
-
     public function update(CommentUpdateRequest $request, Comment $comment): CommentResource
     {
         $comment->update($request->validated());
