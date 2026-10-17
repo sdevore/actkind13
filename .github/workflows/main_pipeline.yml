@@ -1,13 +1,16 @@
-name: Production - main branch test and deploy pipeline
+name: Production - main branch test and release deploy pipeline
 
 on:
   push:
     branches:
       - main
+  release:
+    types:
+      - published
 
 concurrency:
-  group: deploy-main
-  cancel-in-progress: true
+  group: production-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'push' }}
 
 jobs:
   lint:
@@ -19,7 +22,7 @@ jobs:
     secrets: inherit
 
   deploy:
-    if: ${{ needs.lint.result == 'success' && needs.tests.result == 'success' && github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    if: ${{ needs.lint.result == 'success' && needs.tests.result == 'success' && github.event_name == 'release' && !github.event.release.prerelease && github.event.release.target_commitish == 'main' }}
     needs: [lint, tests]
     uses: ./.github/workflows/deploy-laravel-cloud.yml
     secrets:
