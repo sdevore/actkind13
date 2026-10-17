@@ -12,7 +12,8 @@ test('sending an invitation blind-copies the configured address', function () {
     $invitation->send();
 
     Mail::assertSent(InviteUser::class, fn (InviteUser $mail) => $mail->hasTo($invitation->email)
-        && $mail->hasBcc('copies@example.com'));
+        && $mail->hasBcc('copies@example.com')
+        && $mail->cc === []);
 });
 
 test('sending an invitation without a configured bcc sends no blind copy', function () {
@@ -24,6 +25,19 @@ test('sending an invitation without a configured bcc sends no blind copy', funct
 
     Mail::assertSent(InviteUser::class, fn (InviteUser $mail) => $mail->hasTo($invitation->email)
         && $mail->bcc === []);
+});
+
+test('queueing an invitation blind-copies only the configured address', function () {
+    Mail::fake();
+    config(['mail.from.address' => 'hello@example.com', 'mail.invitations.bcc' => 'copies@example.com']);
+    $invitation = Invitation::factory()->create();
+
+    $invitation->send(shouldQueue: true);
+
+    Mail::assertQueued(InviteUser::class, fn (InviteUser $mail) => $mail->hasTo($invitation->email)
+        && $mail->hasBcc('copies@example.com')
+        && ! $mail->hasBcc('hello@example.com')
+        && $mail->cc === []);
 });
 
 test('queueing an invitation queues the invite email to the invitee and counts the send', function () {
