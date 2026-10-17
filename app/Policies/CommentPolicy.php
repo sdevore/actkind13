@@ -45,7 +45,6 @@ class CommentPolicy
 
     public function flag(User $user, Comment $comment): bool
     {
-        //
         if ($user->can('flag comments')) {
             return true;
         }

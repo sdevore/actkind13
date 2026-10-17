@@ -12,7 +12,6 @@ class ActPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
         return true;
     }
 
@@ -21,7 +20,6 @@ class ActPolicy
      */
     public function view(User $user, Act $act): bool
     {
-        //
         return true;
     }
 
@@ -30,7 +28,6 @@ class ActPolicy
      */
     public function create(User $user): bool
     {
-        //
         return true;
     }
 
@@ -39,7 +36,6 @@ class ActPolicy
      */
     public function update(User $user, Act $act): bool
     {
-        //
         if ($user->id === $act->user_id || $user->can('edit acts')) {
             return true;
         }
@@ -49,7 +45,6 @@ class ActPolicy
 
     public function flag(User $user, Act $act): bool
     {
-        //
         if ($user->can('flag acts')) {
             return true;
         }
@@ -62,7 +57,6 @@ class ActPolicy
      */
     public function delete(User $user, Act $act): bool
     {
-        //
         if ($user->id === $act->user_id || $user->can('delete acts')) {
             return true;
         }
@@ -75,7 +69,6 @@ class ActPolicy
      */
     public function restore(User $user, Act $act): bool
     {
-        //
         if ($user->id === $act->user_id || $user->can('restore acts')) {
             return true;
         }
@@ -93,7 +86,6 @@ class ActPolicy
      */
     public function forceDelete(User $user, Act $act): bool
     {
-        //
         if ($user->id === $act->user_id || $user->can('delete acts')) {
             return true;
         }

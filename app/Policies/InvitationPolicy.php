@@ -12,7 +12,6 @@ class InvitationPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
         return $user->can('view invitations');
     }
 
