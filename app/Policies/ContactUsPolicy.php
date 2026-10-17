@@ -20,7 +20,6 @@ class ContactUsPolicy
      */
     public function view(User $user, ContactUs $contactUs): bool
     {
-        //
         return $user->hasRole(['administrator', 'super-admin']);
     }
 
@@ -29,7 +28,6 @@ class ContactUsPolicy
      */
     public function create(User $user): bool
     {
-        //
         return $user->hasRole(['administrator', 'super-admin']);
     }
 
@@ -38,7 +36,6 @@ class ContactUsPolicy
      */
     public function update(User $user, ContactUs $contactUs): bool
     {
-        //
         return $user->hasRole(['administrator', 'super-admin']) || $user->id === $contactUs->user_id;
     }
 
@@ -47,7 +44,6 @@ class ContactUsPolicy
      */
     public function delete(User $user, ContactUs $contactUs): bool
     {
-        //
         return $user->hasRole(['administrator', 'super-admin']) || $user->id === $contactUs->user_id;
     }
 
@@ -56,7 +52,6 @@ class ContactUsPolicy
      */
     public function restore(User $user, ContactUs $contactUs): bool
     {
-        //
         return $user->hasRole(['administrator', 'super-admin']);
     }
 
@@ -65,7 +60,6 @@ class ContactUsPolicy
      */
     public function forceDelete(User $user, ContactUs $contactUs): bool
     {
-        //
         return $user->hasRole(['administrator', 'super-admin']) || $user->id === $contactUs->user_id;
     }
 }
