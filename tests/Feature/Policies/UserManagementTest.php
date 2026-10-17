@@ -22,3 +22,13 @@ test('moderators cannot list or edit users in the admin panel', function () {
     $this->get(ListUsers::getUrl())->assertForbidden();
     $this->get(EditUser::getUrl(['record' => User::factory()->create()]))->assertForbidden();
 });
+
+test('only administrators can bulk email users', function (string $role, bool $canEmail) {
+    $user = User::factory()->create()->assignRole($role);
+
+    expect($user->can('emailAny', User::class))->toBe($canEmail);
+})->with([
+    ['administrator', true],
+    ['super-admin', true],
+    ['moderator', false],
+]);
