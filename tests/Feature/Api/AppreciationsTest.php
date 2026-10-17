@@ -70,7 +70,7 @@ test('sanctum authenticated delete to api/private/appreciations/{appreciation} d
         ->deleteJson("/api/private/appreciations/{$appreciation->id}")
         ->assertNoContent();
 
-    expect(Appreciate::find($appreciation->id))->toBeNull();
+    expect(Appreciate::withTrashed()->find($appreciation->id))->toBeNull();
 });
 
 test('sanctum authenticated delete to api/private/appreciations/{appreciation} is forbidden for a non-owner', function () {

@@ -107,5 +107,10 @@ class Comment extends Model
                 $appreciate->delete();
             }
         });
+
+        static::restoring(function (Comment $comment) {
+            $comment->flags()->onlyTrashed()->where('deleted_at', '>=', $comment->deleted_at)->restore();
+            $comment->appreciates()->onlyTrashed()->where('deleted_at', '>=', $comment->deleted_at)->restore();
+        });
     }
 }

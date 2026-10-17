@@ -15,7 +15,7 @@ class AppreciationsController extends Controller
     {
         Gate::authorize('delete', $appreciation);
 
-        $appreciation->delete();
+        $appreciation->forceDelete();
 
         return response()->noContent();
     }
