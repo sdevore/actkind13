@@ -81,6 +81,7 @@ class UserResource extends Resource
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                     BulkAction::make('email')
+                        ->authorize('emailAny')
                         ->icon('heroicon-o-envelope')
                         ->color('primary')
                         ->form([
@@ -102,10 +103,10 @@ class UserResource extends Resource
                             /** @var User $record */
                             foreach ($records as $record) {
                                 $user = new Address($record->email, $record->name);
-                                Mail::to($user)->send(new BulkEmailUsers($data, $record));
+                                Mail::to($user)->queue(new BulkEmailUsers($data, $record));
                             }
                             Notification::make('success')
-                                ->title('Email sent to '.Str::plural('User', $records->count()))
+                                ->title('Email queued for '.Str::plural('User', $records->count()))
                                 ->success()
                                 ->icon('heroicon-o-envelope')
                                 ->send();

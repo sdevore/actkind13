@@ -77,17 +77,16 @@ class Invitation extends Model
     public function send(bool $shouldQueue = false): void
     {
         $this->increment('send_ct');
+
+        $mail = Mail::to(new Address($this->email, $this->name))
+            ->bcc(array_filter([config('mail.invitations.bcc')]));
+
         if ($shouldQueue) {
-            Mail::to($this->email, $this->name)
-                ->bcc(config('mail.from.address'))
-                ->queue(new InviteUser($this));
+            $mail->queue(new InviteUser($this));
 
             return;
         }
 
-        Mail::to(new Address($this->email, $this->name))
-            ->bcc(array_filter([config('mail.invitations.bcc')]))
-            ->cc(config('mail.from.address'))
-            ->send(new InviteUser($this));
+        $mail->send(new InviteUser($this));
     }
 }

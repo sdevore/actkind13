@@ -36,6 +36,11 @@ class UserPolicy
         return $this->managesUsers($user);
     }
 
+    public function emailAny(User $user): bool
+    {
+        return $this->managesUsers($user);
+    }
+
     private function managesUsers(User $user): bool
     {
         return $user->hasRole(['administrator', 'super-admin']);
