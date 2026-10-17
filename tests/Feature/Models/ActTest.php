@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\Act;
-use App\Models\Appreciate;
 use App\Models\Comment;
 use App\Models\Flag;
 use App\Models\User;
@@ -10,7 +9,7 @@ use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\UnauthorizedException;
 
-test('deleting an act soft-deletes its comments and flags and removes its appreciations', function () {
+test('deleting an act soft-deletes its comments, flags and appreciations', function () {
     $act = Act::factory()->create();
     $comment = Comment::factory()->create(['act_id' => $act->id]);
     $appreciate = $act->appreciates()->create(['user_id' => User::factory()->create()->id]);
@@ -25,7 +24,32 @@ test('deleting an act soft-deletes its comments and flags and removes its apprec
     $this->assertSoftDeleted($act);
     $this->assertSoftDeleted($comment);
     $this->assertSoftDeleted($flag);
-    expect(Appreciate::find($appreciate->id))->toBeNull();
+    $this->assertSoftDeleted($appreciate);
+});
+
+test('restoring an act restores the content deleted with it but not content deleted earlier', function () {
+    $act = Act::factory()->create();
+    $comment = Comment::factory()->create(['act_id' => $act->id]);
+    $commentAppreciate = $comment->appreciates()->create(['user_id' => User::factory()->create()->id]);
+    $earlierComment = Comment::factory()->create(['act_id' => $act->id]);
+    $appreciate = $act->appreciates()->create(['user_id' => User::factory()->create()->id]);
+    $flag = Flag::factory()->create([
+        'flaggable_id' => $act->id,
+        'flaggable_type' => $act->getMorphClass(),
+        'flagged_user_id' => $act->user_id,
+    ]);
+    $earlierComment->delete();
+    $this->travel(1)->minute();
+    $act->delete();
+
+    $act->restore();
+
+    $this->assertNotSoftDeleted($comment);
+    $this->assertNotSoftDeleted($commentAppreciate);
+    $this->assertNotSoftDeleted($appreciate);
+    $this->assertNotSoftDeleted($flag);
+    $this->assertSoftDeleted($earlierComment);
+    expect($act->appreciates()->count())->toBe(1);
 });
 
 test('deleting an act leaves other acts content untouched', function () {

@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Appreciate;
 use App\Models\Comment;
 use App\Models\Flag;
 use App\Models\User;
@@ -9,7 +8,7 @@ use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\UnauthorizedException;
 
-test('deleting a comment soft-deletes its flags and removes its appreciations', function () {
+test('deleting a comment soft-deletes its flags and appreciations', function () {
     $comment = Comment::factory()->create();
     $appreciate = $comment->appreciates()->create(['user_id' => User::factory()->create()->id]);
     $flag = Flag::factory()->create([
@@ -22,7 +21,27 @@ test('deleting a comment soft-deletes its flags and removes its appreciations', 
 
     $this->assertSoftDeleted($comment);
     $this->assertSoftDeleted($flag);
-    expect(Appreciate::find($appreciate->id))->toBeNull();
+    $this->assertSoftDeleted($appreciate);
+});
+
+test('restoring a comment restores the flags and appreciations deleted with it but not ones deleted earlier', function () {
+    $comment = Comment::factory()->create();
+    $appreciate = $comment->appreciates()->create(['user_id' => User::factory()->create()->id]);
+    $withdrawnAppreciate = $comment->appreciates()->create(['user_id' => User::factory()->create()->id]);
+    $flag = Flag::factory()->create([
+        'flaggable_id' => $comment->id,
+        'flaggable_type' => $comment->getMorphClass(),
+        'flagged_user_id' => $comment->user_id,
+    ]);
+    $withdrawnAppreciate->delete();
+    $this->travel(1)->minute();
+    $comment->delete();
+
+    $comment->restore();
+
+    $this->assertNotSoftDeleted($appreciate);
+    $this->assertNotSoftDeleted($flag);
+    $this->assertSoftDeleted($withdrawnAppreciate);
 });
 
 test('a moderator flagging a comment records the flag and notifies the comments author', function () {

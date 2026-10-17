@@ -60,3 +60,16 @@ test('moderators cannot restore deleted records', function (string $page, Closur
 
     expect($record->fresh()->trashed())->toBeTrue();
 })->with('restorable resources');
+
+test('restoring an act from the admin table brings back its appreciations', function () {
+    $act = Act::factory()->create();
+    $act->appreciates()->create(['user_id' => User::factory()->create()->id]);
+    $act->delete();
+    $this->actingAs(User::factory()->create()->assignRole('administrator'));
+
+    Livewire::test(ListActs::class)
+        ->filterTable('trashed', true)
+        ->callAction(TestAction::make(RestoreAction::class)->table($act));
+
+    expect($act->fresh()->appreciates()->count())->toBe(1);
+});

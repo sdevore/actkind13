@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property int $id
@@ -16,11 +17,14 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property string $appreciable_type
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ * @property ?Carbon $deleted_at
  */
 class Appreciate extends Model
 {
     /** @use HasFactory<AppreciateFactory> */
     use HasFactory;
+
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.

@@ -167,5 +167,15 @@ class Act extends Model
                 $flag->delete();
             }
         });
+
+        static::restoring(function (Act $act) {
+            $act->comments()
+                ->onlyTrashed()
+                ->where('deleted_at', '>=', $act->deleted_at)
+                ->each(fn (Comment $comment) => $comment->restore());
+
+            $act->appreciates()->onlyTrashed()->where('deleted_at', '>=', $act->deleted_at)->restore();
+            $act->flags()->onlyTrashed()->where('deleted_at', '>=', $act->deleted_at)->restore();
+        });
     }
 }
