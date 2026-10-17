@@ -41,3 +41,21 @@ test('the appreciations stat counts appreciations, not acts', function () {
     expect($stats[0]->getLabel())->toBe('Appreciation Count')
         ->and($stats[0]->getValue())->toBe(3);
 });
+
+test('the appreciations stat charts daily appreciations over the last 14 days', function () {
+    $act = Act::factory()->create();
+    $this->travelTo(today()->subDays(2)->setHour(12));
+    $act->appreciates()->create(['user_id' => User::factory()->create()->id]);
+    $this->travelBack();
+    $act->appreciates()->createMany(
+        User::factory()->count(2)->create()->map(fn (User $user) => ['user_id' => $user->id])->all()
+    );
+
+    $widget = Livewire::test(AppreciatesStatsWidget::class)->instance();
+    $chart = (new ReflectionMethod($widget, 'getStats'))->invoke($widget)[0]->getChart();
+
+    expect($chart)->toHaveCount(14)
+        ->and($chart[11])->toBe(1)
+        ->and($chart[13])->toBe(2)
+        ->and(array_sum($chart))->toBe(3);
+});
