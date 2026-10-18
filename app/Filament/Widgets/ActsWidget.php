@@ -43,6 +43,7 @@ class ActsWidget extends ChartWidget
         $filter = $this->filter;
         $query = $this->getPageTableQuery();
         $query->getQuery()->orders = [];
+        $query->getQuery()->select([]);
         $saw = collect();
         $did = collect();
         $received = collect();
@@ -62,6 +63,7 @@ class ActsWidget extends ChartWidget
         };
         $query = $this->getPageTableQuery();
         $query->getQuery()->orders = [];
+        $query->getQuery()->select([]);
 
         match ($filter) {
             'week' => $did = Trend::query($query->where('type', '=', ActType::DID))
@@ -79,6 +81,7 @@ class ActsWidget extends ChartWidget
         };
         $query = $this->getPageTableQuery();
         $query->getQuery()->orders = [];
+        $query->getQuery()->select([]);
 
         match ($filter) {
             'week' => $received = Trend::query($query->where('type', '=', ActType::RECEIVED))

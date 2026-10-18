@@ -7,6 +7,7 @@ use App\Filament\Widgets\FlagsWidget;
 use App\Models\Act;
 use App\Models\User;
 use Database\Seeders\RolesAndPermissionsSeeder;
+use Illuminate\Support\Facades\DB;
 use Livewire\Livewire;
 
 beforeEach(function () {
@@ -28,6 +29,24 @@ test('dashboard chart widgets render for every period filter', function (string 
     CommentsWidget::class,
     FlagsWidget::class,
 ])->with(['week', 'month', '3months']);
+
+test('dashboard chart widgets select only the trend columns, not the table counts', function (string $widget) {
+    Act::factory()->count(2)->create();
+    DB::enableQueryLog();
+
+    Livewire::test($widget)->assertOk();
+
+    $trendQueries = collect(DB::getQueryLog())
+        ->pluck('query')
+        ->filter(fn (string $query) => str_contains($query, 'as aggregate'));
+
+    expect($trendQueries)->not->toBeEmpty()
+        ->each(fn ($query) => $query->not->toContain('.*', '_count'));
+})->with([
+    ActsWidget::class,
+    CommentsWidget::class,
+    FlagsWidget::class,
+]);
 
 test('the appreciations stat counts appreciations, not acts', function () {
     $act = Act::factory()->create();

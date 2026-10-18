@@ -41,6 +41,7 @@ class FlagsWidget extends ChartWidget
         $filter = $this->filter;
         $query = $this->getPageTableQuery();
         $query->getQuery()->orders = [];
+        $query->getQuery()->select([]);
         $data = collect();
         match ($filter) {
             'week' => $data = Trend::query($query)
