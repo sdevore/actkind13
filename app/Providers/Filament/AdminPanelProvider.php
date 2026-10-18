@@ -38,12 +38,6 @@ class AdminPanelProvider extends PanelProvider
                     ->icon('heroicon-o-home-modern')
                     ->group('Navigation')
                     ->sort(3),
-                NavigationItem::make('Telescope')
-                    ->url('/telescope')
-                    ->icon('heroicon-o-cog')
-                    ->group('Navigation')
-                    ->sort(3)
-                    ->visible(fn (): bool => app()->environment('local') && auth()->user()->can('view admin panel')),
 
                 // ...
             ])
