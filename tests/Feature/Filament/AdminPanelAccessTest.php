@@ -29,3 +29,20 @@ test('a guest is redirected to the admin login page', function () {
     $this->get('/admin')
         ->assertRedirect('/admin/login');
 });
+
+test('the telescope link is only shown in the local environment', function (string $environment, bool $isShown) {
+    Permission::create(['name' => 'view admin panel']);
+    $admin = User::factory()->create();
+    $admin->givePermissionTo('view admin panel');
+    app()->detectEnvironment(fn (): string => $environment);
+
+    $response = $this->actingAs($admin)->get('/admin');
+
+    $isShown
+        ? $response->assertSee('/telescope', escape: false)
+        : $response->assertDontSee('/telescope', escape: false);
+})->with([
+    'production' => ['production', false],
+    'staging' => ['staging', false],
+    'local' => ['local', true],
+]);
