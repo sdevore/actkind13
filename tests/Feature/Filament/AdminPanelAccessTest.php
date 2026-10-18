@@ -29,3 +29,14 @@ test('a guest is redirected to the admin login page', function () {
     $this->get('/admin')
         ->assertRedirect('/admin/login');
 });
+
+test('the admin panel has no telescope link in any environment', function (string $environment) {
+    Permission::create(['name' => 'view admin panel']);
+    $admin = User::factory()->create();
+    $admin->givePermissionTo('view admin panel');
+    app()->detectEnvironment(fn (): string => $environment);
+
+    $this->actingAs($admin)
+        ->get('/admin')
+        ->assertDontSee('/telescope', escape: false);
+})->with(['production', 'staging', 'local']);
