@@ -24,7 +24,15 @@ class ActIndexRequest extends FormRequest
     public function rules(): array
     {
         return [
+            /**
+             * Page number, starting at 1.
+             *
+             * @default 1
+             */
             'page' => ['nullable', 'integer', 'min:1'],
+            /**
+             * Acts per page. Defaults to 12 on the guest feed and 20 on the signed-in feeds. Values above 50 are capped at 50 and values below 1 fall back to the default.
+             */
             'per_page' => ['nullable', 'integer'],
         ];
     }

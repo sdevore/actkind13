@@ -4,6 +4,12 @@ namespace App\Providers;
 
 use App\Models\User;
 use Carbon\CarbonImmutable;
+use Dedoc\Scramble\Scramble;
+use Dedoc\Scramble\Support\Generator\Operation;
+use Dedoc\Scramble\Support\Generator\Response;
+use Dedoc\Scramble\Support\Generator\Schema;
+use Dedoc\Scramble\Support\Generator\Types\ObjectType;
+use Dedoc\Scramble\Support\Generator\Types\StringType;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
@@ -29,6 +35,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->configureDefaults();
         $this->configureApiDocsAccess();
+        $this->configureApiDocs();
     }
 
     /**
@@ -67,5 +74,37 @@ class AppServiceProvider extends ServiceProvider
 
             return $sanctumUser?->currentAccessToken() instanceof PersonalAccessToken;
         });
+    }
+
+    protected function configureApiDocs(): void
+    {
+        Scramble::configure()->withOperationTransformers(function (Operation $operation): void {
+            collect($operation->responses)
+                ->filter(fn (mixed $response): bool => $response instanceof Response && isset($response->content['application/json']))
+                ->each(fn (Response $response) => $this->documentCurrentPageUrl($response->getContent('application/json')));
+        });
+    }
+
+    /**
+     * Laravel's paginators return `meta.current_page_url`, but Scramble's paginator schema leaves it out.
+     */
+    private function documentCurrentPageUrl(mixed $schema): void
+    {
+        if (! $schema instanceof Schema || ! $schema->type instanceof ObjectType) {
+            return;
+        }
+
+        if (! $schema->type->hasProperty('meta')) {
+            return;
+        }
+
+        $meta = $schema->type->getProperty('meta');
+
+        if (! $meta instanceof ObjectType || ! $meta->hasProperty('current_page')) {
+            return;
+        }
+
+        $meta->addProperty('current_page_url', new StringType)
+            ->addRequired(['current_page_url']);
     }
 }

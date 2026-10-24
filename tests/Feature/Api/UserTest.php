@@ -23,11 +23,24 @@ test('authenticated request to api/user does not expose internal account fields'
     $data = $this->actingAs($user, 'sanctum')
         ->getJson('/api/user')
         ->assertOk()
-        ->json();
+        ->json('data');
 
     expect($data)->not->toHaveKey('email_verified_at')
         ->and($data)->not->toHaveKey('two_factor_confirmed_at')
         ->and($data)->not->toHaveKey('flag_ct');
+});
+
+test('authenticated request to api/user returns a nullable profile photo path and no team id', function () {
+    $user = User::factory()->create();
+
+    $data = $this->actingAs($user, 'sanctum')
+        ->getJson('/api/user')
+        ->assertOk()
+        ->json('data');
+
+    expect($data)->toHaveKey('profile_photo_path')
+        ->and($data['profile_photo_path'])->toBeNull()
+        ->and($data)->not->toHaveKey('current_team_id');
 });
 
 test('sanctum token endpoint issues a token for valid credentials', function () {

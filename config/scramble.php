@@ -51,7 +51,7 @@ return [
         /*
          * Description rendered on the home page of the API documentation (`/docs/api`).
          */
-        'description' => 'These are the client api endpoints for the application. You can use the Try It feature to test the endpoints directly from the documentation.',
+        'description' => 'These are the client api endpoints for the application. You can use the Try It feature to test the endpoints directly from the documentation. Outside local development, open these docs with an `Authorization: Bearer <token>` header using a token from `POST /api/sanctum/token`.',
     ],
 
     'ui' => [
@@ -103,7 +103,10 @@ return [
      * ],
      * ```
      */
-    'servers' => null,
+    'servers' => [
+        'Production' => 'https://actkind.online/api',
+        'Development' => 'https://dev.actkind.online/api',
+    ],
 
     /**
      * Determines how Scramble stores the descriptions of enum cases.
