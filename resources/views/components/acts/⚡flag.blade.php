@@ -65,10 +65,12 @@ new class extends Component
             <span class="ml-2 flex items-center space-x-1">
                 @foreach ($act->flags as $flag)
                     <span class="flex items-center">
-                        <img
-                            class="h-6 w-6 rounded-full object-cover"
-                            src="{{ $flag->user->profile_photo_url }}"
-                            alt="{{ $flag->user->name }}"
+                        <flux:avatar
+                            size="xs"
+                            circle
+                            :name="$flag->user->name"
+                            :initials="$flag->user->initials()"
+                            class="mr-1"
                         />
                         {{ $flag->user->name }}
                     </span>

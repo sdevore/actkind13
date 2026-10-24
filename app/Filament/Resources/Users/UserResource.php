@@ -18,7 +18,6 @@ use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -108,9 +107,6 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                ImageColumn::make('profilePhotoUrl')
-                    ->label('Profile Photo')
-                    ->circular(),
                 TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
