@@ -473,3 +473,26 @@ test('api/acts rejects a non-integer per_page', function () {
         ->assertUnprocessable()
         ->assertJsonValidationErrors('per_page');
 });
+
+test('paging through an act feed returns every act exactly once when acts share a timestamp', function (string $feed) {
+    $user = User::factory()->create();
+    $acts = Act::factory()->count(7)->create(['user_id' => $user->id, 'created_at' => now()]);
+
+    $pagedIds = collect();
+    $page = 1;
+
+    do {
+        $response = $this->actingAs($user, 'sanctum')
+            ->getJson("{$feed}?per_page=3&page={$page}")
+            ->assertOk();
+
+        $pagedIds->push(...collect($response->json('data'))->pluck('id'));
+        $page++;
+    } while ($response->json('links.next') !== null);
+
+    expect($pagedIds->all())->toBe($acts->pluck('id')->sortDesc()->values()->all());
+})->with([
+    'guest feed' => '/api/acts',
+    'private feed' => '/api/private/acts',
+    'my acts feed' => '/api/private/acts/mine',
+]);
