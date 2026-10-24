@@ -496,3 +496,34 @@ test('paging through an act feed returns every act exactly once when acts share 
     'private feed' => '/api/private/acts',
     'my acts feed' => '/api/private/acts/mine',
 ]);
+
+test('sanctum authenticated put to api/private/acts rejects an unknown type', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user, 'sanctum')
+        ->putJson('/api/private/acts', [
+            'title' => 'probe',
+            'description' => 'probe',
+            'type' => 'bogus',
+        ])
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors('type');
+
+    expect(Act::where('user_id', $user->id)->exists())->toBeFalse();
+});
+
+test('sanctum authenticated post to api/private/acts/{act} rejects an unknown type', function () {
+    $user = User::factory()->create();
+    $act = Act::factory()->create(['user_id' => $user->id]);
+
+    $this->actingAs($user, 'sanctum')
+        ->postJson("/api/private/acts/{$act->id}", [
+            'title' => 'probe',
+            'description' => 'probe',
+            'type' => 'bogus',
+        ])
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors('type');
+
+    expect($act->fresh()->title)->toBe($act->title);
+});

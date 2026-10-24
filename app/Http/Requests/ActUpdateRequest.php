@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\ActType;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ActUpdateRequest extends FormRequest
 {
@@ -22,7 +24,7 @@ class ActUpdateRequest extends FormRequest
         return [
             'title' => ['required', 'string'],
             'description' => ['required', 'string'],
-            'type' => ['required', 'string'],
+            'type' => ['required', Rule::enum(ActType::class)],
         ];
     }
 }
