@@ -142,19 +142,19 @@ test('unauthenticated request to api/acts returns the correct second page of res
         ->and(collect($page2)->pluck('id')->all())->toBe($expectedIds->slice(5, 5)->values()->all());
 });
 
-test('unauthenticated put to api/private/acts returns 401', function () {
-    $this->putJson('/api/private/acts', [
+test('unauthenticated post to api/private/acts returns 401', function () {
+    $this->postJson('/api/private/acts', [
         'title' => 'A kind act',
         'description' => 'Something good happened',
         'type' => 'did',
     ])->assertUnauthorized();
 });
 
-test('sanctum authenticated put to api/private/acts creates an act attributed to the authenticated user', function () {
+test('sanctum authenticated post to api/private/acts creates an act attributed to the authenticated user', function () {
     $user = User::factory()->create();
 
     $this->actingAs($user, 'sanctum')
-        ->putJson('/api/private/acts', [
+        ->postJson('/api/private/acts', [
             'title' => 'A kind act',
             'description' => 'Something good happened',
             'type' => 'did',
@@ -164,12 +164,12 @@ test('sanctum authenticated put to api/private/acts creates an act attributed to
     expect(Act::where(['user_id' => $user->id, 'title' => 'A kind act'])->exists())->toBeTrue();
 });
 
-test('sanctum authenticated put to api/private/acts ignores a spoofed user_id and attributes the act to the authenticated user', function () {
+test('sanctum authenticated post to api/private/acts ignores a spoofed user_id and attributes the act to the authenticated user', function () {
     $user = User::factory()->create();
     $otherUser = User::factory()->create();
 
     $this->actingAs($user, 'sanctum')
-        ->putJson('/api/private/acts', [
+        ->postJson('/api/private/acts', [
             'title' => 'A kind act',
             'description' => 'Something good happened',
             'type' => 'did',
@@ -386,12 +386,12 @@ test('unauthenticated request to api/private/acts/mine is unauthorized', functio
         ->assertUnauthorized();
 });
 
-test('sanctum authenticated post to api/private/acts/{act} updates the owners act', function () {
+test('sanctum authenticated put to api/private/acts/{act} updates the owners act', function () {
     $user = User::factory()->create();
     $act = Act::factory()->create(['user_id' => $user->id]);
 
     $this->actingAs($user, 'sanctum')
-        ->postJson("/api/private/acts/{$act->id}", [
+        ->putJson("/api/private/acts/{$act->id}", [
             'title' => 'Updated title',
             'description' => $act->description,
             'type' => $act->type->value,
@@ -402,12 +402,12 @@ test('sanctum authenticated post to api/private/acts/{act} updates the owners ac
     expect($act->fresh()->title)->toBe('Updated title');
 });
 
-test('sanctum authenticated post to api/private/acts/{act} is forbidden for a non-owner', function () {
+test('sanctum authenticated put to api/private/acts/{act} is forbidden for a non-owner', function () {
     $user = User::factory()->create();
     $act = Act::factory()->create();
 
     $this->actingAs($user, 'sanctum')
-        ->postJson("/api/private/acts/{$act->id}", [
+        ->putJson("/api/private/acts/{$act->id}", [
             'title' => 'Updated title',
             'description' => $act->description,
             'type' => $act->type->value,
@@ -415,10 +415,10 @@ test('sanctum authenticated post to api/private/acts/{act} is forbidden for a no
         ->assertForbidden();
 });
 
-test('unauthenticated post to api/private/acts/{act} returns 401', function () {
+test('unauthenticated put to api/private/acts/{act} returns 401', function () {
     $act = Act::factory()->create();
 
-    $this->postJson("/api/private/acts/{$act->id}", [
+    $this->putJson("/api/private/acts/{$act->id}", [
         'title' => 'Updated title',
         'description' => $act->description,
         'type' => $act->type->value,
@@ -497,11 +497,11 @@ test('paging through an act feed returns every act exactly once when acts share 
     'my acts feed' => '/api/private/acts/mine',
 ]);
 
-test('sanctum authenticated put to api/private/acts rejects an unknown type', function () {
+test('sanctum authenticated post to api/private/acts rejects an unknown type', function () {
     $user = User::factory()->create();
 
     $this->actingAs($user, 'sanctum')
-        ->putJson('/api/private/acts', [
+        ->postJson('/api/private/acts', [
             'title' => 'probe',
             'description' => 'probe',
             'type' => 'bogus',
@@ -512,12 +512,12 @@ test('sanctum authenticated put to api/private/acts rejects an unknown type', fu
     expect(Act::where('user_id', $user->id)->exists())->toBeFalse();
 });
 
-test('sanctum authenticated post to api/private/acts/{act} rejects an unknown type', function () {
+test('sanctum authenticated put to api/private/acts/{act} rejects an unknown type', function () {
     $user = User::factory()->create();
     $act = Act::factory()->create(['user_id' => $user->id]);
 
     $this->actingAs($user, 'sanctum')
-        ->postJson("/api/private/acts/{$act->id}", [
+        ->putJson("/api/private/acts/{$act->id}", [
             'title' => 'probe',
             'description' => 'probe',
             'type' => 'bogus',
@@ -527,3 +527,37 @@ test('sanctum authenticated post to api/private/acts/{act} rejects an unknown ty
 
     expect($act->fresh()->title)->toBe($act->title);
 });
+
+test('sanctum authenticated patch to api/private/acts/{act} updates the owners act', function () {
+    $user = User::factory()->create();
+    $act = Act::factory()->create(['user_id' => $user->id]);
+
+    $this->actingAs($user, 'sanctum')
+        ->patchJson("/api/private/acts/{$act->id}", [
+            'title' => 'Patched title',
+            'description' => $act->description,
+            'type' => $act->type->value,
+        ])
+        ->assertOk()
+        ->assertJsonPath('data.title', 'Patched title');
+
+    expect($act->fresh()->title)->toBe('Patched title');
+});
+
+test('the pre-REST write verbs are no longer routed', function (string $method, string $uri) {
+    $user = User::factory()->create();
+    $act = Act::factory()->create(['user_id' => $user->id]);
+    $comment = Comment::factory()->create(['user_id' => $user->id, 'act_id' => $act->id]);
+
+    $uri = str_replace(['{act}', '{comment}'], [$act->id, $comment->id], $uri);
+
+    $this->actingAs($user, 'sanctum')
+        ->json($method, $uri)
+        ->assertMethodNotAllowed();
+})->with([
+    'create act with PUT' => ['PUT', '/api/private/acts'],
+    'update act with POST' => ['POST', '/api/private/acts/{act}'],
+    'appreciate with PUT' => ['PUT', '/api/private/acts/{act}/appreciations'],
+    'comment with PUT' => ['PUT', '/api/private/acts/{act}/comments'],
+    'update comment with POST' => ['POST', '/api/private/comments/{comment}'],
+]);

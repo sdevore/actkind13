@@ -33,7 +33,7 @@ test('administrators can update another members act through the API', function (
     $act = Act::factory()->create();
 
     $this->actingAs(userWithRole('administrator'), 'sanctum')
-        ->postJson("/api/private/acts/{$act->id}", [
+        ->putJson("/api/private/acts/{$act->id}", [
             'title' => 'Edited by an admin',
             'description' => $act->description,
             'type' => $act->type->value,
@@ -46,7 +46,7 @@ test('administrators can update another members comment through the API', functi
     $comment = Comment::factory()->create();
 
     $this->actingAs(userWithRole('administrator'), 'sanctum')
-        ->postJson("/api/private/comments/{$comment->id}", ['body' => 'Edited by an admin'])
+        ->putJson("/api/private/comments/{$comment->id}", ['body' => 'Edited by an admin'])
         ->assertOk()
         ->assertJsonPath('data.body', 'Edited by an admin');
 });
@@ -55,7 +55,7 @@ test('moderators cannot update another members comment through the API', functio
     $comment = Comment::factory()->create();
 
     $this->actingAs(userWithRole('moderator'), 'sanctum')
-        ->postJson("/api/private/comments/{$comment->id}", ['body' => 'Edited by a moderator'])
+        ->putJson("/api/private/comments/{$comment->id}", ['body' => 'Edited by a moderator'])
         ->assertForbidden();
 });
 

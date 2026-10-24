@@ -6,12 +6,12 @@ use App\Models\User;
 use App\Notifications\ActAppreciated;
 use Illuminate\Support\Facades\Notification;
 
-test('sanctum authenticated put to api/private/acts/{act}/appreciations creates an appreciation attributed to the authenticated user', function () {
+test('sanctum authenticated post to api/private/acts/{act}/appreciations creates an appreciation attributed to the authenticated user', function () {
     $user = User::factory()->create();
     $act = Act::factory()->create();
 
     $this->actingAs($user, 'sanctum')
-        ->putJson("/api/private/acts/{$act->id}/appreciations")
+        ->postJson("/api/private/acts/{$act->id}/appreciations")
         ->assertCreated()
         ->assertJsonPath('data.user.id', $user->id);
 
@@ -22,25 +22,25 @@ test('sanctum authenticated put to api/private/acts/{act}/appreciations creates 
     ])->exists())->toBeTrue();
 });
 
-test('sanctum authenticated put to api/private/acts/{act}/appreciations is forbidden for the acts owner', function () {
+test('sanctum authenticated post to api/private/acts/{act}/appreciations is forbidden for the acts owner', function () {
     $user = User::factory()->create();
     $act = Act::factory()->create(['user_id' => $user->id]);
 
     $this->actingAs($user, 'sanctum')
-        ->putJson("/api/private/acts/{$act->id}/appreciations")
+        ->postJson("/api/private/acts/{$act->id}/appreciations")
         ->assertForbidden();
 });
 
-test('sanctum authenticated put to api/private/acts/{act}/appreciations is idempotent and does not create a duplicate', function () {
+test('sanctum authenticated post to api/private/acts/{act}/appreciations is idempotent and does not create a duplicate', function () {
     $user = User::factory()->create();
     $act = Act::factory()->create();
 
     $this->actingAs($user, 'sanctum')
-        ->putJson("/api/private/acts/{$act->id}/appreciations")
+        ->postJson("/api/private/acts/{$act->id}/appreciations")
         ->assertCreated();
 
     $this->actingAs($user, 'sanctum')
-        ->putJson("/api/private/acts/{$act->id}/appreciations")
+        ->postJson("/api/private/acts/{$act->id}/appreciations")
         ->assertOk();
 
     expect(Appreciate::where([
@@ -50,10 +50,10 @@ test('sanctum authenticated put to api/private/acts/{act}/appreciations is idemp
     ])->count())->toBe(1);
 });
 
-test('unauthenticated put to api/private/acts/{act}/appreciations returns 401', function () {
+test('unauthenticated post to api/private/acts/{act}/appreciations returns 401', function () {
     $act = Act::factory()->create();
 
-    $this->putJson("/api/private/acts/{$act->id}/appreciations")
+    $this->postJson("/api/private/acts/{$act->id}/appreciations")
         ->assertUnauthorized();
 });
 
@@ -94,7 +94,7 @@ test('appreciating an act notifies the acts owner', function () {
     $act = Act::factory()->create();
 
     $this->actingAs(User::factory()->create(), 'sanctum')
-        ->putJson("/api/private/acts/{$act->id}/appreciations")
+        ->postJson("/api/private/acts/{$act->id}/appreciations")
         ->assertCreated();
 
     Notification::assertSentTo($act->user, ActAppreciated::class);
@@ -107,7 +107,7 @@ test('appreciating an act again does not notify the acts owner a second time', f
     Notification::fake();
 
     $this->actingAs($user, 'sanctum')
-        ->putJson("/api/private/acts/{$act->id}/appreciations")
+        ->postJson("/api/private/acts/{$act->id}/appreciations")
         ->assertOk();
 
     Notification::assertNothingSent();

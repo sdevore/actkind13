@@ -43,9 +43,9 @@ Route::name('api.')->group(function () {
 
                             Route::controller(ActsController::class)->group(function () {
                                 Route::get('/', 'index')->name('index');
-                                Route::put('/', 'store')->name('store');
+                                Route::post('/', 'store')->name('store');
                                 Route::get('/{act}', 'show')->name('show');
-                                Route::post('/{act}', 'update')->name('update');
+                                Route::match(['put', 'patch'], '/{act}', 'update')->name('update');
                                 Route::delete('/{act}', 'destroy')->name('destroy');
                             });
                         });
@@ -53,9 +53,9 @@ Route::name('api.')->group(function () {
                     Route::prefix('acts/{act}')
                         ->name('acts.')
                         ->group(function () {
-                            Route::put('/appreciations', [ActAppreciationsController::class, 'store'])
+                            Route::post('/appreciations', [ActAppreciationsController::class, 'store'])
                                 ->name('appreciations.store');
-                            Route::put('/comments', [ActCommentsController::class, 'store'])
+                            Route::post('/comments', [ActCommentsController::class, 'store'])
                                 ->name('comments.store');
                         });
 
@@ -63,7 +63,7 @@ Route::name('api.')->group(function () {
                         ->controller(CommentsController::class)
                         ->name('comments.')
                         ->group(function () {
-                            Route::post('/{comment}', 'update')->name('update');
+                            Route::match(['put', 'patch'], '/{comment}', 'update')->name('update');
                             Route::delete('/{comment}', 'destroy')->name('destroy');
                         });
 
