@@ -6,12 +6,12 @@ use App\Models\User;
 use App\Notifications\ActCommented;
 use Illuminate\Support\Facades\Notification;
 
-test('sanctum authenticated put to api/private/acts/{act}/comments creates a comment attributed to the authenticated user', function () {
+test('sanctum authenticated post to api/private/acts/{act}/comments creates a comment attributed to the authenticated user', function () {
     $user = User::factory()->create();
     $act = Act::factory()->create();
 
     $this->actingAs($user, 'sanctum')
-        ->putJson("/api/private/acts/{$act->id}/comments", [
+        ->postJson("/api/private/acts/{$act->id}/comments", [
             'body' => 'What a kind thing to do',
         ])
         ->assertCreated()
@@ -21,30 +21,30 @@ test('sanctum authenticated put to api/private/acts/{act}/comments creates a com
     expect(Comment::where(['act_id' => $act->id, 'user_id' => $user->id, 'body' => 'What a kind thing to do'])->exists())->toBeTrue();
 });
 
-test('sanctum authenticated put to api/private/acts/{act}/comments requires a body', function () {
+test('sanctum authenticated post to api/private/acts/{act}/comments requires a body', function () {
     $user = User::factory()->create();
     $act = Act::factory()->create();
 
     $this->actingAs($user, 'sanctum')
-        ->putJson("/api/private/acts/{$act->id}/comments", [])
+        ->postJson("/api/private/acts/{$act->id}/comments", [])
         ->assertUnprocessable()
         ->assertJsonValidationErrors('body');
 });
 
-test('unauthenticated put to api/private/acts/{act}/comments returns 401', function () {
+test('unauthenticated post to api/private/acts/{act}/comments returns 401', function () {
     $act = Act::factory()->create();
 
-    $this->putJson("/api/private/acts/{$act->id}/comments", [
+    $this->postJson("/api/private/acts/{$act->id}/comments", [
         'body' => 'What a kind thing to do',
     ])->assertUnauthorized();
 });
 
-test('sanctum authenticated post to api/private/comments/{comment} updates the owners comment', function () {
+test('sanctum authenticated put to api/private/comments/{comment} updates the owners comment', function () {
     $user = User::factory()->create();
     $comment = Comment::factory()->create(['user_id' => $user->id]);
 
     $this->actingAs($user, 'sanctum')
-        ->postJson("/api/private/comments/{$comment->id}", [
+        ->putJson("/api/private/comments/{$comment->id}", [
             'body' => 'Updated comment body',
         ])
         ->assertOk()
@@ -53,21 +53,21 @@ test('sanctum authenticated post to api/private/comments/{comment} updates the o
     expect($comment->fresh()->body)->toBe('Updated comment body');
 });
 
-test('sanctum authenticated post to api/private/comments/{comment} is forbidden for a non-owner', function () {
+test('sanctum authenticated put to api/private/comments/{comment} is forbidden for a non-owner', function () {
     $user = User::factory()->create();
     $comment = Comment::factory()->create();
 
     $this->actingAs($user, 'sanctum')
-        ->postJson("/api/private/comments/{$comment->id}", [
+        ->putJson("/api/private/comments/{$comment->id}", [
             'body' => 'Updated comment body',
         ])
         ->assertForbidden();
 });
 
-test('unauthenticated post to api/private/comments/{comment} returns 401', function () {
+test('unauthenticated put to api/private/comments/{comment} returns 401', function () {
     $comment = Comment::factory()->create();
 
-    $this->postJson("/api/private/comments/{$comment->id}", [
+    $this->putJson("/api/private/comments/{$comment->id}", [
         'body' => 'Updated comment body',
     ])->assertUnauthorized();
 });
@@ -104,8 +104,22 @@ test('commenting on an act notifies the acts owner', function () {
     $act = Act::factory()->create();
 
     $this->actingAs(User::factory()->create(), 'sanctum')
-        ->putJson("/api/private/acts/{$act->id}/comments", ['body' => 'Lovely'])
+        ->postJson("/api/private/acts/{$act->id}/comments", ['body' => 'Lovely'])
         ->assertCreated();
 
     Notification::assertSentTo($act->user, ActCommented::class);
+});
+
+test('sanctum authenticated patch to api/private/comments/{comment} updates the owners comment', function () {
+    $user = User::factory()->create();
+    $comment = Comment::factory()->create(['user_id' => $user->id]);
+
+    $this->actingAs($user, 'sanctum')
+        ->patchJson("/api/private/comments/{$comment->id}", [
+            'body' => 'Patched comment body',
+        ])
+        ->assertOk()
+        ->assertJsonPath('data.body', 'Patched comment body');
+
+    expect($comment->fresh()->body)->toBe('Patched comment body');
 });
