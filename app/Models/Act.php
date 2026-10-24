@@ -121,7 +121,7 @@ class Act extends Model
     #[Scope]
     protected function newestFirst(Builder $query): void
     {
-        $query->orderByDesc('created_at');
+        $query->orderByDesc('created_at')->orderByDesc('id');
     }
 
     /** @return MorphMany<Flag, $this> */

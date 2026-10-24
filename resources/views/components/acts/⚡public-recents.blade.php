@@ -15,11 +15,11 @@ new class extends Component
             $this->showNames = true;
             $this->acts = Act::with(['user'])
                 ->where('user_id', '!=', auth()->id())
-                ->latest()
+                ->newestFirst()
                 ->take(10)
                 ->get();
         } else {
-            $this->acts = Act::withEngagementCounts()->latest()->take(10)->get();
+            $this->acts = Act::withEngagementCounts()->newestFirst()->take(10)->get();
         }
     }
 };
