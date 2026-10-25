@@ -18,17 +18,20 @@ use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
+use Filament\Support\Enums\IconSize;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Mail\Mailables\Address;
-use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
+use Illuminate\View\ComponentAttributeBag;
 use Spatie\Permission\Models\Role;
+
+use function Filament\Support\generate_icon_html;
 
 class UserResource extends Resource
 {
@@ -117,11 +120,11 @@ class UserResource extends Resource
                     ->label('Acts')
                     ->counts('acts'),
                 TextColumn::make('comments_count')
-                    ->label(new HtmlString(Blade::render(' <x-icon name="far-comments" class="mr-2 h-4 w-4" />')))
+                    ->label(self::iconLabel('far-comments', 'Comments'))
                     ->counts('comments')
                     ->sortable(),
                 TextColumn::make('flag_ct')
-                    ->label(new HtmlString(Blade::render(' <x-icon name="fas-flag" class="mr-2 h-4 w-4" />')))
+                    ->label(self::iconLabel('fas-flag', 'Flags'))
                     ->sortable(),
 
             ])
@@ -185,5 +188,16 @@ class UserResource extends Resource
             'create' => CreateUser::route('/create'),
             'edit' => EditUser::route('/{record}/edit'),
         ];
+    }
+
+    /**
+     * An icon-only column header that screen readers announce by its label.
+     */
+    private static function iconLabel(string $icon, string $label): ?Htmlable
+    {
+        return generate_icon_html($icon, attributes: new ComponentAttributeBag([
+            'role' => 'img',
+            'aria-label' => $label,
+        ]), size: IconSize::Small);
     }
 }

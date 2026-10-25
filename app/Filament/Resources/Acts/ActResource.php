@@ -21,13 +21,16 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
+use Filament\Support\Enums\IconSize;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\HtmlString;
+use Illuminate\View\ComponentAttributeBag;
+
+use function Filament\Support\generate_icon_html;
 
 class ActResource extends Resource
 {
@@ -68,15 +71,15 @@ class ActResource extends Resource
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('appreciates_count')
-                    ->label(new HtmlString(Blade::render(' <x-icon name="fas-hand-heart" class="mr-2 h-4 w-4" />')))
+                    ->label(self::iconLabel('fas-hand-heart', 'Appreciates'))
                     ->counts('appreciates')
                     ->sortable(),
                 TextColumn::make('comments_count')
-                    ->label(new HtmlString(Blade::render(' <x-icon name="far-comments" class="mr-2 h-4 w-4" />')))
+                    ->label(self::iconLabel('far-comments', 'Comments'))
                     ->counts('comments')
                     ->sortable(),
                 TextColumn::make('flags_count')
-                    ->label(new HtmlString(Blade::render(' <x-icon name="fas-flag" class="mr-2 h-4 w-4" />')))
+                    ->label(self::iconLabel('fas-flag', 'Flags'))
                     ->counts('flags')
                     ->sortable(),
                 TextColumn::make('created_at')
@@ -138,5 +141,16 @@ class ActResource extends Resource
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
+    }
+
+    /**
+     * An icon-only column header that screen readers announce by its label.
+     */
+    private static function iconLabel(string $icon, string $label): ?Htmlable
+    {
+        return generate_icon_html($icon, attributes: new ComponentAttributeBag([
+            'role' => 'img',
+            'aria-label' => $label,
+        ]), size: IconSize::Small);
     }
 }
