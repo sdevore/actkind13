@@ -26,3 +26,5 @@ yarn-error.log
 
 # Pest browser testing screenshots
 /tests/Browser/Screenshots
+
+.claude/settings.local.json
