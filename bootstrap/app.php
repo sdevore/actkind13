@@ -3,6 +3,9 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Livewire\Exceptions\MethodNotFoundException;
+use Livewire\Features\SupportFileUploads\MissingFileUploadsTraitException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -15,5 +18,12 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        $exceptions->map(fn (MissingFileUploadsTraitException $exception) => new BadRequestHttpException(previous: $exception));
+
+        $exceptions->map(fn (MethodNotFoundException $exception) => new BadRequestHttpException(previous: $exception));
+
+        $exceptions->dontReport([
+            MissingFileUploadsTraitException::class,
+            MethodNotFoundException::class,
+        ]);
     })->create();
