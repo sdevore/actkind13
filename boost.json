@@ -33,6 +33,7 @@
         "spatie-laravel-php-standards",
         "debugging-output-and-previewing-html-using-ray",
         "deploying-laravel-cloud",
-        "laravel-scramble"
+        "laravel-scramble",
+        "triage-nightwatch"
     ]
 }
