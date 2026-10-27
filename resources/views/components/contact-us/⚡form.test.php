@@ -1,6 +1,7 @@
 <?php
 
 use App\Mail\ContactUsMailable;
+use Illuminate\Support\Facades\Exceptions;
 use Livewire\Livewire;
 use RyanChandler\LaravelCloudflareTurnstile\Facades\Turnstile;
 
@@ -106,3 +107,23 @@ it('sends an email and redirects to the home route on success', function () {
                $mail->contactUs->email === 'john@example.com';
     });
 })->group('components');
+
+it('rejects a crafted call to a method the form does not offer with a 400 and reports nothing', function (string $method, array $params) {
+    $snapshot = Livewire::test('contact-us.form')->snapshot;
+    Exceptions::fake();
+
+    $response = $this->postJson(route('default-livewire.update'), [
+        'components' => [[
+            'snapshot' => json_encode($snapshot),
+            'updates' => [],
+            'calls' => [['method' => $method, 'params' => $params, 'path' => '']],
+        ]],
+    ], ['X-Livewire' => 'true']);
+
+    $response->assertBadRequest();
+    expect($response->json('message'))->not->toContain('contact-us.form');
+    Exceptions::assertNothingReported();
+})->with([
+    'file upload without WithFileUploads' => ['_startUpload', ['photo', [['name' => 'shell.php', 'size' => 100, 'type' => 'image/png']], false]],
+    'unknown method' => ['deleteEverything', []],
+])->group('components');
